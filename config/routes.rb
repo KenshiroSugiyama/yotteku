@@ -1,3 +1,22 @@
 Rails.application.routes.draw do
+  get 'restaurant/signup'
+  get 'restaurant/login'
+  get 'reserve/edit'
+  get 'reserve/update'
+  get 'chat/index'
+  get 'users_restaurants/new'
+  get 'users_restaurants/create'
+  get 'users_restaurants/edit'
+  get 'users_restaurants/update'
+  get 'users_restaurants/mypage'
+  get 'users_restaurants/detail'
+  get 'user_profile/show'
+  get 'user_profile/new'
+  get 'user_profile/edit'
+  get 'user_profile/create'
+  get 'user_profile/update'
+  get 'request_controller/new'
+  get 'user_profile/show'
+  get 'user/login'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
