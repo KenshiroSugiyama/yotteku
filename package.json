@@ -1,5 +1,7 @@
 {
   "name": "yotteku",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "redis-server": "^1.2.2"
+  }
 }
