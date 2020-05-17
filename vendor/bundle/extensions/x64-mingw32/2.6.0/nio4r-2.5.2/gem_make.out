@@ -1,0 +1,14 @@
+current directory: C:/Users/keimi/Desktop/yamaken-prject/yotteku/vendor/bundle/gems/nio4r-2.5.2/ext/nio4r
+C:/Ruby26-x64/bin/ruby.exe -I C:/Ruby26-x64/lib/ruby/2.6.0 -r ./siteconf20200510-15136-1arm943.rb extconf.rb
+
+current directory: C:/Users/keimi/Desktop/yamaken-prject/yotteku/vendor/bundle/gems/nio4r-2.5.2/ext/nio4r
+make "DESTDIR=" clean
+make: *** ターゲット 'clean' を make するルールがありません.  中止.
+
+current directory: C:/Users/keimi/Desktop/yamaken-prject/yotteku/vendor/bundle/gems/nio4r-2.5.2/ext/nio4r
+make "DESTDIR="
+make: 'all' に対して行うべき事はありません.
+
+current directory: C:/Users/keimi/Desktop/yamaken-prject/yotteku/vendor/bundle/gems/nio4r-2.5.2/ext/nio4r
+make "DESTDIR=" install
+make: 'install' に対して行うべき事はありません.
