@@ -18,5 +18,6 @@ Rails.application.routes.draw do
   get 'request_controller/new'
   get 'user_profile/show'
   get 'user/login'
+  get '/firebase/login', to: 'firebase#login'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
