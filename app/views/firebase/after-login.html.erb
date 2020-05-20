@@ -1,0 +1,24 @@
+<script>
+const firebaseConfig = {
+apiKey: "AIzaSyBIbATXyGA8IhtRlGQgCvcCzthmxY_VBaE",
+authDomain: "yotteku-72fc3.firebaseapp.com",
+databaseURL: "https://yotteku-72fc3.firebaseio.com",
+projectId: "yotteku-72fc3",
+storageBucket: "yotteku-72fc3.appspot.com",
+messagingSenderId: "809800943603",
+appId: "1:809800943603:web:2b259125b8b5e7f822f486",
+measurementId: "G-J1NL1HD5M0"
+};
+firebase.initializeApp(firebaseConfig);
+</script>
+
+<script>
+  firebase.auth().onAuthStateChanged(function(user){
+    if(user){
+      console.log('login');
+    }else{
+      console.log('no user');
+    }
+  });
+</script>
+<h1>ログイン成功！！</h1>

@@ -1,6 +1,101 @@
-<h1 style="font-size:50px;">よってく</h1>
-<hr>
-<div id="message">
-  <div id="firebaseui-auth-container"></div>
-  <div id="loader">Loading...</div>
+<h1>ログイン</h1>
+<div id="loggedin"></div>
+
+<div class="login-wrapper">
+  <p>email</p>
+  <input id="txtEmail" type="email" name="" value="" placeholder="email">
+  <p>password</p>
+  <input id="txtPassword"type="password" name="" value="" placeholder="password">
+
+  <button id="btnLogin" class="btn btn-action">login</button>
 </div>
+
+<button id="btnSignUp" type="button" name="button" class="btn btn-secondary">SignUp</button>
+<button id="btnLogout" type="" name="button" class="btn btn-action hide">Log Out</button>
+
+<script>
+  (function(){
+
+    console.log("読み込み完了");
+
+    // initialize firebase
+    const firebaseConfig = {
+    apiKey: "AIzaSyBIbATXyGA8IhtRlGQgCvcCzthmxY_VBaE",
+    authDomain: "yotteku-72fc3.firebaseapp.com",
+    databaseURL: "https://yotteku-72fc3.firebaseio.com",
+    projectId: "yotteku-72fc3",
+    storageBucket: "yotteku-72fc3.appspot.com",
+    messagingSenderId: "809800943603",
+    appId: "1:809800943603:web:2b259125b8b5e7f822f486",
+    measurementId: "G-J1NL1HD5M0"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    // get element
+    const txtEmail = document.getElementById('txtEmail');
+    const txtPassword = document.getElementById('txtPassword');
+    const btnLogin = document.getElementById('btnLogin');
+    const btnSignUp = document.getElementById('btnSignUp');
+    const btnLogout = document.getElementById('btnLogout');
+
+    // add login event
+    btnLogin.addEventListener('click', e =>{
+      const email = txtEmail.value;
+      const pass = txtPassword.value;
+      const auth = firebase.auth();
+    // sign in
+      const promise = auth.signInWithEmailAndPassword(email,pass);
+      promise.catch(e => console.log(e.message));
+    });
+
+    btnSignUp.addEventListener('click', e=>{
+      const email = txtEmail.value;
+      const pass = txtPassword.value;
+      const auth = firebase.auth();
+    // sign in
+      const promise = auth.createUserWithEmailAndPassword(email,pass);
+      promise
+      .catch(e => console.log(e.message));
+    });
+
+    btnLogout.addEventListener('click',e=>{
+      firebase.auth().signOut();
+
+    });
+
+
+    // add a realtime listener
+    firebase.auth().onAuthStateChanged(firebaseUser => {
+      if(firebaseUser){
+        var loggedin = document.getElementById('loggedin');
+        loggedin.innerHTML = '<h2>ログイン済み</h2>'
+        btnLogout.classList.remove('hide');
+        btnLogin.classList.add('hide');
+        console.log(firebaseUser);
+      }else{
+        var loggedin = document.getElementById('loggedin');
+        loggedin.innerHTML = '<h2>ログインしてください</h2>'
+        btnLogout.classList.add('hide');
+        btnLogin.classList.remove('hide');
+        console.log('not logged in');
+      }
+    });
+
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+  .then(function() {
+    // Existing and future Auth states are now persisted in the current
+    // session only. Closing the window would clear any existing state even
+    // if a user forgets to sign out.
+    // ...
+    // New sign-in will be persisted with session persistence.
+    console.log('session');
+    return firebase.auth().signInWithEmailAndPassword(email, password);
+  })
+  .catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+  });
+  }());
+
+</script>
