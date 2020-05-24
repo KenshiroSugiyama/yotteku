@@ -1,4 +1,17 @@
 Rails.application.routes.draw do
+  #杉山追加------------------------------------------------------
+  devise_for :restaurants, :controller => {
+    :registrations => 'restaurants/registrations',
+    :sessions => 'restaurants/sessions'   
+  } 
+
+  devise_scope :restaurants do
+    get "restaurants/:id", :to => "users/registrations#detail"
+    get "signup", :to => "restaurants/registrations#new"
+    get "login", :to => "restaurants/sessions#new"
+    get "logout", :to => "restaurants/sessions#destroy"
+  end
+  #--------------------------------------------------------------
   get 'restaurant/signup'
   get 'restaurant/login'
   get 'reserve/edit'
