@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
+  get 'mypage/home' => 'mypage#home'
   #杉山追加------------------------------------------------------
   devise_for :restaurants, :controller => {
     :registrations => 'restaurants/registrations',
-    :sessions => 'restaurants/sessions'   
-  } 
+    :sessions => 'restaurants/sessions'
+  }
 
   devise_scope :restaurants do
     get "restaurants/:id", :to => "users/registrations#detail"
@@ -11,6 +12,13 @@ Rails.application.routes.draw do
     get "login", :to => "restaurants/sessions#new"
     get "logout", :to => "restaurants/sessions#destroy"
   end
+  
+  get 'user_profile/show' => 'user_profile#show'
+  get 'user_profile/new' => 'user_profile#new'
+  get 'user_profile/edit' =>'user_profile#edit'
+  get 'request_controller/new' =>'request_controller#new'
+  get '/' => 'firebase#login-authUI'
+  get 'firebase/after-login' =>'firebase#after-login'
   #--------------------------------------------------------------
   get 'restaurant/signup'
   get 'restaurant/login'
@@ -23,15 +31,9 @@ Rails.application.routes.draw do
   get 'users_restaurants/update'
   get 'users_restaurants/mypage'
   get 'users_restaurants/detail'
-  get 'user_profile/show'
-  get 'user_profile/new'
-  get 'user_profile/edit'
   get 'user_profile/create'
   get 'user_profile/update'
-  get 'request_controller/new'
   get 'user_profile/show'
   get 'user/login'
-  get '/' => 'firebase#login-authUI'
-  get 'firebase/after-login' =>'firebase#after-login'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
