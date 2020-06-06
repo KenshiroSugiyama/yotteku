@@ -17,7 +17,7 @@
 <script type="text/javascript">
   // FirebaseUI config.
   var uiConfig = {
-    signInSuccessUrl: '/firebase/after-login',
+    signInSuccessUrl: '/user_profile/new',
     signInOptions: [
       // Leave the lines as is for the providers you want to offer your users.
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -42,6 +42,12 @@
   var ui = new firebaseui.auth.AuthUI(firebase.auth());
   // The start method will wait until the DOM is loaded.
   ui.start('#firebaseui-auth-container', uiConfig);
+  firebase.auth().onAuthStateChanged(user => {
+  console.log(user)
+  var storage =localStorage;
+  var userId  = user.uid;
+  storage.id = userId;
+});
 </script>
 <!DOCTYPE html>
 <html>

@@ -1,2 +1,9 @@
-<h1>UserProfile#new</h1>
-<p>Find me in app/views/user_profile/new.html.erb</p>
+<h1>ユーザー新規登録画面</h1>
+<input type="text" name="" value="" id="id-input">
+<script>
+  var storage = localStorage;
+  console.log(storage.id);
+
+  var idInput = document.getElementById('id-input');
+  idInput.value = storage.id;
+</script>
