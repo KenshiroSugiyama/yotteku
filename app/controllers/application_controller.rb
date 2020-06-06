@@ -19,4 +19,20 @@ class ApplicationController < ActionController::Base
         end
       end
     end
+    
+    # ログイン後のリダイレクト先
+    def after_sign_in_path_for(resource_or_scope)
+      if resource_or_scope.is_a?(Restaurant)
+        res = RestaurantInformation.find_by(restaurant_id: resource_or_scope.id)
+        unless res
+          new_restaurant_information_path(restaurant_id: resource_or_scope.id)
+        else
+          restaurant_information_path(id: res.id )
+        end
+      else
+        root_path
+      end
+    end
+  
+    
 end

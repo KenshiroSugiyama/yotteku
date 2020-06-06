@@ -11,6 +11,8 @@ Rails.application.routes.draw do
     get "login", :to => "restaurants/sessions#new"
     get "logout", :to => "restaurants/sessions#destroy"
   end
+
+  resources :restaurant_information,only: [:new,:create,:show]
   #--------------------------------------------------------------
   get 'restaurant/signup'
   get 'restaurant/login'

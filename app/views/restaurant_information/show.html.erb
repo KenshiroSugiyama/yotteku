@@ -1,0 +1,24 @@
+<div class="text-center">
+  <h2>店情報</h2>
+</div>
+<div class="row">
+  <div class="col-sm-6 offset-sm-3 bg-light">
+    <div class="mb-1">
+    <label>一押しメニュー</label>:
+        <%= @info.menu%>
+    </div>
+    
+    <div class="mb-1">
+    <label>平均予算</label>:
+        <%= @info.price_min %>~<%= @info.price_max %>
+    </div>
+    <div class="mb-1">
+    <label>住所</label>:
+        <%= @info.address %>
+    </div>
+    <div class="mb-1">
+        <label>URL</label>:
+        <%= @info.url %>
+    </div>
+  </div>
+</div>

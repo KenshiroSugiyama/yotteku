@@ -1,5 +1,11 @@
 ja:
   activerecord:
+    errors:
+      models:
+        restaurant:
+          attributes:
+            category:
+              required: "必要です"
     attributes:
       restaurant:
         current_password: "現在のパスワード"

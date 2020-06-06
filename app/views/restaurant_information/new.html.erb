@@ -1,0 +1,38 @@
+<div class="text-center">
+  <h1>店情報登録</h1>
+</div>
+
+<div class="row">
+  <div class="col-sm-6 offset-sm-3">
+
+    <%= form_with(model: @info,url: restaurant_information_index_path,method: :post,  local: true) do |f| %>
+      
+      <div class="form-group">
+        <%= f.label :menu, '一押しメニュー' %>
+        <%= f.text_field :menu, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :price_min, '平均予算' %>
+        <%= f.number_field :price_min, class: 'form-control' %>~
+        <%= f.number_field :price_max, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :address, '住所' %>
+        <%= f.text_field :address, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :url, 'URL' %>
+        <%= f.text_field :url, class: 'form-control' %>
+      </div>
+
+
+      
+
+     
+      <%= f.submit '登録', class: 'btn btn-primary btn-block' %>
+    <% end %>
+  </div>
+</div>
