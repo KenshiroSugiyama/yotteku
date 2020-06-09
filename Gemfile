@@ -70,3 +70,8 @@ gem 'firebase-auth-rails'
 
 gem 'coffee-script-source', '1.8.0'
 
+#heroku用-----------------------------------------
+group :production do
+  gem 'pg', '>= 0.18', '< 2.0'
+end
+#-----------------------------------------------
