@@ -21,6 +21,8 @@ Rails.application.routes.draw do
   get 'request_controller/new' =>'request_controller#new'
   get '/' => 'firebase#login-authUI'
   get 'firebase/after-login' =>'firebase#after-login'
+
+  post '/callback' => 'linebot#callback'
   #--------------------------------------------------------------
   get 'restaurant/signup'
   get 'restaurant/login'
