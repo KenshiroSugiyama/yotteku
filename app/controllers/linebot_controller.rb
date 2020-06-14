@@ -22,16 +22,16 @@ class LinebotController < ApplicationController
             client.reply_message(event['replyToken'], template2)
           elsif　e.include?('~2000円') || e.include?('2000~3000円') || e.include?('3000~4000円') || e.include?('5000円~') 
             message = {
-              type: 'text'
-              text: '人数を数字のみ入力してください（例： 3 ）'
+              "type": "text",
+              "text": "人数を数字のみ入力してください（例： 3 ）"
             }
             client.reply_message(event['replyToken'], message)
           else
-            message2 = {
-              type: 'text'
-              text:  e
+            message = {
+              "type": "text",
+              "text": e
             }
-            client.reply_message(event['replyToken'], message2)
+            client.reply_message(event['replyToken'], message)
           end
         end
       end
