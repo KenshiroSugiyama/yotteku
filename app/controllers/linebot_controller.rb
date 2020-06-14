@@ -20,7 +20,7 @@ class LinebotController < ApplicationController
             client.reply_message(event['replyToken'], template)
           elsif e.include?('肉系') || e.include?('魚介系') || e.include?('イタリアン')
             client.reply_message(event['replyToken'], template2)
-          elsif　e.include?('~2000円') || e.include?('2000~3000円') || e.include?('3000~4000円') || e.include?('5000円~') 
+          elsif e.include?('~2000円') || e.include?('2000~3000円') || e.include?('3000~4000円') || e.include?('5000円~') 
             message = {
               "type": "text",
               "text": "人数を数字のみ入力してください（例： 3 ）"
