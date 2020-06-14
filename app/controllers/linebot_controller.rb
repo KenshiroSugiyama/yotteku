@@ -15,10 +15,23 @@ class LinebotController < ApplicationController
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
-          if event.message['text'].eql?('予約する')
+          e = event.message['text']
+          if e.eql?('予約する')
             client.reply_message(event['replyToken'], template)
-          elsif event.message['text'].include?('肉系') || event.message['text'].include?('魚介系') || event.message['text'].include?('イタリアン')
+          elsif e.include?('肉系') || e.include?('魚介系') || e.include?('イタリアン')
             client.reply_message(event['replyToken'], template2)
+          elsif　e.include?('~2000円') || e.include?('2000~3000円') || e.include?('3000~4000円') || e.include?('5000円~') 
+            message = {
+              type: 'text'
+              text: '人数を数字のみ入力してください（例： 3 ）'
+            }
+            client.reply_message(event['replyToken'], message)
+          else
+            message2 = {
+              type: 'text'
+              text:  e
+            }
+            client.reply_message(event['replyToken'], message2)
           end
         end
       end
@@ -149,6 +162,8 @@ def template
       }
     }
   end
+
+  
 
 # LINE Developers登録完了後に作成される環境変数の認証
   def client
