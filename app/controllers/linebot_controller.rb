@@ -17,6 +17,8 @@ class LinebotController < ApplicationController
         when Line::Bot::Event::MessageType::Text
           if event.message['text'].eql?('予約する')
             client.reply_message(event['replyToken'], template)
+          elsif event.message['text'].any?('肉系','魚介系','イタリアン')
+            client.reply_message(event['replyToken'], template2)
           end
         end
       end
@@ -98,6 +100,53 @@ def template
       "imageAspectRatio": "rectangle",
       "imageSize": "cover"
   }
+    }
+  end
+
+  def template2
+    {
+      "type": "template",
+      "altText": "This is a buttons template",
+      "template": {
+          "type": "buttons",
+          "thumbnailImageUrl": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg",
+          "imageAspectRatio": "rectangle",
+          "imageSize": "cover",
+          "imageBackgroundColor": "#FFFFFF",
+          "title": "予算",
+          "text": "希望予算を選択してください",
+          "defaultAction": {
+              "type": "uri",
+              "label": "View detail",
+              "uri": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg"
+          },
+          "actions": [
+              {
+                "type": "postback",
+                "label": "~2000円",
+                "data": "~2000",
+                "text": "~2000円"
+              },
+              {
+                "type": "postback",
+                "label": "2000~3000円",
+                "data": "2000~3000",
+                "text": "2000~3000円"
+              },
+              {
+                "type": "postback",
+                "label": "3000~4000円",
+                "data": "3000~4000",
+                "text": "3000~4000円"
+              },
+              {
+                "type": "postback",
+                "label": "5000円~",
+                "data": "5000~",
+                "text": "5000円~"
+              }  
+          ]
+      }
     }
   end
 
