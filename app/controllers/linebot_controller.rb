@@ -17,7 +17,7 @@ class LinebotController < ApplicationController
         when Line::Bot::Event::MessageType::Text
           if event.message['text'].eql?('予約する')
             client.reply_message(event['replyToken'], template)
-          elsif event.message['text'].any?('肉系','魚介系','イタリアン')
+          elsif event.message['text'].include?('肉系') || event.message['text'].include?('魚介系') || event.message['text'].include?('イタリアン')
             client.reply_message(event['replyToken'], template2)
           end
         end
