@@ -98,8 +98,6 @@ def template
       "imageAspectRatio": "rectangle",
       "imageSize": "cover"
   }
-          ]
-      }
     }
   end
 
