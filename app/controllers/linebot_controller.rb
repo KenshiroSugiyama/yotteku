@@ -35,7 +35,7 @@ def template
           "text": "何食べたい？",
           "columns": [
           {
-            "thumbnailImageUrl": "https://rimage.gnst.jp/rest/img/6sp1wtu60000/s_0n6m.jpg?t=1585036850"
+            "thumbnailImageUrl": "https://rimage.gnst.jp/rest/img/6sp1wtu60000/s_0n6m.jpg?t=1585036850",
             "imageBackgroundColor": "#FFFFFF",
             "title": "肉系",
             "text": "description",
@@ -75,7 +75,7 @@ def template
             ]
           },
           {
-            "thumbnailImageUrl": "https://tblg.k-img.com/resize/660x370c/restaurant/images/Rvw/131355/131355648.jpg?token=0890a11&api=v2"
+            "thumbnailImageUrl": "https://tblg.k-img.com/resize/660x370c/restaurant/images/Rvw/131355/131355648.jpg?token=0890a11&api=v2",
             "imageBackgroundColor": "#000000",
             "title": "イタリアン",
             "text": "description",
