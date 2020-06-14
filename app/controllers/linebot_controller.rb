@@ -38,7 +38,6 @@ def template
             "thumbnailImageUrl": "https://rimage.gnst.jp/rest/img/6sp1wtu60000/s_0n6m.jpg?t=1585036850",
             "imageBackgroundColor": "#FFFFFF",
             "title": "肉系",
-            "text": "description",
             "defaultAction": {
                 "type": "postback",
                 "label": "選択",
@@ -58,7 +57,6 @@ def template
             "thumbnailImageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTdJUj8MRgLDP64ptvYCflvOwcOKBrjnvtWd3MX86QD1gNl8-el&usqp=CAU",
             "imageBackgroundColor": "#000000",
             "title": "魚介系",
-            "text": "description",
             "defaultAction": {
                 "type": "postback",
                 "label": "選択",
@@ -78,7 +76,6 @@ def template
             "thumbnailImageUrl": "https://tblg.k-img.com/resize/660x370c/restaurant/images/Rvw/131355/131355648.jpg?token=0890a11&api=v2",
             "imageBackgroundColor": "#000000",
             "title": "イタリアン",
-            "text": "description",
             "defaultAction": {
                 "type": "postback",
                 "label": "選択",
@@ -88,7 +85,7 @@ def template
             "actions": [
                 {
                     "type": "postback",
-                    "label": "決定",
+                    "label": "選択",
                     "data": "category=italy",
                     "text": "イタリアン"
                 },
