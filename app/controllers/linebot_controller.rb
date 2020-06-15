@@ -27,7 +27,7 @@ class LinebotController < ApplicationController
               "text": "人数を数字のみ入力してください（例： 3 ）"
             }
             client.reply_message(event['replyToken'], message)
-          elsif num.any?{|n| e.include?(n)}
+          elsif num.any?{|n| e.to_i.include?(n)}
             message = {
               type: 'text',
               text: 'ok'
