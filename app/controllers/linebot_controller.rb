@@ -16,6 +16,7 @@ class LinebotController < ApplicationController
         case event.type
         when Line::Bot::Event::MessageType::Text
           e = event.message['text']
+          num = [*1..100]
           if e.eql?('予約する')
             client.reply_message(event['replyToken'], template)
           elsif e.include?('肉系') || e.include?('魚介系') || e.include?('イタリアン')
@@ -24,6 +25,12 @@ class LinebotController < ApplicationController
             message = {
               "type": "text",
               "text": "人数を数字のみ入力してください（例： 3 ）"
+            }
+            client.reply_message(event['replyToken'], message)
+          elsif num.any?{|n| e.include?(n)}
+            message = {
+              type: 'text',
+              text: 'ok'
             }
             client.reply_message(event['replyToken'], message)
           else
