@@ -30,7 +30,7 @@ class LinebotController < ApplicationController
           elsif num.any?(e.to_i)
             message = {
               type: 'text',
-              text: e+'人ですね！ 何か要望はありますか？（例： 掘りごたつ、個室）、ない場合は「なし」と入力'
+              text: e+'人ですね！ 何かご要望はありますか？（例： 掘りごたつ、個室）、ない場合は「なし」と入力'
             }
             client.reply_message(event['replyToken'], message)
           elsif e.include?('なし')
@@ -38,6 +38,7 @@ class LinebotController < ApplicationController
               type: 'text',
               text: 'ありがとうございます'
             }
+            client.reply_message(event['replyToken'], message)
           else
             message = {
               "type": "text",
