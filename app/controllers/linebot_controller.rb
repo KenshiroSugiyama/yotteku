@@ -24,7 +24,7 @@ class LinebotController < ApplicationController
             User.create(uid: uid)
           end
           #request作成
-          req = Request.where(user_id: user.id).last
+          req = Request.find_by(user_id: user.id)
           unless req
             Request.create(user_id: user.id)
           end
