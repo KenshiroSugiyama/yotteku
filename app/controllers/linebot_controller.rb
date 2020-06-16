@@ -17,9 +17,23 @@ class LinebotController < ApplicationController
         when Line::Bot::Event::MessageType::Text
           e = event.message['text']
           num = [*1..100]
+          #user作成
+          uid = event['source']['userId']
+          user = User.find_by(uid: uid)
+          unless user
+            User.create(uid: uid)
+          end
+          #request作成
+          req = Request.where(user_id: user.id).last
+          unless req
+            Request.create(user_id: user.id)
+          end
+
           if e.eql?('予約する')
             client.reply_message(event['replyToken'], template)
           elsif e.include?('肉系') || e.include?('魚介系') || e.include?('イタリアン')
+            category = Category.find_by(name: e)
+            req.update(category_id: category.id)
             client.reply_message(event['replyToken'], template2)
           elsif e.include?('~2000円') || e.include?('2000~3000円') || e.include?('3000~4000円') || e.include?('5000円~') 
             message = {
