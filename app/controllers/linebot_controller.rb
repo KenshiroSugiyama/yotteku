@@ -33,6 +33,7 @@ class LinebotController < ApplicationController
               Request.create(user_id: user.id)
             end
           elsif e.include?('肉系') || e.include?('魚介系') || e.include?('イタリアン')
+            req = Request.find_by(user_id: user.id)
             category = Category.find_by(name: e)
             req.update(category_id: category.id)
             client.reply_message(event['replyToken'], template2)
