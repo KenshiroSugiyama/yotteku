@@ -38,6 +38,8 @@ class LinebotController < ApplicationController
             req.update(category_id: category.id)
             client.reply_message(event['replyToken'], template2)
           elsif e.include?('~2000円') || e.include?('2000~3000円') || e.include?('3000~4000円') || e.include?('5000円~') 
+            req = Request.find_by(user_id: user.id)
+            req.update(price_min: e)
             message = {
               "type": "text",
               "text": "人数を数字のみ入力してください（例： 3 ）"
@@ -166,25 +168,25 @@ def template
               {
                 "type": "postback",
                 "label": "~2000円",
-                "data": "~2000",
+                "data": "0 2000",
                 "text": "~2000円"
               },
               {
                 "type": "postback",
                 "label": "2000~3000円",
-                "data": "2000~3000",
+                "data": "2000 3000",
                 "text": "2000~3000円"
               },
               {
                 "type": "postback",
                 "label": "3000~4000円",
-                "data": "3000~4000",
+                "data": "3000 4000",
                 "text": "3000~4000円"
               },
               {
                 "type": "postback",
                 "label": "5000円~",
-                "data": "5000~",
+                "data": "5000 ",
                 "text": "5000円~"
               }  
           ]
