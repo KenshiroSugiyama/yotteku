@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_16_042123) do
+ActiveRecord::Schema.define(version: 2020_06_18_063215) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
@@ -20,8 +20,6 @@ ActiveRecord::Schema.define(version: 2020_06_16_042123) do
 
   create_table "requests", force: :cascade do |t|
     t.string "category"
-    t.integer "price_min"
-    t.integer "price_max"
     t.integer "number_of_people"
     t.integer "time_start"
     t.integer "time_end"
@@ -29,6 +27,8 @@ ActiveRecord::Schema.define(version: 2020_06_16_042123) do
     t.datetime "updated_at", null: false
     t.integer "category_id"
     t.integer "user_id"
+    t.string "budget"
+    t.integer "people"
     t.index ["category_id"], name: "index_requests_on_category_id"
     t.index ["user_id"], name: "index_requests_on_user_id"
   end

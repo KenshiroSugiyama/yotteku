@@ -23,29 +23,28 @@ class LinebotController < ApplicationController
           unless user
             User.create(uid: uid)
           end
-          
+          req = Request.find_by(user_id: user.id)
+          unless req
+            Request.create(user_id: user.id)
+          end
 
           if e.eql?('予約する')
             client.reply_message(event['replyToken'], template)
             #request作成
-            req = Request.find_by(user_id: user.id)
-            unless req
-              Request.create(user_id: user.id)
-            end
           elsif e.include?('肉系') || e.include?('魚介系') || e.include?('イタリアン')
-            req = Request.find_by(user_id: user.id)
             category = Category.find_by(name: e)
             req.update(category_id: category.id)
             client.reply_message(event['replyToken'], template2)
           elsif e.include?('~2000円') || e.include?('2000~3000円') || e.include?('3000~4000円') || e.include?('5000円~') 
-            req = Request.find_by(user_id: user.id)
-            req.update(price_min: e)
+            req.update(budget: e)
             message = {
               "type": "text",
               "text": "人数を数字のみ入力してください（例： 3 ）"
             }
             client.reply_message(event['replyToken'], message)
           elsif num.any?(e.to_i)
+            req = Request.find_by(user_id: user.id)
+            req.update(number_of_people: e.to_i)
             message = {
               type: 'text',
               text: e+'人ですね！ 何かご要望はありますか？（例： 掘りごたつ、個室）、ない場合は「なし」と入力'
