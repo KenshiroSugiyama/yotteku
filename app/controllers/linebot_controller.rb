@@ -60,7 +60,11 @@ class LinebotController < ApplicationController
             req = Request.find_by(user_id: user.id)
             req.update(hope: e)
             category = Category.find_by(id: req.category_id)
-            client.reply_message(event['replyToken'], template4)
+            message = {
+              type: 'text',
+              text: "ありがとうございます。<br>リクエストが完成しました<br>ジャンル： "+category.name +"<br>予算： "+ req.budget + "<br>人数： "+ req.number_of_people.to_s +"<br>開始時間： "+ req.time +"<br>要望"+req.hope
+            }
+            client.reply_message(event['replyToken'], message)
           else
             message = {
               "type": "text",
@@ -245,8 +249,7 @@ def template
       "altText": "this is a confirm template",
       "template": {
           "type": "confirm",
-          "text": "ありがとうございます。<br>リクエストが完成しました<br>ジャンル： "+category.name +"<br>
-          予算： "+ req.budget + "<br>人数： "+ req.number_of_people.to_s +"<br>開始時間： "+ req.time +"<br>要望"+　req.hope+ "<br><br>確認できましたか？",
+          "text": "確認できましたか？",
           "actions": [
               {
                 "type": "message",
