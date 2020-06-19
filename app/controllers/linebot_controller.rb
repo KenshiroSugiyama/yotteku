@@ -50,21 +50,18 @@ class LinebotController < ApplicationController
           elsif e.eql?('今すぐ')||e.eql?('30分後')||e.eql?('１時間後')
             req = Request.find_by(user_id: user.id)
             req.update(time: e)
-            message = {
-              type: 'text',
-              text: '何かご要望はありますか？　ない場合は「なし」とある場合は「要望（例）個室＆掘りごたつ」のように要望という言葉を先頭に入れて入力してください'
-            }
-            client.reply_message(event['replyToken'], message)
+            client.reply_message(event['replyToken'], template5)
 
-          elsif e.eql?('なし')||e.include?('要望')
+          elsif e.eql?('なし')
             req = Request.find_by(user_id: user.id)
             req.update(hope: e)
             category = Category.find(req.category_id)
-            message = {
-              type: 'text',
-              text: "ありがとうございます。\r\nリクエストが完成しました\r\nジャンル： #{category.name} \r\n予算#{req.budget}\r\n人数： #{req.number_of_people.to_s}\r\n開始時間： #{req.time}\r\n要望:  #{req.hope}"
-            }
-            client.reply_message(event['replyToken'], message)
+            client.reply_message(event['replyToken'], template4)
+          elsif e.include?('要望')
+            req = Request.find_by(user_id: user.id)
+            req.update(hope: e.slice!('要望'))
+            category = Category.find(req.category_id)
+            client.reply_message(event['replyToken'], template4)
           else
             message = {
               "type": "text",
@@ -249,7 +246,7 @@ def template
       "altText": "this is a confirm template",
       "template": {
           "type": "confirm",
-          "text": "確認できましたか？",
+          "text": "ありがとうございます。\r\nリクエストが完成しました\r\nジャンル： #{category.name} \r\n予算：　#{req.budget}\r\n人数： #{req.number_of_people.to_s}\r\n開始時間： #{req.time}\r\n要望:  #{req.hope}",
           "actions": [
               {
                 "type": "message",
@@ -266,6 +263,28 @@ def template
     }
   end
   
+  def template5
+    {
+      "type": "template",
+      "altText": "this is a confirm template",
+      "template": {
+          "type": "confirm",
+          "text": "何かご要望はありますか？ある場合は先頭に「要望」という言葉を入れて入力してください。（例： 要望　掘りごたつ＆個室）",
+          "actions": [
+              {
+                "type": "message",
+                "label": "要望を入力",
+                "text": "要望を入力"
+              },
+              {
+                "type": "message",
+                "label": "なし",
+                "text": "なし"
+              }
+          ]
+      }
+    }
+  end
 
 # LINE Developers登録完了後に作成される環境変数の認証
   def client
