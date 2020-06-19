@@ -56,7 +56,7 @@ class LinebotController < ApplicationController
             @req = Request.find_by(user_id: user.id)
             f = e.delete!('要望/n')
             @req.update(hope: f)
-            @category = Category.find(req.category_id)
+            @category = Category.find(@req.category_id)
             client.reply_message(event['replyToken'], template4)
           end
         end
