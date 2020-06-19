@@ -46,15 +46,22 @@ class LinebotController < ApplicationController
           elsif num.any?(e.to_i)
             req = Request.find_by(user_id: user.id)
             req.update(number_of_people: e.to_i)
+            client.reply_message(event['replyToken'], template3)
+          elsif e.eql?('今すぐ')||e.eql?('30分後')||e.eql?('１時間後')
+            req = Request.find_by(user_id: user.id)
+            req.update(time: e)
             message = {
               type: 'text',
-              text: e+'人ですね！ 何かご要望はありますか？（例： 掘りごたつ、個室）、ない場合は「なし」と入力'
+              text: e+'ですね！何かご要望はありますか？　　　　　　ない場合は「なし」とある場合は「要望（例）個室＆掘りごたつ」のように要望という言葉を先頭に入れて入力してください'
             }
             client.reply_message(event['replyToken'], message)
-          elsif e.include?('なし')
+
+          elsif e.eql?('なし')||e.include?('要望')
+            req = Request.find_by(user_id: user.id)
+            req.update(hope: e)
             message = {
               type: 'text',
-              text: 'ありがとうございます'
+              text: 'ありがとうございます。リクエストが完成しました'
             }
             client.reply_message(event['replyToken'], message)
           else
@@ -194,6 +201,46 @@ def template
     }
   end
 
+  def template3
+    {
+      "type": "template",
+      "altText": "This is a buttons template",
+      "template": {
+          "type": "buttons",
+          "thumbnailImageUrl": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg",
+          "imageAspectRatio": "rectangle",
+          "imageSize": "cover",
+          "imageBackgroundColor": "#FFFFFF",
+          "title": "時間",
+          "text": "開始時刻を選んでください",
+          "defaultAction": {
+              "type": "uri",
+              "label": "View detail",
+              "uri": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg"
+          },
+          "actions": [
+              {
+                "type": "postback",
+                "label": "今すぐ",
+                "data": "now",
+                "text": "今すぐ"
+              },
+              {
+                "type": "postback",
+                "label": "30分後",
+                "data": "30later",
+                "text": "30分後"
+              },
+              {
+                "type": "postback",
+                "label": "１時間後",
+                "data": "60later",
+                "text": "１時間後"
+              }
+          ]
+      }
+    }
+  end
   
 
 # LINE Developers登録完了後に作成される環境変数の認証
