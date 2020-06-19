@@ -47,7 +47,7 @@ class LinebotController < ApplicationController
             req = Request.find_by(user_id: user.id)
             req.update(number_of_people: e.to_i)
             client.reply_message(event['replyToken'], template3)
-          elsif e.eql?('今すぐ')||　e.eql?('30分後')　||　e.eql?('１時間後')
+          elsif e.eql?('今すぐ') || e.eql?('30分後') || e.eql?('１時間後')
             req = Request.find_by(user_id: user.id)
             req.update(time: e)
             client.reply_message(event['replyToken'], template5)
@@ -237,7 +237,7 @@ def template
       "altText": "this is a confirm template",
       "template": {
           "type": "confirm",
-          "text": "ありがとうございます。\r\nリクエストが完成しました\r\nジャンル： #{@category.name} \r\n予算：　#{req.budget}\r\n人数： #{req.number_of_people.to_s}\r\n開始時間： #{req.time}\r\n要望:  #{req.hope}",
+          "text": "ありがとうございます。\r\nリクエストが完成しました\r\nジャンル： #{@category.name} \r\n予算： #{req.budget}\r\n人数： #{req.number_of_people.to_s}\r\n開始時間： #{req.time}\r\n要望:  #{req.hope}",
           "actions": [
               {
                 "type": "message",
@@ -262,7 +262,7 @@ def template
       "altText": "this is a confirm template",
       "template": {
           "type": "confirm",
-          "text": "何かご要望はありますか？ある場合は先頭に「要望」という言葉を入れて入力してください。（例： 要望　掘りごたつ＆個室）",
+          "text": "何かご要望はありますか？ある場合は先頭に「要望」という言葉を入れて入力してください。（例： 要望 掘りごたつ＆個室）",
           "actions": [
               {
                 "type": "message",
