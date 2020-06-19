@@ -24,10 +24,10 @@ class LinebotController < ApplicationController
             User.create(uid: uid)
             user = User.find_by(uid: uid)
           end
-          req = Request.find_by(user_id: user.id)
+          req = Request.where(user_id: user.id).last
           unless req
             Request.create(user_id: user.id)
-            req = Request.find_by(user_id: user.id)
+            req = Request.where(user_id: user.id).last
           end
 
           if e.eql?('予約する')
