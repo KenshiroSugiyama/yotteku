@@ -52,7 +52,7 @@ class LinebotController < ApplicationController
             req.update(time: e)
             message = {
               type: 'text',
-              text: '何かご要望はありますか？<br>ない場合は「なし」とある場合は「要望（例）個室＆掘りごたつ」のように要望という言葉を先頭に入れて入力してください'
+              text: '何かご要望はありますか？　ない場合は「なし」とある場合は「要望（例）個室＆掘りごたつ」のように要望という言葉を先頭に入れて入力してください'
             }
             client.reply_message(event['replyToken'], message)
 
@@ -62,7 +62,7 @@ class LinebotController < ApplicationController
             category = Category.find(req.category_id)
             message = {
               type: 'text',
-              text: "ありがとうございます。<br>リクエストが完成しました<br>ジャンル： "+category.name   #+ req.budget + "<br>人数： "+ req.number_of_people.to_s +"<br>開始時間： "+ req.time +"<br>要望"+req.hope
+              text: "ありがとうございます。\r\nリクエストが完成しました\r\nジャンル： #{category.name} \r\n予算#{req.budget}\r\n人数： #{req.number_of_people.to_s}\r\n開始時間： #{req.time}\r\n要望:  #{req.hope}"
             }
             client.reply_message(event['replyToken'], message)
           else
