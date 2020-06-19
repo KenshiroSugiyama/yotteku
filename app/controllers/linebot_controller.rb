@@ -59,7 +59,8 @@ class LinebotController < ApplicationController
             client.reply_message(event['replyToken'], template4)
           elsif e.include?('要望')
             req = Request.find_by(user_id: user.id)
-            req.update(hope: e.slice!('要望'))
+            f = e.delete!('要望')
+            req.update(hope: f)
             category = Category.find(req.category_id)
             client.reply_message(event['replyToken'], template4)
           else
@@ -274,7 +275,7 @@ def template
               {
                 "type": "message",
                 "label": "要望を入力",
-                "text": "要望を入力"
+                "text": "入力"
               },
               {
                 "type": "message",
