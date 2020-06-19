@@ -52,13 +52,14 @@ class LinebotController < ApplicationController
             req.update(time: e)
             message = {
               type: 'text',
-              text: e+'ですね！何かご要望はありますか？　　　　　　ない場合は「なし」とある場合は「要望（例）個室＆掘りごたつ」のように要望という言葉を先頭に入れて入力してください'
+              text: '何かご要望はありますか？<br>ない場合は「なし」とある場合は「要望（例）個室＆掘りごたつ」のように要望という言葉を先頭に入れて入力してください'
             }
             client.reply_message(event['replyToken'], message)
 
           elsif e.eql?('なし')||e.include?('要望')
             req = Request.find_by(user_id: user.id)
             req.update(hope: e)
+            category = Category.find_by(id: req.category_id)
             message = {
               type: 'text',
               text: 'ありがとうございます。リクエストが完成しました'
@@ -236,6 +237,30 @@ def template
                 "label": "１時間後",
                 "data": "60later",
                 "text": "１時間後"
+              }
+          ]
+      }
+    }
+  end
+
+  def template4
+    {
+      "type": "template",
+      "altText": "this is a confirm template",
+      "template": {
+          "type": "confirm",
+          "text": "ありがとうございます。<br>リクエストが完成しました<br>ジャンル： "+category.name +"<br>
+          予算： "+ req.budget + "<br>人数： "+ req.number_of_people.to_s +"<br>開始時間： "+ req.time +"<br>要望"+　req.hope+ "<br><br>確認できましたか？",
+          "actions": [
+              {
+                "type": "message",
+                "label": "OK!",
+                "text": "OK"
+              },
+              {
+                "type": "message",
+                "label": "修正",
+                "text": "修正"
               }
           ]
       }
