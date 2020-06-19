@@ -60,11 +60,7 @@ class LinebotController < ApplicationController
             req = Request.find_by(user_id: user.id)
             req.update(hope: e)
             category = Category.find_by(id: req.category_id)
-            message = {
-              type: 'text',
-              text: 'ありがとうございます。リクエストが完成しました'
-            }
-            client.reply_message(event['replyToken'], message)
+            client.reply_message(event['replyToken'], template4)
           else
             message = {
               "type": "text",
