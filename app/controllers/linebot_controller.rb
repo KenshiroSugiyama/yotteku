@@ -59,10 +59,10 @@ class LinebotController < ApplicationController
           elsif e.eql?('なし')||e.include?('要望')
             req = Request.find_by(user_id: user.id)
             req.update(hope: e)
-            category = Category.find_by(id: req.category_id)
+            category = Category.find(req.category_id)
             message = {
               type: 'text',
-              text: "ありがとうございます。<br>リクエストが完成しました<br>ジャンル： "+category.name +"<br>予算： "#+ req.budget + "<br>人数： "+ req.number_of_people.to_s +"<br>開始時間： "+ req.time +"<br>要望"+req.hope
+              text: "ありがとうございます。<br>リクエストが完成しました<br>ジャンル： "+category.name   #+ req.budget + "<br>人数： "+ req.number_of_people.to_s +"<br>開始時間： "+ req.time +"<br>要望"+req.hope
             }
             client.reply_message(event['replyToken'], message)
           else
