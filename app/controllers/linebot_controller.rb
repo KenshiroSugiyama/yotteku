@@ -76,6 +76,28 @@ class LinebotController < ApplicationController
     head :ok
   end
 
+  def template4
+    {
+      "type": "template",
+      "altText": "this is a confirm template",
+      "template": {
+          "type": "confirm",
+          "text": "ありがとうございます。\r\nリクエストが完成しました\r\nジャンル： #{category.name} \r\n予算：　#{req.budget}\r\n人数： #{req.number_of_people.to_s}\r\n開始時間： #{req.time}\r\n要望:  #{req.hope}",
+          "actions": [
+              {
+                "type": "message",
+                "label": "OK!",
+                "text": "OK"
+              },
+              {
+                "type": "message",
+                "label": "修正",
+                "text": "修正"
+              }
+          ]
+      }
+    }
+  end
 private
 
 def template
@@ -241,28 +263,7 @@ def template
     }
   end
 
-  def template4
-    {
-      "type": "template",
-      "altText": "this is a confirm template",
-      "template": {
-          "type": "confirm",
-          "text": "ありがとうございます。\r\nリクエストが完成しました\r\nジャンル： #{category.name} \r\n予算：　#{req.budget}\r\n人数： #{req.number_of_people.to_s}\r\n開始時間： #{req.time}\r\n要望:  #{req.hope}",
-          "actions": [
-              {
-                "type": "message",
-                "label": "OK!",
-                "text": "OK"
-              },
-              {
-                "type": "message",
-                "label": "修正",
-                "text": "修正"
-              }
-          ]
-      }
-    }
-  end
+  
   
   def template5
     {
