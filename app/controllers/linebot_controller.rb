@@ -28,15 +28,12 @@ class LinebotController < ApplicationController
 
           if e.eql?('予約する')
             client.reply_message(event['replyToken'], template)
-            #request作成
-            req = Request.find_by(user_id: user.id)
-            unless req
-              Request.create(user_id: user.id)
-            end
           elsif e.include?('肉系') || e.include?('魚介系') || e.include?('イタリアン')
             category = Category.find_by(name: e)
             req = Request.find_by(user_id: user.id)
-            req.update(category_id: category.id)
+            unless req
+              Request.create(user_id: user.id,category_id: category.id)
+            end
             client.reply_message(event['replyToken'], template2)
           elsif e.include?('~2000円') || e.include?('2000~3000円') || e.include?('3000~4000円') || e.include?('5000円~') 
             req = Request.find_by(user_id: user.id)
