@@ -52,10 +52,10 @@ class LinebotController < ApplicationController
             req.update(time: e)
             client.reply_message(event['replyToken'], template5)
 
-          elsif e.eql?('なし')||e.include?('要望')
-            req = Request.find_by(user_id: user.id)
+          elsif e.eql?('なし') || e.include?('要望')
+            @req = Request.find_by(user_id: user.id)
             f = e.delete!('要望/n')
-            req.update(hope: f)
+            @req.update(hope: f)
             @category = Category.find(req.category_id)
             client.reply_message(event['replyToken'], template4)
           end
@@ -218,7 +218,7 @@ def template
                 "type": "postback",
                 "label": "30分後",
                 "data": "30later",
-                "text": "30分後"
+                "text": '30分後'
               },
               {
                 "type": "postback",
@@ -237,7 +237,7 @@ def template
       "altText": "this is a confirm template",
       "template": {
           "type": "confirm",
-          "text": "ありがとうございます。\r\nリクエストが完成しました\r\nジャンル： #{@category.name} \r\n予算： #{req.budget}\r\n人数： #{req.number_of_people.to_s}\r\n開始時間： #{req.time}\r\n要望:  #{req.hope}",
+          "text": "ありがとうございます。\r\nリクエストが完成しました\r\nジャンル： #{@category.name} \r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}",
           "actions": [
               {
                 "type": "message",
