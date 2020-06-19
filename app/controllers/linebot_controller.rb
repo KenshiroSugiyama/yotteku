@@ -52,23 +52,12 @@ class LinebotController < ApplicationController
             req.update(time: e)
             client.reply_message(event['replyToken'], template5)
 
-          elsif e.eql?('なし')
-            req = Request.find_by(user_id: user.id)
-            req.update(hope: e)
-            category = Category.find(req.category_id)
-            client.reply_message(event['replyToken'], template4)
-          elsif e.include?('要望')
+          elsif e.eql?('なし')||e.include?('要望')
             req = Request.find_by(user_id: user.id)
             f = e.delete!('要望')
             req.update(hope: f)
             category = Category.find(req.category_id)
             client.reply_message(event['replyToken'], template4)
-          else
-            message = {
-              "type": "text",
-              "text": e
-            }
-            client.reply_message(event['replyToken'], message)
           end
         end
       end
@@ -76,28 +65,7 @@ class LinebotController < ApplicationController
     head :ok
   end
 
-  def template4
-    {
-      "type": "template",
-      "altText": "this is a confirm template",
-      "template": {
-          "type": "confirm",
-          "text": "ありがとうございます。\r\nリクエストが完成しました\r\nジャンル： #{category.name} \r\n予算：　#{req.budget}\r\n人数： #{req.number_of_people.to_s}\r\n開始時間： #{req.time}\r\n要望:  #{req.hope}",
-          "actions": [
-              {
-                "type": "message",
-                "label": "OK!",
-                "text": "OK"
-              },
-              {
-                "type": "message",
-                "label": "修正",
-                "text": "修正"
-              }
-          ]
-      }
-    }
-  end
+  
 private
 
 def template
@@ -257,6 +225,29 @@ def template
                 "label": "１時間後",
                 "data": "60later",
                 "text": "１時間後"
+              }
+          ]
+      }
+    }
+  end
+
+  def template4
+    {
+      "type": "template",
+      "altText": "this is a confirm template",
+      "template": {
+          "type": "confirm",
+          "text": "ありがとうございます。\r\nリクエストが完成しました\r\nジャンル： #{category.name} \r\n予算：　#{req.budget}\r\n人数： #{req.number_of_people.to_s}\r\n開始時間： #{req.time}\r\n要望:  #{req.hope}",
+          "actions": [
+              {
+                "type": "message",
+                "label": "OK!",
+                "text": "OK"
+              },
+              {
+                "type": "message",
+                "label": "修正",
+                "text": "修正"
               }
           ]
       }
