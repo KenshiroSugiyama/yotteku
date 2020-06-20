@@ -18,6 +18,7 @@ class LinebotController < ApplicationController
           e = event.message['text']
           num = [*1..100]
           res_category = ['肉系店','魚介系店','イタリアン店']
+          req_category = ['肉系','魚介系','イタリアン']
           #user作成
           uid = event['source']['userId']
           user = User.find_by(uid: uid)
@@ -29,7 +30,7 @@ class LinebotController < ApplicationController
 
           if e.eql?('予約する')
             client.reply_message(event['replyToken'], template)
-          elsif e.include?('肉系') || e.include?('魚介系') || e.include?('イタリアン')
+          elsif req_category.any?(e)
             category = Category.find_by(name: e)
             req = Request.find_by(user_id: user.id)
             unless req
