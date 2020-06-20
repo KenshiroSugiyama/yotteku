@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_19_172537) do
+ActiveRecord::Schema.define(version: 2020_06_20_093726) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2020_06_19_172537) do
     t.string "budget"
     t.string "time"
     t.string "hope"
+    t.boolean "req_status", default: false
     t.index ["category_id"], name: "index_requests_on_category_id"
     t.index ["user_id"], name: "index_requests_on_user_id"
   end
@@ -54,6 +55,7 @@ ActiveRecord::Schema.define(version: 2020_06_19_172537) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.string "uid"
     t.index ["category_id"], name: "index_restaurants_on_category_id"
     t.index ["email"], name: "index_restaurants_on_email", unique: true
     t.index ["reset_password_token"], name: "index_restaurants_on_reset_password_token", unique: true

@@ -17,6 +17,7 @@ class LinebotController < ApplicationController
         when Line::Bot::Event::MessageType::Text
           e = event.message['text']
           num = [*1..100]
+          res_category = ['肉系店','魚介系店','イタリアン店']
           #user作成
           uid = event['source']['userId']
           user = User.find_by(uid: uid)
@@ -47,17 +48,42 @@ class LinebotController < ApplicationController
             req = Request.find_by(user_id: user.id)
             req.update(number_of_people: e.to_i)
             client.reply_message(event['replyToken'], template3)
-          elsif e.eql?('今すぐ') || e.eql?('30分後') || e.eql?('１時間後')
+          elsif e.eql?('今すぐ') || e.eql?('３０分後') || e.eql?('１時間後')
             req = Request.find_by(user_id: user.id)
             req.update(time: e)
             client.reply_message(event['replyToken'], template5)
 
-          elsif e.eql?('なし') || e.include?('要望')
+          elsif e.eql?('なし') || e.include?('要望') || e.eql?('予約確認')
             @req = Request.find_by(user_id: user.id)
             f = e.delete!('要望/n')
             @req.update(hope: f)
             @category = Category.find(@req.category_id)
             client.reply_message(event['replyToken'], template4)
+          elsif e.eql?('キャンセル')
+            message = {
+              "type": "text",
+              "text": "リクエストをキャンセルしました。もう一度予約をする場合は最初からやり直してください。"
+            }
+            client.reply_message(event['replyToken'], message)
+          elsif e.eql?('OK')
+            req = Request.find_by(user_id: user.id)
+            res_ids = Restaurant.where(category_id: req.category_id).id
+            client.multicast(res_ids, <message>)
+          elsif e.eql?('店舗登録')
+
+            client.reply_message(event['replyToken'], template6)
+          elsif res_category.any?(e)
+            f = e.delete!('店')
+            category = Category.find_by(name: f)
+            res = Restaurant.find_by(uid: uid)
+            unless res
+              Restaurant.create(uid: uid,category_id: category.id)
+            end 
+            message = {
+              "type": "text",
+              "text": "店舗登録が完了しました！"
+            }
+            client.reply_message(event['replyToken'], message)
           end
         end
       end
@@ -216,9 +242,9 @@ def template
               },
               {
                 "type": "postback",
-                "label": "30分後",
+                "label": "３０分後",
                 "data": "30later",
-                "text": '30分後'
+                "text": '３０分後'
               },
               {
                 "type": "postback",
@@ -246,8 +272,8 @@ def template
               },
               {
                 "type": "message",
-                "label": "修正",
-                "text": "修正"
+                "label": "キャンセル",
+                "text": "キャンセル"
               }
           ]
       }
@@ -262,7 +288,7 @@ def template
       "altText": "this is a confirm template",
       "template": {
           "type": "confirm",
-          "text": "何かご要望はありますか？ある場合は先頭に「要望」という言葉を入れて入力してください。（例： 要望 掘りごたつ＆個室）",
+          "text": "何かご要望はありますか？\r\nある場合は先頭に「要望」という言葉を入れて入力してください。（例： 要望 掘りごたつ＆個室）",
           "actions": [
               {
                 "type": "message",
@@ -278,6 +304,82 @@ def template
       }
     }
   end
+
+  def template6
+    {
+      "type": "template",
+      "altText": "？",
+      "template": {
+          "type": "carousel",
+          "text": "店のカテゴリーを選択してください",
+          "columns": [
+          {
+            "thumbnailImageUrl": "https://rimage.gnst.jp/rest/img/6sp1wtu60000/s_0n6m.jpg?t=1585036850",
+            "imageBackgroundColor": "#FFFFFF",
+            "title": "肉系",
+            "text": "description",
+            "defaultAction": {
+                "type": "postback",
+                "label": "選択",
+                "data": "category=meat",
+                "text": "肉系店"
+            },
+            "actions": [
+                {
+                    "type": "postback",
+                    "label": "選択",
+                    "data": "category=meat",
+                    "text": "肉系店"
+                },
+            ]
+          },
+          {
+            "thumbnailImageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTdJUj8MRgLDP64ptvYCflvOwcOKBrjnvtWd3MX86QD1gNl8-el&usqp=CAU",
+            "imageBackgroundColor": "#000000",
+            "title": "魚介系",
+            "text": "description",
+            "defaultAction": {
+                "type": "postback",
+                "label": "選択",
+                "data": "category=fish",
+                "text": "魚介系店"
+            },
+            "actions": [
+                {
+                    "type": "postback",
+                    "label": "選択",
+                    "data": "category=fish",
+                    "text": "魚介系店"
+                },
+            ]
+          },
+          {
+            "thumbnailImageUrl": "https://tblg.k-img.com/resize/660x370c/restaurant/images/Rvw/131355/131355648.jpg?token=0890a11&api=v2",
+            "imageBackgroundColor": "#000000",
+            "title": "イタリアン",
+            "text": "description",
+            "defaultAction": {
+                "type": "postback",
+                "label": "選択",
+                "data": "category=italy",
+                "text": "イタリアン店"
+            },
+            "actions": [
+                {
+                    "type": "postback",
+                    "label": "選択",
+                    "data": "category=italy",
+                    "text": "イタリアン店"
+                },
+            ]
+          }
+      ],
+      "imageAspectRatio": "rectangle",
+      "imageSize": "cover"
+  }
+    }
+  end
+
 
 # LINE Developers登録完了後に作成される環境変数の認証
   def client
