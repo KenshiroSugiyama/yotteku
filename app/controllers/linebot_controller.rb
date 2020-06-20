@@ -67,8 +67,14 @@ class LinebotController < ApplicationController
             client.reply_message(event['replyToken'], message)
           elsif e.eql?('OK')
             req = Request.find_by(user_id: user.id)
-            res_ids = Restaurant.where(category_id: req.category_id).id
-            client.multicast(res_ids, <message>)
+            req.update(req_status: true)
+            #res_ids = Restaurant.where(category_id: req.category_id).id
+            #client.multicast(res_ids, <message>)
+            message = {
+              "type": "text",
+              "text": "リクエストを店に送信しました。返事をお待ちください"
+            }
+            client.reply_message(event['replyToken'], message)
           elsif e.eql?('店舗登録')
 
             client.reply_message(event['replyToken'], template6)
