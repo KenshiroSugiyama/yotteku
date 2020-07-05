@@ -105,7 +105,8 @@ class LinebotController < ApplicationController
       type: 'text',
       text: '要望入力完了'
     }
-    userId=params[:id].to_s
+    user=Request.find(params[:id]).user_id
+    userId = User.find(user).uid
     response = client.push_message(userId, message)
     puts response
   end
