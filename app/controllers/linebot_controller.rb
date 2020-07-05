@@ -48,7 +48,17 @@ class LinebotController < ApplicationController
           elsif req_num.any?(e)
             a = [0,1,2]
             if a.any?{|v| req_num[v]==e}
-              client.reply_message(event['replyToken'], template8(v))
+              if req_num[0] == e
+                v = 0
+                client.reply_message(event['replyToken'], template8(v))
+              elsif req_nun[1] == e
+                v = 1
+                client.reply_message(event['replyToken'], template8(v))
+              else
+                v=2
+                client.reply_message(event['replyToken'], template8(v))
+              end
+
             else
               message = {
                 "type": "text",
