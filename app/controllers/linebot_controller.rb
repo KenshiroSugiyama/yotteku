@@ -302,7 +302,7 @@ def template
               {
                 "type": "uri",
                 "label": "要望を入力",
-                "uri": "https://3353edb90393.ngrok.io/request_controller/edit?id=#{@req.id}"
+                "uri": "https://yotteku.herokuapp.com/request_controller/edit?id=#{@req.id}"
               },
               {
                 "type": "message",
