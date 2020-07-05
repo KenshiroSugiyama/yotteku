@@ -1,5 +1,6 @@
 class LinebotController < ApplicationController
     require 'line/bot'
+    
 
     protect_from_forgery :except => [:callback]
   def callback
@@ -19,16 +20,19 @@ class LinebotController < ApplicationController
           num = [*1..100]
           res_category = ['肉系店','魚介系店','イタリアン店']
           req_category = ['肉系','魚介系','イタリアン']
+          req_num = ['１～４人','５～８人','９～１２人','１３人以上']
+          req_num_0 = ['１','２','３','４']
+          req_num_1 = ['５','６','７','８']
+          req_num_2 = ['９','１０','１１','１２']
           #user作成
           uid = event['source']['userId']
           user = User.find_by(uid: uid)
-          unless user
-            User.create(uid: uid)
-            user = User.find_by(uid: uid)
-          end
-          
-
+          # req = Request.find_by(user_id: user.id)
           if e.eql?('予約する')
+            unless user
+              User.create(uid: uid)
+              user = User.find_by(uid: uid)
+            end
             client.reply_message(event['replyToken'], template)
           elsif req_category.any?(e)
             category = Category.find_by(name: e)
@@ -40,26 +44,31 @@ class LinebotController < ApplicationController
           elsif e.include?('~2000円') || e.include?('2000~3000円') || e.include?('3000~4000円') || e.include?('5000円~') 
             req = Request.find_by(user_id: user.id)
             req.update(budget: e)
-            message = {
-              "type": "text",
-              "text": "人数を数字のみ入力してください（例： 3 ）"
-            }
-            client.reply_message(event['replyToken'], message)
+            client.reply_message(event['replyToken'], template7)
+          # elsif req_num.any?(e)
+            # (0..2).each do |i|
+            #   if e == req_num[i]
+            #     client.reply_message(event['replyToken'], template8(req_num_i))
+            #   end
+            # end
+            
+
           elsif num.any?(e.to_i)
             req = Request.find_by(user_id: user.id)
             req.update(number_of_people: e.to_i)
             client.reply_message(event['replyToken'], template3)
           elsif e.eql?('今すぐ') || e.eql?('３０分後') || e.eql?('１時間後')
-            req = Request.find_by(user_id: user.id)
-            req.update(time: e)
+            @req = Request.find_by(user_id: user.id)
+            @req.update(time: e)
             client.reply_message(event['replyToken'], template5)
 
-          elsif e.eql?('なし') || e.include?('要望') || e.eql?('予約確認')
+          elsif e.eql?('なし') || e.eql?('予約確認') 
             @req = Request.find_by(user_id: user.id)
-            f = e.delete!('要望/n')
-            @req.update(hope: f)
+            
             @category = Category.find(@req.category_id)
             client.reply_message(event['replyToken'], template4)
+          
+           
           elsif e.eql?('キャンセル')
             message = {
               "type": "text",
@@ -70,14 +79,13 @@ class LinebotController < ApplicationController
             req = Request.find_by(user_id: user.id)
             req.update(req_status: true)
             #res_ids = Restaurant.where(category_id: req.category_id).id
-            #client.multicast(res_ids, <message>)
+            #client.multicast(res_ids, message)
             message = {
               "type": "text",
               "text": "リクエストを店に送信しました。返事をお待ちください"
             }
             client.reply_message(event['replyToken'], message)
           elsif e.eql?('店舗登録')
-
             client.reply_message(event['replyToken'], template6)
           elsif res_category.any?(e)
             f = e.delete!('店')
@@ -298,9 +306,9 @@ def template
           "text": "何かご要望はありますか？\r\nある場合は先頭に「要望」という言葉を入れて入力してください。（例： 要望 掘りごたつ＆個室）",
           "actions": [
               {
-                "type": "message",
+                "type": "uri",
                 "label": "要望を入力",
-                "text": "入力"
+                "uri": "https://3353edb90393.ngrok.io/request_controller/edit?id=#{@req.id}"
               },
               {
                 "type": "message",
@@ -386,6 +394,100 @@ def template
   }
     }
   end
+
+  def template7
+    {
+      "type": "template",
+      "altText": "This is a buttons template",
+      "template": {
+          "type": "buttons",
+          "thumbnailImageUrl": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg",
+          "imageAspectRatio": "rectangle",
+          "imageSize": "cover",
+          "imageBackgroundColor": "#FFFFFF",
+          "title": "人数",
+          "text": "人数を選択してください",
+          "defaultAction": {
+              "type": "uri",
+              "label": "View detail",
+              "uri": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg"
+          },
+          "actions": [
+              {
+                "type": "postback",
+                "label": "1～4人",
+                "data": "1..4",
+                "text": "１～４人"
+              },
+              {
+                "type": "postback",
+                "label": "5～8人",
+                "data": "5..8",
+                "text": "５～８人"
+              },
+              {
+                "type": "postback",
+                "label": "9～12人",
+                "data": "9..12",
+                "text": "９～１２人"
+              },
+              {
+                "type": "postback",
+                "label": "13人以上",
+                "data": "13.. ",
+                "text": "１３人以上"
+              }  
+          ]
+      }
+    }
+  end
+
+  # def template8(num)
+  #   {
+  #     "type": "template",
+  #     "altText": "This is a buttons template",
+  #     "template": {
+  #         "type": "buttons",
+  #         "thumbnailImageUrl": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg",
+  #         "imageAspectRatio": "rectangle",
+  #         "imageSize": "cover",
+  #         "imageBackgroundColor": "#FFFFFF",
+  #         "title": "人数",
+  #         "text": "人数を選択してください",
+  #         "defaultAction": {
+  #             "type": "uri",
+  #             "label": "View detail",
+  #             "uri": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg"
+  #         },
+  #         "actions": [
+  #             {
+  #               "type": "postback",
+  #               "label": "#{num[0]}",
+  #               "data": "1..4",
+  #               "text": "１～４人"
+  #             },
+  #             {
+  #               "type": "postback",
+  #               "label": "#{num[1]}",
+  #               "data": "5..8",
+  #               "text": "６～８人"
+  #             },
+  #             {
+  #               "type": "postback",
+  #               "label": "#{num[2]}",
+  #               "data": "9..12",
+  #               "text": "９～１２人"
+  #             },
+  #             {
+  #               "type": "postback",
+  #               "label": "#{num[3]}",
+  #               "data": "13.. ",
+  #               "text": "１３人以上"
+  #             }  
+  #         ]
+  #     }
+  #   }
+  # end
 
 
 # LINE Developers登録完了後に作成される環境変数の認証
