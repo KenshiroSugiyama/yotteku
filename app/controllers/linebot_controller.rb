@@ -45,14 +45,8 @@ class LinebotController < ApplicationController
             req = Request.find_by(user_id: user.id)
             req.update(budget: e)
             client.reply_message(event['replyToken'], template7)
-          # elsif req_num.any?(e)
-            # (0..2).each do |i|
-            #   if e == req_num[i]
-            #     client.reply_message(event['replyToken'], template8(req_num_i))
-            #   end
-            # end
-            
-
+          elsif e.eql?('１～４人')
+            client.reply_message(event['replyToken'], template9)
           elsif num.any?(e.to_i)
             req = Request.find_by(user_id: user.id)
             req.update(number_of_people: e.to_i)
@@ -469,7 +463,7 @@ def template
   #             {
   #               "type": "postback",
   #               "label": "#{num[1]}",
-  #               "data": "5..8",
+  #               "data": "6..8",
   #               "text": "６～８人"
   #             },
   #             {
@@ -488,6 +482,52 @@ def template
   #     }
   #   }
   # end
+  def template9
+    {
+      "type": "template",
+      "altText": "This is a buttons template",
+      "template": {
+          "type": "buttons",
+          "thumbnailImageUrl": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg",
+          "imageAspectRatio": "rectangle",
+          "imageSize": "cover",
+          "imageBackgroundColor": "#FFFFFF",
+          "title": "人数",
+          "text": "人数を選択してください",
+          "defaultAction": {
+              "type": "uri",
+              "label": "View detail",
+              "uri": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg"
+          },
+          "actions": [
+              {
+                "type": "postback",
+                "label": "1人",
+                "data": "1..4",
+                "text": "１人"
+              },
+              {
+                "type": "postback",
+                "label": "2人",
+                "data": "2",
+                "text": "２人"
+              },
+              {
+                "type": "postback",
+                "label": "3人",
+                "data": "9..12",
+                "text": "３人"
+              },
+              {
+                "type": "postback",
+                "label": "4人",
+                "data": "13.. ",
+                "text": "４人"
+              }  
+          ]
+      }
+    }
+  end
 
 
 # LINE Developers登録完了後に作成される環境変数の認証
