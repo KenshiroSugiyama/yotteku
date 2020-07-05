@@ -21,9 +21,7 @@ class LinebotController < ApplicationController
           res_category = ['肉系店','魚介系店','イタリアン店']
           req_category = ['肉系','魚介系','イタリアン']
           req_num = ['１～４人','５～８人','９～１２人','１３人以上']
-          req_num_0 = ['１','２','３','４']
-          req_num_1 = ['５','６','７','８']
-          req_num_2 = ['９','１０','１１','１２']
+          
           #user作成
           uid = event['source']['userId']
           user = User.find_by(uid: uid)
@@ -45,8 +43,19 @@ class LinebotController < ApplicationController
             req = Request.find_by(user_id: user.id)
             req.update(budget: e)
             client.reply_message(event['replyToken'], template7)
-          elsif e.eql?('１～４人')
-            client.reply_message(event['replyToken'], template9)
+          # elsif e.eql?('１～４人')
+          #   client.reply_message(event['replyToken'], template9)
+          elsif req_num.any?(e)
+            a = [0,1,2]
+            if a.any?{|v| req_num[v]==e}
+              client.reply_message(event['replyToken'], template8(v))
+            else
+              message = {
+                "type": "text",
+                "text": "人数を数字のみ入力してください（例： ３）"
+              }
+              client.reply_message(event['replyToken'], message)
+            end
           elsif num.any?(e.to_i)
             req = Request.find_by(user_id: user.id)
             req.update(number_of_people: e.to_i)
@@ -445,52 +454,60 @@ def template
     }
   end
 
-  # def template8(num)
-  #   {
-  #     "type": "template",
-  #     "altText": "This is a buttons template",
-  #     "template": {
-  #         "type": "buttons",
-  #         "thumbnailImageUrl": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg",
-  #         "imageAspectRatio": "rectangle",
-  #         "imageSize": "cover",
-  #         "imageBackgroundColor": "#FFFFFF",
-  #         "title": "人数",
-  #         "text": "人数を選択してください",
-  #         "defaultAction": {
-  #             "type": "uri",
-  #             "label": "View detail",
-  #             "uri": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg"
-  #         },
-  #         "actions": [
-  #             {
-  #               "type": "postback",
-  #               "label": "#{num[0]}",
-  #               "data": "1..4",
-  #               "text": "１～４人"
-  #             },
-  #             {
-  #               "type": "postback",
-  #               "label": "#{num[1]}",
-  #               "data": "6..8",
-  #               "text": "６～８人"
-  #             },
-  #             {
-  #               "type": "postback",
-  #               "label": "#{num[2]}",
-  #               "data": "9..12",
-  #               "text": "９～１２人"
-  #             },
-  #             {
-  #               "type": "postback",
-  #               "label": "#{num[3]}",
-  #               "data": "13.. ",
-  #               "text": "１３人以上"
-  #             }  
-  #         ]
-  #     }
-  #   }
-  # end
+  def template8(v)
+    if v == 0
+      req = ['１','２','３','４']
+    elsif v == 1
+      req = ['５','６','７','８']
+    elsif v == 2
+      req = ['９','１０','１１','１２']
+    end
+
+    {
+      "type": "template",
+      "altText": "This is a buttons template",
+      "template": {
+          "type": "buttons",
+          "thumbnailImageUrl": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg",
+          "imageAspectRatio": "rectangle",
+          "imageSize": "cover",
+          "imageBackgroundColor": "#FFFFFF",
+          "title": "人数",
+          "text": "人数を選択してください",
+          "defaultAction": {
+              "type": "uri",
+              "label": "View detail",
+              "uri": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg"
+          },
+          "actions": [
+              {
+                "type": "postback",
+                "label": "#{req[0]}",
+                "data": "#{req[0]}",
+                "text": "#{req[0]}"
+              },
+              {
+                "type": "postback",
+                "label": "#{req[1]}",
+                "data": "#{req[1]}",
+                "text": "#{req[1]}"
+              },
+              {
+                "type": "postback",
+                "label": "#{req[2]}",
+                "data": "#{req[2]}",
+                "text": "#{req[2]}"
+              },
+              {
+                "type": "postback",
+                "label": "#{req[3]}",
+                "data": "#{req[3]}",
+                "text": "#{req[3]}"
+              }
+          ]
+      }
+    }
+  end
   def template9
     {
       "type": "template",
@@ -512,7 +529,7 @@ def template
               {
                 "type": "postback",
                 "label": "1人",
-                "data": "1..4",
+                "data": "1",
                 "text": "1"
               },
               {
@@ -524,13 +541,13 @@ def template
               {
                 "type": "postback",
                 "label": "3人",
-                "data": "9..12",
+                "data": "3",
                 "text": "3"
               },
               {
                 "type": "postback",
                 "label": "4人",
-                "data": "13.. ",
+                "data": "4",
                 "text": "4"
               }  
           ]
