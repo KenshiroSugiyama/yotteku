@@ -1,4 +1,4 @@
-class RequestControllerController < ApplicationController
+class RequestControllerController < LinebotController
   def new
     
   end
@@ -16,8 +16,9 @@ class RequestControllerController < ApplicationController
     #@req.hope = params[:hope]
     if @req.update(hope: params[:hope])
       flash[:success] = '更新されました'
+      #public_method(:resreq).super_method.call
 
-      redirect_to request_controller_show_path(id: @req.id)
+      redirect_to "https://line.me/R/"
     end
   end
 

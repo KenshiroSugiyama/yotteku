@@ -100,7 +100,9 @@ class LinebotController < ApplicationController
     head :ok
   end
 
-  
+  def resreq
+    
+  end
 private
 
 def template
