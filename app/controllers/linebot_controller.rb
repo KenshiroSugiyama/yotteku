@@ -51,11 +51,11 @@ class LinebotController < ApplicationController
               if req_num[0] == e
                 v = 0
                 client.reply_message(event['replyToken'], template8(v))
-              elsif req_nun[1] == e
+              elsif req_num[1] == e
                 v = 1
                 client.reply_message(event['replyToken'], template8(v))
               else
-                v=2
+                v=　2
                 client.reply_message(event['replyToken'], template8(v))
               end
 
