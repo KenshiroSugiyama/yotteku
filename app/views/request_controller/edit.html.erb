@@ -1,5 +1,6 @@
 <%= form_with(url: request_controller_update_path,method: :put, local: true) do |f| %>
   <%= f.hidden_field :id, :value => params[:id]  %>
+  
   <%= f.label :hope, '要望' %>
   <%= f.text_field :hope %>
 

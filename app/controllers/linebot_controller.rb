@@ -101,7 +101,12 @@ class LinebotController < ApplicationController
   end
 
   def resreq
-    
+    message = {
+      type: 'text',
+      text: '要望入力完了'
+    }
+    userId=params[:id]
+    response = client.push_message("userId", message)
   end
 private
 

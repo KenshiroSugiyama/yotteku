@@ -16,9 +16,9 @@ class RequestControllerController < LinebotController
     #@req.hope = params[:hope]
     if @req.update(hope: params[:hope])
       flash[:success] = '更新されました'
-      #public_method(:resreq).super_method.call
+      public_method(:resreq).super_method.call
 
-      redirect_to "https://line.me/R/"
+      #redirect_to "https://line.me/R/"
     end
   end
 
