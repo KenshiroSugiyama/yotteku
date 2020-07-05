@@ -504,25 +504,25 @@ def template
                 "type": "postback",
                 "label": "1人",
                 "data": "1..4",
-                "text": "１"
+                "text": "1"
               },
               {
                 "type": "postback",
                 "label": "2人",
                 "data": "2",
-                "text": "２"
+                "text": "2"
               },
               {
                 "type": "postback",
                 "label": "3人",
                 "data": "9..12",
-                "text": "３"
+                "text": "3"
               },
               {
                 "type": "postback",
                 "label": "4人",
                 "data": "13.. ",
-                "text": "４"
+                "text": "4"
               }  
           ]
       }
