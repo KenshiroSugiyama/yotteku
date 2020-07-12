@@ -75,7 +75,7 @@ class LinebotController < ApplicationController
             @req.update(time: e)
             client.reply_message(event['replyToken'], template5)
 
-          elsif e.eql?('なし') || e.eql?('予約確認') 
+          elsif e.eql?('なし') || e.eql?('予約確認') || e.eql?('要望入力が完了しました！') 
             @req = Request.find_by(user_id: user.id)
             
             @category = Category.find(@req.category_id)

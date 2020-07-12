@@ -24,13 +24,13 @@ class RequestControllerController < LinebotController
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + ENV['LINE_CHANNEL_TOKEN'],
       }
-      
+      userId = User.find(params[:id]).uid
       post = {
-        'to': 'Uc839d0d386e217ea31ba4482a3cd2d26',
+        'to': userId,
         'messages': [
             {
                 'type': 'text',
-                'text': '要望入力完了！'
+                'text': '要望入力が完了しました！'
             }
         ]
       }
