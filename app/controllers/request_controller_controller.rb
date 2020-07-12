@@ -45,7 +45,7 @@ class RequestControllerController < LinebotController
     # POSTデータを設定
     
     # 実行
-    REQ = requests.post(CH, headers=HEADERS, data=json.dumps(POST))
+    # REQ = requests.post(CH, headers=HEADERS, data=json.dumps(POST))
      
       # LinebotController.resreq
       #redirect_to "https://line.me/R/"
