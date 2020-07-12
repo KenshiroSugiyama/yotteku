@@ -119,18 +119,18 @@ class LinebotController < ApplicationController
     head :ok
   end
 
-  def resreq
-    message = {
-      type: 'text',
-      text: '要望入力完了'
-    }
-    # user=Request.find(params[:id]).user_id
-    # userId = User.find(user).uid
-    response = client.push_message("Uc839d0d386e217ea31ba4482a3cd2d26", message)
-    puts response
-  end
+  # def resreq
+  #   message = {
+  #     type: 'text',
+  #     text: '要望入力完了'
+  #   }
+  #   # user=Request.find(params[:id]).user_id
+  #   # userId = User.find(user).uid
+  #   response = client.push_message("Uc839d0d386e217ea31ba4482a3cd2d26", message)
+  #   puts response
+  # end
 
-
+private
 def template
     {
       "type": "template",
