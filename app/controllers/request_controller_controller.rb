@@ -17,7 +17,7 @@ class RequestControllerController < LinebotController
     @req = Request.find(params[:id])
     #@req.hope = params[:hope]
     if @req.update(hope: params[:hope])
-      flash[:success] = '更新されました'
+      # flash[:success] = '更新されました'
 
       uri = URI.parse("https://api.line.me/v2/bot/message/push")
       headers = {
@@ -30,7 +30,7 @@ class RequestControllerController < LinebotController
         'messages': [
             {
                 'type': 'text',
-                'text': 'カレーぱんが焼けました！'
+                'text': '要望入力完了！'
             }
         ]
       }
@@ -39,16 +39,7 @@ class RequestControllerController < LinebotController
       req.use_ssl = uri.scheme === "https"
       req.post(uri.path, post.to_json,headers)
     
-    
-      
-     
-    # POSTデータを設定
-    
-    # 実行
-    # REQ = requests.post(CH, headers=HEADERS, data=json.dumps(POST))
-     
-      # LinebotController.resreq
-      #redirect_to "https://line.me/R/"
+      redirect_to "https://line.me/R/"
     end
   end
 
