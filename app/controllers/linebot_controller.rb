@@ -129,7 +129,7 @@ class LinebotController < ApplicationController
     response = client.push_message(userId, message)
     puts response
   end
-private
+
 
 def template
     {
