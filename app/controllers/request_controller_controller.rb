@@ -32,8 +32,8 @@ class RequestControllerController < LinebotController
         'to': userId,
         'messages': [
             {
-                'type': 'text',
-                'text': "要望入力が完了しました！\r\nジャンル： #{@category.name} \r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}"
+                "type": "text",
+                "text": "要望入力が完了しました！\r\nジャンル： #{@category.name} \r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}"
             }
         ]
       }
