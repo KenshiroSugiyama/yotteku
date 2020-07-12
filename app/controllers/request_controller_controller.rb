@@ -1,4 +1,6 @@
 class RequestControllerController < LinebotController
+  require "net/http"
+  require "json"
   def new
     
   end
@@ -16,8 +18,35 @@ class RequestControllerController < LinebotController
     #@req.hope = params[:hope]
     if @req.update(hope: params[:hope])
       flash[:success] = '更新されました'
-      # public_method(:resreq).super_method.call
-      LinebotController.resreq
+
+      uri = URI.parse("https://api.line.me/v2/bot/message/push")
+      HEADERS = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + ENV['LINE_CHANNEL_TOKEN'],
+      }
+      
+      POST = {
+        'to': 'Uc839d0d386e217ea31ba4482a3cd2d26',
+        'messages': [
+            {
+                'type': 'text',
+                'text': 'カレーぱんが焼けました！'
+            }
+        ]
+      }
+     
+      req = Net::HTTP.new(uri.host, uri.port)
+      req.post(uri.path, POST.to_json,HEADERS)
+    
+    
+      
+     
+    # POSTデータを設定
+    
+    # 実行
+    REQ = requests.post(CH, headers=HEADERS, data=json.dumps(POST))
+     
+      # LinebotController.resreq
       #redirect_to "https://line.me/R/"
     end
   end
@@ -26,3 +55,5 @@ class RequestControllerController < LinebotController
     @req = Request.find(params[:id])
   end
 end
+
+
