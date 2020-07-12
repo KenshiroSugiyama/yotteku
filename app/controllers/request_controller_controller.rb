@@ -25,8 +25,9 @@ class RequestControllerController < LinebotController
         'Authorization': 'Bearer ' + ENV['LINE_CHANNEL_TOKEN'],
       }
       userId = User.find(params[:id]).uid
+      puts userId
       post = {
-        'to': '${userId}',
+        'to': userId,
         'messages': [
             {
                 'type': 'text',
@@ -34,7 +35,7 @@ class RequestControllerController < LinebotController
             }
         ]
       }
-      
+      puts userId
       req = Net::HTTP.new(uri.host, uri.port)
       req.use_ssl = uri.scheme === "https"
       req.post(uri.path, post.to_json,headers)
