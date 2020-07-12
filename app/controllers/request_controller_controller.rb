@@ -28,7 +28,7 @@ class RequestControllerController < LinebotController
       userId = User.find(user).uid
       puts userId
       post = {
-        'to': 'userId',
+        'to': userId,
         'messages': [
             {
                 'type': 'text',
