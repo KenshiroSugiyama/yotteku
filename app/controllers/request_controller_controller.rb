@@ -24,10 +24,11 @@ class RequestControllerController < LinebotController
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + ENV['LINE_CHANNEL_TOKEN'],
       }
-      userId = User.find(params[:id]).uid
+      user = @req.user_id
+      userId = User.find(user).uid
       puts userId
       post = {
-        'to': userId,
+        'to': 'userId',
         'messages': [
             {
                 'type': 'text',
