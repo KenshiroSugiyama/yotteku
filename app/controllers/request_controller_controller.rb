@@ -26,7 +26,7 @@ class RequestControllerController < LinebotController
       }
       userId = User.find(params[:id]).uid
       post = {
-        'to': userId,
+        'to': 'userId',
         'messages': [
             {
                 'type': 'text',
