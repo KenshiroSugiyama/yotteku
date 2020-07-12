@@ -34,8 +34,9 @@ class RequestControllerController < LinebotController
             }
         ]
       }
-     
+      
       req = Net::HTTP.new(uri.host, uri.port)
+      req.use_ssl = uri.scheme === "https"
       req.post(uri.path, POST.to_json,HEADERS)
     
     
