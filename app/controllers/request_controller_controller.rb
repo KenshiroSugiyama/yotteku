@@ -20,12 +20,12 @@ class RequestControllerController < LinebotController
       flash[:success] = '更新されました'
 
       uri = URI.parse("https://api.line.me/v2/bot/message/push")
-      HEADERS = {
+      headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + ENV['LINE_CHANNEL_TOKEN'],
       }
       
-      POST = {
+      post = {
         'to': 'Uc839d0d386e217ea31ba4482a3cd2d26',
         'messages': [
             {
@@ -37,7 +37,7 @@ class RequestControllerController < LinebotController
       
       req = Net::HTTP.new(uri.host, uri.port)
       req.use_ssl = uri.scheme === "https"
-      req.post(uri.path, POST.to_json,HEADERS)
+      req.post(uri.path, post.to_json,headers)
     
     
       
