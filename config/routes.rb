@@ -26,6 +26,8 @@ Rails.application.routes.draw do
   get 'firebase/after-login' =>'firebase#after-login'
 
   post '/callback' => 'linebot#callback'
+  get '/hope' => 'linbot#hope'
+  post '/responce' => 'linebot#callback'
   #post '/resreq' => 'linebot#resreq'
   #--------------------------------------------------------------
   get 'restaurant/signup'

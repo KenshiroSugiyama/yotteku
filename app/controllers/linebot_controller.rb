@@ -3,6 +3,21 @@ class LinebotController < ApplicationController
     
 
     protect_from_forgery :except => [:callback]
+
+  def hope
+    
+  end
+
+  def responce
+    userId = Request.find(params[:req_id]).uid
+    @res = Restaurant.find(params[:res_id])
+    message = {
+              "type": "text",
+              "text": "#{@res.id}"
+              }
+    client.push_message(userId,message)
+  end
+
   def callback
     body = request.body.read
     signature = request.env['HTTP_X_LINE_SIGNATURE']
@@ -108,6 +123,14 @@ class LinebotController < ApplicationController
              #店側に送信
              res_ids = Restaurant.where(category_id: @req.category_id).pluck(:uid)
              client.multicast(res_ids,res_message)
+          elsif e.include?('スカウト')
+            @res = Restaurant.find_by(uid: uid)
+            @req_id = e.delete("スカウト").to_i
+            message = {
+              "type": "text",
+              "text": "以下のリンクをクリックしてスカウトメッセージを送ってください！\b\n https://yotteku.herokuapp.com/hope?res_id=#{@res.id}&req_id=#{@req_id}"
+            }
+            client.reply_message(event['replyToken'], message)
           elsif e.eql?('店舗登録')
             client.reply_message(event['replyToken'], template6)
           elsif res_category.any?(e)
@@ -585,12 +608,12 @@ def template
           "actions": [
               {
                 "type": "uri",
-                "label": "スカウト/b/nを送る",
-                "uri":"http://example.com/page/222",
+                "label": "スカウト送信",
+                "text": "スカウト#{@req.id}",
               },
               {
                 "type": "message",
-                "label": "スルー",
+                "label": "見送り",
                 "text": "スカウトを送らない"
               }
           ]

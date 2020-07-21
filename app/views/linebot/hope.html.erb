@@ -1,0 +1,12 @@
+<div class="p-4 form-group">
+  <%= form_with(url: responce_path,method: :post, local: true) do |f| %>
+    <%= f.hidden_field :res_id, :value => params[:res_id]  %>
+    <%= f.hidden_field :req_id, :value => params[:req_id]  %>
+    
+    <%= f.label :hope, 'お客様へのメッセージを入力（例：　飲み放題付きで3000円でいけます！,１時間後であればいけます！etc' %><br>
+    <br>
+    <%= f.text_field :hope,class: "form-control" %>
+
+    <%= f.submit 'スカウトメッセージを送信' ,class: "btn btn-primary mt-5"%>
+  <% end %>
+</div>
