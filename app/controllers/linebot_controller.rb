@@ -585,14 +585,14 @@ def template
           "actions": [
               {
                 "type": "uri",
-                "label": "スカウトを送る",
+                "label": "スカウト/b/nを送る",
                 "uri":"http://example.com/page/222",
+              },
+              {
+                "type": "message",
+                "label": "スルー",
+                "text": "スカウトを送らない"
               }
-              # {
-              #   "type": "message",
-              #   "label": "条件的に厳しいためスカウトを送らない",
-              #   "text": "no"
-              # }
           ]
       }
     }
