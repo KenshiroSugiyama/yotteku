@@ -10,14 +10,13 @@ class LinebotController < ApplicationController
 
   def responce
     user = Request.find(params[:req_id]).user_id
-    puts user
     userId = User.find(user).uid
-    puts userId
     @res = Restaurant.find(params[:res_id])
-    puts @res
+    @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
+    @hope = params[:hope]
     message = {
               "type": "text",
-              "text": "#{@res.id}"
+              "text": "#{@res.name} 様からスカウトが届きました！\b\n平均予算：#{@res_info.price_min}~#{@res_info.price_max}\b\n一押しメニュー：　#{@res_info.menu}\b\n住所： #{@res_info.address}\b\nurl: #{@res_info.url}\b\nメッセージ： #{@hope}"
               }
     client.push_message(userId,message)
   end
