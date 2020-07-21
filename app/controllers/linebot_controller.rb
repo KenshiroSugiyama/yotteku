@@ -14,11 +14,31 @@ class LinebotController < ApplicationController
     @res = Restaurant.find(params[:res_id])
     @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
     @hope = params[:hope]
-    message = {
-              "type": "text",
-              "text": "#{@res.name} 様からスカウトが届きました！\b\n平均予算：#{@res_info.price_min}~#{@res_info.price_max}\b\n一押しメニュー：　#{@res_info.menu}\b\n住所： #{@res_info.address}\b\nurl: #{@res_info.url}\b\nメッセージ： #{@hope}"
+
+      def template
+              {
+                "type": "template",
+                "altText": "this is a confirm template",
+                "template": {
+                    "type": "confirm",
+                    "text": "　#{@res.name} 様\b\nからスカウトが届きました！\b\n平均予算：#{@res_info.price_min}~#{@res_info.price_max}\b\n一押しメニュー：　#{@res_info.menu}\b\n住所： #{@res_info.address}\b\nurl: #{@res_info.url}\b\nメッセージ： #{@hope}",
+                    "actions": [
+                        {
+                          "type": "message",
+                          "label": "予約確定",
+                          "text": "予約確定",
+                        },
+                        {
+                          "type": "message",
+                          "label": "興味なし",
+                          "text": "興味なし"
+                        }
+                    ]
+                }
               }
-    client.push_message(userId,message)
+      end
+    
+    client.push_message(userId,template)
   end
 
   def callback
