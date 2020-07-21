@@ -587,12 +587,12 @@ def template
                 "type": "uri",
                 "label": "スカウトを送る",
                 "uri":"http://example.com/page/222",
-              },
-              {
-                "type": "message",
-                "label": "条件的に厳しいためスカウトを送らない",
-                "text": "no"
               }
+              # {
+              #   "type": "message",
+              #   "label": "条件的に厳しいためスカウトを送らない",
+              #   "text": "no"
+              # }
           ]
       }
     }
