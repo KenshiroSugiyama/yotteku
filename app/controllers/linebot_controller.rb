@@ -128,7 +128,7 @@ class LinebotController < ApplicationController
             @req_id = e.delete("スカウト").to_i
             message = {
               "type": "text",
-              "text": "以下のリンクをクリックしてスカウトメッセージを送ってください！\b\n https://yotteku.herokuapp.com/hope?res_id=#{@res.id}&req_id=#{@req_id}"
+              "text": "以下のリンクからスカウトメッセージを送ってください！\b\n https://yotteku.herokuapp.com/hope?res_id=#{@res.id}&req_id=#{@req_id}"
             }
             client.reply_message(event['replyToken'], message)
           elsif e.eql?('店舗登録')
