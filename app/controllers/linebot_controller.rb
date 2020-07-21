@@ -10,8 +10,11 @@ class LinebotController < ApplicationController
 
   def responce
     user = Request.find(params[:req_id]).user_id
+    puts user
     userId = User.find(user).uid
+    puts userId
     @res = Restaurant.find(params[:res_id])
+    puts @res
     message = {
               "type": "text",
               "text": "#{@res.id}"
