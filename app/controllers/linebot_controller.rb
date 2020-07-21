@@ -9,7 +9,8 @@ class LinebotController < ApplicationController
   end
 
   def responce
-    userId = Request.find(params[:req_id]).uid
+    user = Request.find(params[:req_id]).user_id
+    userId = User.find(user).uid
     @res = Restaurant.find(params[:res_id])
     message = {
               "type": "text",
