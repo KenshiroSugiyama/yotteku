@@ -607,7 +607,7 @@ def template
           "text": "リクエストが届きました！\r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}",
           "actions": [
               {
-                "type": "uri",
+                "type": "message",
                 "label": "スカウト送信",
                 "text": "スカウト#{@req.id}",
               },
