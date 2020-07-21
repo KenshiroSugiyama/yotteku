@@ -106,7 +106,7 @@ class LinebotController < ApplicationController
             client.reply_message(event['replyToken'], message)
 
              #店側に送信
-             res_ids = Restaurant.where(category_id: @req.category_id)
+             res_ids = Restaurant.where(category_id: @req.category_id).pluck(:uid)
              client.multicast(res_ids,res_message)
           elsif e.eql?('店舗登録')
             client.reply_message(event['replyToken'], template6)
