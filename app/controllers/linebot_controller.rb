@@ -21,7 +21,7 @@ class LinebotController < ApplicationController
                 "altText": "this is a confirm template",
                 "template": {
                     "type": "confirm",
-                    "text": "　#{@res.name} 様\b\nからスカウトが届きました！\b\n平均予算：#{@res_info.price_min}~#{@res_info.price_max}\b\n一押しメニュー：　#{@res_info.menu}\b\n住所： #{@res_info.address}\b\nurl: #{@res_info.url}\b\nメッセージ： #{@hope}",
+                    "text": "#{@res.name} 様\b\nからスカウトが届きました！\b\n平均予算：#{@res_info.price_min}~#{@res_info.price_max}\b\n一押しメニュー：　#{@res_info.menu}\b\n住所： #{@res_info.address}\b\nurl: #{@res_info.url}\b\nメッセージ： #{@hope}",
                     "actions": [
                         {
                           "type": "message",
@@ -39,6 +39,7 @@ class LinebotController < ApplicationController
       end
     
     client.push_message(userId,template)
+    flash[:success] = 'スカウトメッセージを送信しました！ブラウザを閉じて、Lineの画面へお戻り下さい。'
   end
 
   def callback
@@ -90,14 +91,14 @@ class LinebotController < ApplicationController
                 v = 0
               elsif req_num[1] == e
                 v = 1
-              else
+              elsif req_num[2] == e
                 v=　2
               end
               client.reply_message(event['replyToken'], template8(v))
             else
               message = {
                 "type": "text",
-                "text": "人数を数字のみ入力してください（例： ３）"
+                "text": "人数を数字のみ入力してください（例： １３）"
               }
               client.reply_message(event['replyToken'], message)
             end
@@ -356,7 +357,7 @@ def template
       "altText": "this is a confirm template",
       "template": {
           "type": "confirm",
-          "text": "ありがとうございます。\r\nリクエストが完成しました\r\nジャンル： #{@category.name} \r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}",
+          "text": "ありがとうございます。\r\nリクエストが完成しました\r\nジャンル： #{@category.name} \r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}\b\n店側にリクエストを送ってもいいですか？",
           "actions": [
               {
                 "type": "message",
@@ -381,7 +382,7 @@ def template
       "altText": "this is a confirm template",
       "template": {
           "type": "confirm",
-          "text": "何かご要望はありますか？\r\nある場合は先頭に「要望」という言葉を入れて入力してください。（例： 要望 掘りごたつ＆個室）",
+          "text": "何かご要望はありますか？（例： 掘りごたつ＆個室、飲み放題付きで！）",
           "actions": [
               {
                 "type": "uri",
