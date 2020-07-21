@@ -50,15 +50,12 @@ class LinebotController < ApplicationController
             if a.any?{|v| req_num[v]==e}
               if req_num[0] == e
                 v = 0
-                client.reply_message(event['replyToken'], template8(v))
               elsif req_num[1] == e
                 v = 1
-                client.reply_message(event['replyToken'], template8(v))
               else
                 v=　2
-                client.reply_message(event['replyToken'], template8(v))
               end
-
+              client.reply_message(event['replyToken'], template8(v))
             else
               message = {
                 "type": "text",
@@ -77,27 +74,40 @@ class LinebotController < ApplicationController
 
           elsif e.eql?('なし') || e.eql?('予約確認') 
             @req = Request.find_by(user_id: user.id)
-            
-            @category = Category.find(@req.category_id)
-            client.reply_message(event['replyToken'], template4)
-          
-           
+            if @req.present?
+              @req.update(hope: e)
+              @category = Category.find(@req.category_id)
+              client.reply_message(event['replyToken'], template4)
+            else
+              message = {
+              "type": "text",
+              "text": "リクエストが見つかりません。予約を作成してください"
+              }
+              client.reply_message(event['replyToken'], message)
+            end
+    
           elsif e.eql?('キャンセル')
             message = {
               "type": "text",
               "text": "リクエストをキャンセルしました。もう一度予約をする場合は最初からやり直してください。"
             }
+            req = Request.find_by(user_id: user.id)
+            req.destroy
             client.reply_message(event['replyToken'], message)
           elsif e.eql?('OK')
-            req = Request.find_by(user_id: user.id)
-            req.update(req_status: true)
-            #res_ids = Restaurant.where(category_id: req.category_id).id
-            #client.multicast(res_ids, message)
+            @req = Request.find_by(user_id: user.id)
+            @req.update(req_status: true)
+           
+            #ユーザ－に送信
             message = {
               "type": "text",
               "text": "リクエストを店に送信しました。返事をお待ちください"
             }
             client.reply_message(event['replyToken'], message)
+
+             #店側に送信
+             res_ids = Restaurant.where(category_id: @req.category_id)
+             client.multicast(res_ids,res_message)
           elsif e.eql?('店舗登録')
             client.reply_message(event['replyToken'], template6)
           elsif res_category.any?(e)
@@ -560,6 +570,29 @@ def template
                 "data": "4",
                 "text": "4"
               }  
+          ]
+      }
+    }
+  end
+
+  def res_message
+    {
+      "type": "template",
+      "altText": "this is a confirm template",
+      "template": {
+          "type": "confirm",
+          "text": "リクエストが届きました！\r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}",
+          "actions": [
+              {
+                "type": "uri",
+                "label": "スカウトを送る",
+                "uri":"http://example.com/page/222",
+              },
+              {
+                "type": "message",
+                "label": "条件的に厳しいためスカウトを送らない",
+                "text": "no"
+              }
           ]
       }
     }
