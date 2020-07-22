@@ -92,7 +92,7 @@ class LinebotController < ApplicationController
               elsif req_num[1] == e
                 v = 1
               elsif req_num[2] == e
-                v=　2
+                v = 2
               end
               client.reply_message(event['replyToken'], template8(v))
             else
@@ -105,18 +105,18 @@ class LinebotController < ApplicationController
           elsif num.any?(e.to_i)
             req = Request.find_by(user_id: user.id)
             req.update(number_of_people: e.to_i)
-            client.reply_message(event['replyToken'], template3)
+            client.reply_message(event['replyToken'], select_time)
           elsif e.eql?('今すぐ') || e.eql?('３０分後') || e.eql?('１時間後')
             @req = Request.find_by(user_id: user.id)
             @req.update(time: e)
-            client.reply_message(event['replyToken'], template5)
+            client.reply_message(event['replyToken'], confirm_hope)
 
           elsif e.eql?('なし') || e.eql?('予約確認') 
             @req = Request.find_by(user_id: user.id)
             if @req.present?
               @req.update(hope: e)
               @category = Category.find(@req.category_id)
-              client.reply_message(event['replyToken'], template4)
+              client.reply_message(event['replyToken'], confirm_request)
             else
               message = {
               "type": "text",
@@ -156,7 +156,7 @@ class LinebotController < ApplicationController
             }
             client.reply_message(event['replyToken'], message)
           elsif e.eql?('店舗登録')
-            client.reply_message(event['replyToken'], template6)
+            client.reply_message(event['replyToken'], select_res_cotegory)
           elsif res_category.any?(e)
             f = e.delete!('店')
             category = Category.find_by(name: f)
@@ -176,16 +176,7 @@ class LinebotController < ApplicationController
     head :ok
   end
 
-  # def resreq
-  #   message = {
-  #     type: 'text',
-  #     text: '要望入力完了'
-  #   }
-  #   # user=Request.find(params[:id]).user_id
-  #   # userId = User.find(user).uid
-  #   response = client.push_message("Uc839d0d386e217ea31ba4482a3cd2d26", message)
-  #   puts response
-  # end
+  
 
 private
 def template
@@ -310,7 +301,7 @@ def template
     }
   end
 
-  def template3
+  def select_time
     {
       "type": "template",
       "altText": "This is a buttons template",
@@ -351,7 +342,7 @@ def template
     }
   end
 
-  def template4
+  def confirm_request
     {
       "type": "template",
       "altText": "this is a confirm template",
@@ -376,7 +367,7 @@ def template
 
   
   
-  def template5
+  def confirm_hope
     {
       "type": "template",
       "altText": "this is a confirm template",
@@ -399,7 +390,7 @@ def template
     }
   end
 
-  def template6
+  def select_res_cotegory
     {
       "type": "template",
       "altText": "？",
