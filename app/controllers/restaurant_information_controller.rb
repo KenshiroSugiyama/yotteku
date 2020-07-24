@@ -10,8 +10,12 @@ class RestaurantInformationController < ApplicationController
         @info.price_max = params[:restaurant_information][:price_max]
         @info.address = params[:restaurant_information][:address]
         @info.url = params[:restaurant_information][:url]
+        name = params[:restaurant_information][:name]
+        category_id = params[:restaurant_information][:category_id].to_i
+        phone_number = params[:restaurant_information][:phone_number].to_i
 
         if @info.save!
+            Restaurant.find(current_restaurant.id).update(name: name,phone_number: phone_number,category_id: category_id)
             redirect_to restaurant_information_path(id: @info.id)
             flash[:notice] = '登録しました'
         else

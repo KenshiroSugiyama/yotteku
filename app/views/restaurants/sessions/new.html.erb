@@ -1,4 +1,5 @@
 <h3 class="text-center my-4">店側ログイン</h2>
+<%= devise_error_messages %>
 
 <div class="form-group text-center">
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
