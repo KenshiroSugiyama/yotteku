@@ -4,6 +4,7 @@
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="form-group text-center">
+    <%= f.hidden_field :uid ,value: params[:uid]%>
     <div class="field mt-3 mx-5">
       <%= f.label :email %><br />
       <%= f.email_field :email, autofocus: true, autocomplete: "email",class: "form-control" %>
