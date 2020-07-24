@@ -64,7 +64,7 @@ class LinebotController < ApplicationController
           #user作成
           uid = event['source']['userId']
           user = User.find_by(uid: uid)
-          # req = Request.find_by(user_id: user.id)
+          @req = Request.find_by(user_id: user.id)
           if e.eql?('リクエスト作成')
             unless user
               User.create(uid: uid)
@@ -73,14 +73,12 @@ class LinebotController < ApplicationController
             client.reply_message(event['replyToken'], template)
           elsif req_category.any?(e)
             category = Category.find_by(name: e)
-            req = Request.find_by(user_id: user.id)
-            unless req
+            unless @req
               Request.create(user_id: user.id,category_id: category.id)
             end
             client.reply_message(event['replyToken'], budget)
           elsif e.include?('~2000円') || e.include?('2000~3000円') || e.include?('3000~4000円') || e.include?('5000円~') 
-            req = Request.find_by(user_id: user.id)
-            req.update(budget: e)
+            @req.update(budget: e)
             client.reply_message(event['replyToken'], template7)
           elsif req_num.any?(e)
             a = [0,1,2]
@@ -101,21 +99,16 @@ class LinebotController < ApplicationController
               client.reply_message(event['replyToken'], message)
             end
           elsif num.any?(e.to_i)
-            req = Request.find_by(user_id: user.id)
-            req.update(number_of_people: e.to_i)
+            @req.update(number_of_people: e.to_i)
             client.reply_message(event['replyToken'], select_time)
           elsif e.eql?('今すぐ') || e.eql?('３０分後') || e.eql?('１時間後')
-            @req = Request.find_by(user_id: user.id)
             @req.update(time: e)
             client.reply_message(event['replyToken'], confirm_hope)
-
           elsif e.eql?('なし') 
-            @req = Request.find_by(user_id: user.id)
             @req.update(hope: e)
             @category = Category.find(@req.category_id)
             client.reply_message(event['replyToken'], confirm_send_request)
           elsif e.eql?('リクエスト確認')
-            @req = Request.find_by(user_id: user.id)
             @category = Category.find(@req.category_id)
             if @req.present?
               client.reply_message(event['replyToken'], confirm_request)
@@ -126,16 +119,14 @@ class LinebotController < ApplicationController
               }
               client.reply_message(event['replyToken'], message)
             end
-          elsif e.eql?('リクエストキャンセル')
+          elsif e.eql?('リクエストキャンセル') || e.eql?('予約キャンセル')
             message = {
               "type": "text",
               "text": "リクエストをキャンセルしました。もう一度予約をする場合は最初からやり直してください。"
             }
-            req = Request.find_by(user_id: user.id)
-            req.destroy
+            @req.destroy
             client.reply_message(event['replyToken'], message)
           elsif e.eql?('OK!')
-            @req = Request.find_by(user_id: user.id)
             @req.update(req_status: true)
            
             #ユーザ－に送信
@@ -152,7 +143,6 @@ class LinebotController < ApplicationController
             res_name = e.delete("予約確定:")
             @res = Restaurant.find_by(name: res_name)
             @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
-            @req = Request.find_by(user_id: user.id)
             @req.update(req_status: true,res_id: @res.id)
             message = {
               "type": "text",
@@ -160,7 +150,6 @@ class LinebotController < ApplicationController
             }
             client.reply_message(event['replyToken'], message)
           elsif e.eql?('予約確認') 
-            @req = Request.find_by(user_id: user.id)
             if @req.req_status
               @res = Restaurant.find(@req.res_id)
               @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
