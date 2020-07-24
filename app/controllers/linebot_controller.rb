@@ -152,14 +152,26 @@ class LinebotController < ApplicationController
             res_name = e.delete("予約確定:")
             @res = Restaurant.find_by(name: res_name)
             @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
-
             @req = Request.find_by(user_id: user.id)
             @req.update(req_status: true,res_id: @res.id)
             message = {
               "type": "text",
-              "text": "予約を確定しました！\r\n\r\n#{res_name}\r\ntel: #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n"
+              "text": "予約を確定しました！\r\n\r\n#{res_name}\r\ntel: #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}"
             }
             client.reply_message(event['replyToken'], message)
+          elsif e.eql?('予約確認')            
+            if @req.req_status
+              @req = Request.find_by(user_id: user.id)
+              @res = Restaurant.find(@req.res_id)
+              @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
+              client.reply_message(event['replyToken'], reserve_confirm)
+            else
+              message = {
+                "type": "text",
+                "text": "成立した予約が見つかりません。リクエストを作成し予約を確定させてください"
+                }
+              client.reply_message(event['replyToken'], message)
+            end
           elsif e.include?('スカウト')
             @res = Restaurant.find_by(uid: uid)
             @req_id = e.delete("スカウト").to_i
@@ -584,6 +596,29 @@ def template
                 "type": "message",
                 "label": "見送り",
                 "text": "スカウトを送らない"
+              }
+          ]
+      }
+    }
+  end
+
+  def reserve_confirm
+    {
+      "type": "template",
+      "altText": "this is a confirm template",
+      "template": {
+          "type": "confirm",
+          "text": "#{@res.name}\r\ntel: #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}",
+          "actions": [
+              {
+                "type": "message",
+                "label": "OK",
+                "text": "OK",
+              },
+              {
+                "type": "message",
+                "label": "キャンセル",
+                "text": "予約キャンセル"
               }
           ]
       }
