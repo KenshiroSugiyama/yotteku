@@ -159,9 +159,9 @@ class LinebotController < ApplicationController
               "text": "予約を確定しました！\r\n\r\n#{res_name}\r\ntel: #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}"
             }
             client.reply_message(event['replyToken'], message)
-          elsif e.eql?('予約確認')            
+          elsif e.eql?('予約確認') 
+            @req = Request.find_by(user_id: user.id)
             if @req.req_status
-              @req = Request.find_by(user_id: user.id)
               @res = Restaurant.find(@req.res_id)
               @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
               client.reply_message(event['replyToken'], reserve_confirm)
