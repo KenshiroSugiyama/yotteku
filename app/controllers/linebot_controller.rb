@@ -26,7 +26,7 @@ class LinebotController < ApplicationController
                         {
                           "type": "message",
                           "label": "予約確定",
-                          "text": "予約確定 #{@res.name}",
+                          "text": "予約確定:#{@res.name}",
                         },
                         {
                           "type": "message",
@@ -148,7 +148,7 @@ class LinebotController < ApplicationController
              res_ids = Restaurant.where(category_id: @req.category_id).pluck(:uid)
              client.multicast(res_ids,res_message)
           elsif e.include?('予約確定')
-            res_name = e.delete("予約確定 ")
+            res_name = e.delete("予約確定:")
             @res = Restaurant.find_by(name: res_name)
             @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
 
