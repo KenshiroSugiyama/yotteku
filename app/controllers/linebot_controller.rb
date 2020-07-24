@@ -26,7 +26,7 @@ class LinebotController < ApplicationController
                         {
                           "type": "message",
                           "label": "予約確定",
-                          "text": "予約確定",
+                          "text": "予約確定 #{@res.name}",
                         },
                         {
                           "type": "message",
@@ -65,7 +65,7 @@ class LinebotController < ApplicationController
           uid = event['source']['userId']
           user = User.find_by(uid: uid)
           # req = Request.find_by(user_id: user.id)
-          if e.eql?('予約する')
+          if e.eql?('リクエスト作成')
             unless user
               User.create(uid: uid)
               user = User.find_by(uid: uid)
@@ -77,13 +77,11 @@ class LinebotController < ApplicationController
             unless req
               Request.create(user_id: user.id,category_id: category.id)
             end
-            client.reply_message(event['replyToken'], template2)
+            client.reply_message(event['replyToken'], budget)
           elsif e.include?('~2000円') || e.include?('2000~3000円') || e.include?('3000~4000円') || e.include?('5000円~') 
             req = Request.find_by(user_id: user.id)
             req.update(budget: e)
             client.reply_message(event['replyToken'], template7)
-          # elsif e.eql?('１～４人')
-          #   client.reply_message(event['replyToken'], template9)
           elsif req_num.any?(e)
             a = [0,1,2]
             if a.any?{|v| req_num[v]==e}
@@ -111,21 +109,23 @@ class LinebotController < ApplicationController
             @req.update(time: e)
             client.reply_message(event['replyToken'], confirm_hope)
 
-          elsif e.eql?('なし') || e.eql?('予約確認') 
+          elsif e.eql?('なし') 
+            @req = Request.find_by(user_id: user.id)
+            @req.update(hope: e)
+            @category = Category.find(@req.category_id)
+            client.reply_message(event['replyToken'], confirm_send_request)
+          elsif e.eql?('リクエスト確認')
             @req = Request.find_by(user_id: user.id)
             if @req.present?
-              @req.update(hope: e)
-              @category = Category.find(@req.category_id)
               client.reply_message(event['replyToken'], confirm_request)
             else
               message = {
               "type": "text",
-              "text": "リクエストが見つかりません。予約を作成してください"
+              "text": "リクエストが見つかりません。リクエストを作成してください"
               }
               client.reply_message(event['replyToken'], message)
             end
-    
-          elsif e.eql?('キャンセル')
+          elsif e.eql?('リクエストキャンセル')
             message = {
               "type": "text",
               "text": "リクエストをキャンセルしました。もう一度予約をする場合は最初からやり直してください。"
@@ -133,7 +133,7 @@ class LinebotController < ApplicationController
             req = Request.find_by(user_id: user.id)
             req.destroy
             client.reply_message(event['replyToken'], message)
-          elsif e.eql?('OK')
+          elsif e.eql?('OK!')
             @req = Request.find_by(user_id: user.id)
             @req.update(req_status: true)
            
@@ -147,6 +147,18 @@ class LinebotController < ApplicationController
              #店側に送信
              res_ids = Restaurant.where(category_id: @req.category_id).pluck(:uid)
              client.multicast(res_ids,res_message)
+          elsif e.include?('予約確定')
+            res_name = e.delete("予約確定 ")
+            @res = Restaurant.find_by(name: res_name)
+            @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
+
+            @req = Request.find_by(user_id: user.id)
+            @req.update(req_status: true,res_id: @res.id)
+            message = {
+              "type": "text",
+              "text": "予約を確定しました！\r\n\r\n#{res_name}\r\ntel: #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n"
+            }
+            client.reply_message(event['replyToken'], message)
           elsif e.include?('スカウト')
             @res = Restaurant.find_by(uid: uid)
             @req_id = e.delete("スカウト").to_i
@@ -246,7 +258,7 @@ def template
     }
   end
 
-  def template2
+  def budget
     {
       "type": "template",
       "altText": "This is a buttons template",
@@ -334,7 +346,7 @@ def template
     }
   end
 
-  def confirm_request
+  def confirm_send_request
     {
       "type": "template",
       "altText": "this is a confirm template",
@@ -345,12 +357,35 @@ def template
               {
                 "type": "message",
                 "label": "OK!",
+                "text": "OK!"
+              },
+              {
+                "type": "message",
+                "label": "キャンセル",
+                "text": "リクエストキャンセル"
+              }
+          ]
+      }
+    }
+  end
+
+  def confirm_request
+    {
+      "type": "template",
+      "altText": "this is a confirm template",
+      "template": {
+          "type": "confirm",
+          "text": "リクエスト確認\r\nジャンル： #{@category.name} \r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}",
+          "actions": [
+              {
+                "type": "message",
+                "label": "OK",
                 "text": "OK"
               },
               {
                 "type": "message",
                 "label": "キャンセル",
-                "text": "キャンセル"
+                "text": "リクエストキャンセル"
               }
           ]
       }
