@@ -116,6 +116,7 @@ class LinebotController < ApplicationController
             client.reply_message(event['replyToken'], confirm_send_request)
           elsif e.eql?('リクエスト確認')
             @req = Request.find_by(user_id: user.id)
+            @category = Category.find(@req.category_id)
             if @req.present?
               client.reply_message(event['replyToken'], confirm_request)
             else
