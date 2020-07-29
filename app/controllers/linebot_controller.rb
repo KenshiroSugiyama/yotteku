@@ -52,6 +52,16 @@ class LinebotController < ApplicationController
 
     events.each do |event|
       case event
+      when Line::Bot::Event::Follow
+        uid = event['source']['userId']
+        user = User.find_by(uid: uid)
+        unless user
+          message = {
+            "type": "text",
+            "text": "ユーザー登録を以下のリンクよりお願いいたします。\b\nhttps://yotteku.herokuapp.com/users/new?uid=#{uid}"
+          }
+          client.reply_message(event['replyToken'], message)
+        end
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
@@ -66,10 +76,6 @@ class LinebotController < ApplicationController
           user = User.find_by(uid: uid)
           @req = Request.find_by(user_id: user.id)
           if e.eql?('リクエスト作成')
-            unless user
-              User.create(uid: uid)
-              user = User.find_by(uid: uid)
-            end
             client.reply_message(event['replyToken'], template)
           elsif req_category.any?(e)
             category = Category.find_by(name: e)
@@ -109,8 +115,8 @@ class LinebotController < ApplicationController
             @category = Category.find(@req.category_id)
             client.reply_message(event['replyToken'], confirm_send_request)
           elsif e.eql?('リクエスト確認')
-            @category = Category.find(@req.category_id)
             if @req.present?
+              @category = Category.find(@req.category_id)
               client.reply_message(event['replyToken'], confirm_request)
             else
               message = {
@@ -170,11 +176,14 @@ class LinebotController < ApplicationController
             }
             client.reply_message(event['replyToken'], message)
           elsif e.eql?('店舗登録')
-            message = {
-              "type": "text",
-              "text": "店舗登録を以下のリンクよりお願いいたします。\b\nhttps://yotteku.herokuapp.com/restaurants/sign_up?uid=#{uid}"
-            }
-            client.reply_message(event['replyToken'], message)
+            res = Restaurant.find_by(uid: uid)
+            unless res
+              message = {
+                "type": "text",
+                "text": "店舗登録を以下のリンクよりお願いいたします。\b\nhttps://yotteku.herokuapp.com/restaurants/sign_up?uid=#{uid}"
+              }
+              client.reply_message(event['replyToken'], message)
+            end
           end
         end
       end

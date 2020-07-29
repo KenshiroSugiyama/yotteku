@@ -44,6 +44,6 @@ Rails.application.routes.draw do
   get 'user_profile/create'
   get 'user_profile/update'
   get 'user_profile/show'
-  get 'user/login'
+  resources :users,only: [:new,:create,:show]
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
