@@ -86,7 +86,7 @@ class LinebotController < ApplicationController
           elsif e.eql?('飲み放題') 
             @req.update(freedrink: e)
             client.reply_message(event['replyToken'], select_drink_time)
-          elsif e.eql?('90分') || e.eql?('120分')
+          elsif e.eql?('９０分') || e.eql?('１２０分')
             @req.update(drink_time: e)
             client.reply_message(event['replyToken'], select_foodamount)
           elsif e.eql?('単品') 
@@ -394,13 +394,13 @@ def template
                 "type": "postback",
                 "label": "９０分",
                 "data": "９０分",
-                "text": "90分"
+                "text": "９０分"
               },
               {
                 "type": "postback",
                 "label": "１２０分",
                 "data": "１２０分",
-                "text": '120分'
+                "text": '１２０分'
               }
           ]
       }
@@ -518,7 +518,7 @@ def template
       "altText": "this is a confirm template",
       "template": {
           "type": "confirm",
-          "text": "ありがとうございます。\r\nリクエストが完成しました\r\nジャンル： #{@category.name} \r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}\b\n店側にリクエストを送ってもいいですか？",
+          "text": "ありがとうございます。\r\nリクエストが完成しました\r\nジャンル： #{@category.name} \r\nお酒： #{@req.freedrink}\r\n席時間： #{@req.drinktime}\r\n雰囲気： #{@req.situation}\r\n食べ物： #{@req.foodamount}\r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}\b\n店側にリクエストを送ってもいいですか？",
           "actions": [
               {
                 "type": "message",
@@ -541,7 +541,7 @@ def template
       "altText": "this is a confirm template",
       "template": {
           "type": "confirm",
-          "text": "リクエスト確認\r\nジャンル： #{@category.name}\r\nお酒： #{@category.freedrink}\r\n席時間： #{@category.drinktime}\r\n雰囲気： #{@req.situation}\r\n食べ物： #{@req.foodamount}\r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}",
+          "text": "リクエスト確認\r\nジャンル： #{@category.name}\r\nお酒： #{@req.freedrink}\r\n席時間： #{@req.drinktime}\r\n雰囲気： #{@req.situation}\r\n食べ物： #{@req.foodamount}\r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}",
           "actions": [
               {
                 "type": "message",
