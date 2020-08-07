@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_07_131109) do
+ActiveRecord::Schema.define(version: 2020_08_07_135058) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 2020_08_07_131109) do
     t.string "hope"
     t.boolean "req_status", default: false
     t.integer "res_id"
-    t.boolean "freedrink"
+    t.string "freedrink"
     t.string "situation"
     t.string "foodamount"
     t.string "drinktime"
