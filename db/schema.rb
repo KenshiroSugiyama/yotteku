@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_24_065944) do
+ActiveRecord::Schema.define(version: 2020_08_07_131109) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
@@ -29,6 +29,10 @@ ActiveRecord::Schema.define(version: 2020_07_24_065944) do
     t.string "hope"
     t.boolean "req_status", default: false
     t.integer "res_id"
+    t.boolean "freedrink"
+    t.string "situation"
+    t.string "foodamount"
+    t.string "drinktime"
     t.index ["category_id"], name: "index_requests_on_category_id"
     t.index ["user_id"], name: "index_requests_on_user_id"
   end

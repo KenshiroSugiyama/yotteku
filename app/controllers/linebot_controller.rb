@@ -82,6 +82,21 @@ class LinebotController < ApplicationController
             unless @req
               Request.create(user_id: user.id,category_id: category.id)
             end
+            client.reply_message(event['replyToken'], select_freedrink)
+          elsif e.eql?('飲み放題') 
+            @req.update(freedrink: true)
+            client.reply_message(event['replyToken'], select_drink_time)
+          elsif e.eql?('９０分') || e.eql?('１２０分')
+            @req.update(drink_time: e)
+            client.reply_message(event['replyToken'], select_foodamount)
+          elsif e.eql?('単品') 
+            @req.update(freedrink: false)
+            client.reply_message(event['replyToken'], select_foodamount)
+          elsif e.eql?('がっつり') || e.eql?('少し')
+            @req.update(foodamount: e)
+            client.reply_message(event['replyToken'], select_situation)
+          elsif e.eql?('がやがや') || e.eql?('静か')
+            @req.update(situation: e)
             client.reply_message(event['replyToken'], budget)
           elsif e.include?('~2000円') || e.include?('2000~3000円') || e.include?('3000~4000円') || e.include?('5000円~') 
             @req.update(budget: e)
@@ -351,6 +366,146 @@ def template
                 "label": "１時間後",
                 "data": "60later",
                 "text": "１時間後"
+              }
+          ]
+      }
+    }
+  end
+
+  def select_drink_time
+    {
+      "type": "template",
+      "altText": "This is a buttons template",
+      "template": {
+          "type": "buttons",
+          "thumbnailImageUrl": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg",
+          "imageAspectRatio": "rectangle",
+          "imageSize": "cover",
+          "imageBackgroundColor": "#FFFFFF",
+          "title": "時間",
+          "text": "飲み放題の時間は？",
+          "defaultAction": {
+              "type": "uri",
+              "label": "View detail",
+              "uri": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg"
+          },
+          "actions": [
+              {
+                "type": "postback",
+                "label": "９０分",
+                "data": "９０分",
+                "text": "９０分"
+              },
+              {
+                "type": "postback",
+                "label": "１２０分",
+                "data": "１２０分",
+                "text": '１２０分'
+              }
+          ]
+      }
+    }
+  end
+
+  def select_situation
+    {
+      "type": "template",
+      "altText": "This is a buttons template",
+      "template": {
+          "type": "buttons",
+          "thumbnailImageUrl": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg",
+          "imageAspectRatio": "rectangle",
+          "imageSize": "cover",
+          "imageBackgroundColor": "#FFFFFF",
+          "title": "雰囲気",
+          "text": "店の雰囲気は？",
+          "defaultAction": {
+              "type": "uri",
+              "label": "View detail",
+              "uri": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg"
+          },
+          "actions": [
+              {
+                "type": "postback",
+                "label": "がやがや",
+                "data": "がやがや",
+                "text": "がやがや"
+              },
+              {
+                "type": "postback",
+                "label": "静か",
+                "data": "静か",
+                "text": '静か'
+              }
+          ]
+      }
+    }
+  end
+
+  def select_freedrink
+    {
+      "type": "template",
+      "altText": "This is a buttons template",
+      "template": {
+          "type": "buttons",
+          "thumbnailImageUrl": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg",
+          "imageAspectRatio": "rectangle",
+          "imageSize": "cover",
+          "imageBackgroundColor": "#FFFFFF",
+          "title": "飲み放題",
+          "text": "お酒は？",
+          "defaultAction": {
+              "type": "uri",
+              "label": "View detail",
+              "uri": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg"
+          },
+          "actions": [
+              {
+                "type": "postback",
+                "label": "飲み放題",
+                "data": "飲み放題",
+                "text": "飲み放題"
+              },
+              {
+                "type": "postback",
+                "label": "単品",
+                "data": "単品",
+                "text": '単品'
+              }
+          ]
+      }
+    }
+  end
+
+  def select_foodamount
+    {
+      "type": "template",
+      "altText": "This is a buttons template",
+      "template": {
+          "type": "buttons",
+          "thumbnailImageUrl": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg",
+          "imageAspectRatio": "rectangle",
+          "imageSize": "cover",
+          "imageBackgroundColor": "#FFFFFF",
+          "title": "food",
+          "text": "がっつり食べたい？",
+          "defaultAction": {
+              "type": "uri",
+              "label": "View detail",
+              "uri": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg"
+          },
+          "actions": [
+              {
+                "type": "postback",
+                "label": "がっつり",
+                "data": "がっつり",
+                "text": "がっつり"
+              },
+              {
+                "type": "postback",
+                "label": "少しでいい",
+                "data": "少し",
+                "text": '少し'
               }
           ]
       }
