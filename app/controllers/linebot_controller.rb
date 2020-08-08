@@ -747,7 +747,7 @@ def template
       "altText": "this is a confirm template",
       "template": {
           "type": "confirm",
-          "text": "リクエストが届きました！\r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}",
+          "text": "リクエストが届きました！\r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\nお酒： #{@req.freedrink}\r\n席時間： #{@req.drinktime}\r\n食べ物： #{@req.foodamount}\r\n要望:  #{@req.hope}",
           "actions": [
               {
                 "type": "message",
