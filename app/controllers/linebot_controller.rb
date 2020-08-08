@@ -74,7 +74,9 @@ class LinebotController < ApplicationController
           #user作成
           uid = event['source']['userId']
           user = User.find_by(uid: uid)
-          @req = Request.find_by(user_id: user.id)
+          if user
+            @req = Request.find_by(user_id: user.id)
+          end
           if e.eql?('リクエスト作成')
             client.reply_message(event['replyToken'], template)
           elsif req_category.any?(e)
