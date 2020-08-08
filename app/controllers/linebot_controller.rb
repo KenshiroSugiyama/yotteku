@@ -21,7 +21,7 @@ class LinebotController < ApplicationController
                 "altText": "this is a confirm template",
                 "template": {
                     "type": "confirm",
-                    "text": "#{@res.name} 様\b\nからスカウトが届きました！\b\n平均予算：#{@res_info.price_min}~#{@res_info.price_max}\b\n一押しメニュー：　#{@res_info.menu}\b\n住所： #{@res_info.address}\b\nurl: #{@res_info.url}\b\nメッセージ： #{@hope}",
+                    "text": "#{@res.name} 様\b\nからスカウトが届きました！\b\n平均予算：#{@res_info.price_min}~#{@res_info.price_max}\b\n一押しｄｄ： #{@res_info.menu}\b\n住所： #{@res_info.address}\b\nURL: #{@res_info.url}\b\nメッセージ： #{@hope}",
                     "actions": [
                         {
                           "type": "message",
@@ -169,14 +169,14 @@ class LinebotController < ApplicationController
             @req.update(req_status: true,res_id: @res.id)
             message = {
               "type": "text",
-              "text": "予約を確定しました！\r\n\r\n#{res_name}\r\ntel: #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n予算： #{@req.budget}\r\nお酒： #{@req.freedrink}\r\n席時間： #{@req.drinktime}\r\nご飯： #{@req.foodamount}\r\n希望： #{@req.hope}"
+              "text": "予約を確定しました！\r\n\r\n#{res_name}\r\n☎: #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n予算： #{@req.budget}\r\nお酒： #{@req.freedrink}\r\n席時間： #{@req.drinktime}\r\nご飯： #{@req.foodamount}\r\n希望： #{@req.hope}"
             }
             client.reply_message(event['replyToken'], message)
 
             #店側に送信
             res_message = {
               "type": "text",
-              "text": "予約が成立しました！\r\n\r\n予約者名： #{user.name}\r\ntel: #{user.email}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n予算： #{@req.budget}\r\nお酒： #{@req.freedrink}\r\n席時間： #{@req.drinktime}\r\nご飯： #{@req.foodamount}\r\n希望： #{@req.hope}"
+              "text": "予約が成立しました！\r\n\r\n予約者名： #{user.name}\r\n☎: #{user.email}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n予算： #{@req.budget}\r\nお酒： #{@req.freedrink}\r\n席時間： #{@req.drinktime}\r\nご飯： #{@req.foodamount}\r\n希望： #{@req.hope}"
             }
             client.push_message(@res.uid,res_message)
           elsif e.eql?('予約確認') 
@@ -770,7 +770,7 @@ def template
       "altText": "this is a confirm template",
       "template": {
           "type": "confirm",
-          "text": "#{@res.name}\r\ntel: #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}",
+          "text": "#{@res.name}\r\n☎: #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}",
           "actions": [
               {
                 "type": "message",
