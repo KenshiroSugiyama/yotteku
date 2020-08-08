@@ -170,6 +170,13 @@ class LinebotController < ApplicationController
               "text": "予約を確定しました！\r\n\r\n#{res_name}\r\ntel: #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}"
             }
             client.reply_message(event['replyToken'], message)
+
+            #店側に送信
+            res_message = {
+              "type": "text",
+              "text": "予約が成立しました！\r\n\r\n予約者名： #{user.name}\r\ntel: #{user.email}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n希望： #{@req.hope}\r\n予算： #{@req.budget}\r\nお酒： #{@req.freedrink}\r\nご飯： #{@req.foodamount}"
+            }
+            client.push_message(@res.uid,res_message)
           elsif e.eql?('予約確認') 
             if @req.req_status
               @res = Restaurant.find(@req.res_id)
