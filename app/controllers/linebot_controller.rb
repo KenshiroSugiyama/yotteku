@@ -88,8 +88,8 @@ class LinebotController < ApplicationController
           elsif e.eql?('飲み放題') 
             @req.update(freedrink: e)
             client.reply_message(event['replyToken'], select_drink_time)
-          elsif e.eql?('90') || e.eql?('120')
-            @req.update(drink_time: e+"分")
+          elsif e.eql?('９０分') || e.eql?('１２０分')
+            @req.update(drinktime: e)
             client.reply_message(event['replyToken'], select_foodamount)
           elsif e.eql?('単品') 
             @req.update(freedrink: e)
@@ -403,13 +403,13 @@ def template
                 "type": "postback",
                 "label": "９０分",
                 "data": "９０分",
-                "text": "90"
+                "text": "９０分"
               },
               {
                 "type": "postback",
                 "label": "１２０分",
                 "data": "１２０分",
-                "text": '120'
+                "text": "１２０分"
               }
           ]
       }
