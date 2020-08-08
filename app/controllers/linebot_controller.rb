@@ -88,8 +88,8 @@ class LinebotController < ApplicationController
           elsif e.eql?('飲み放題') 
             @req.update(freedrink: e)
             client.reply_message(event['replyToken'], select_drink_time)
-          elsif e.eql?('９０分') || e.eql?('１２０分')
-            @req.update(drink_time: e)
+          elsif e.eql?('９０') || e.eql?('１２０')
+            @req.update(drink_time: e+"分")
             client.reply_message(event['replyToken'], select_foodamount)
           elsif e.eql?('単品') 
             @req.update(freedrink: e)
@@ -169,14 +169,14 @@ class LinebotController < ApplicationController
             @req.update(req_status: true,res_id: @res.id)
             message = {
               "type": "text",
-              "text": "予約を確定しました！\r\n\r\n#{res_name}\r\ntel: #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}"
+              "text": "予約を確定しました！\r\n\r\n#{res_name}\r\ntel: #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n予算： #{@req.budget}\r\nお酒： #{@req.freedrink}\r\n席時間： #{@req.drinktime}\r\nご飯： #{@req.foodamount}\r\n希望： #{@req.hope}"
             }
             client.reply_message(event['replyToken'], message)
 
             #店側に送信
             res_message = {
               "type": "text",
-              "text": "予約が成立しました！\r\n\r\n予約者名： #{user.name}\r\ntel: #{user.email}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n希望： #{@req.hope}\r\n予算： #{@req.budget}\r\nお酒： #{@req.freedrink}\r\nご飯： #{@req.foodamount}"
+              "text": "予約が成立しました！\r\n\r\n予約者名： #{user.name}\r\ntel: #{user.email}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n予算： #{@req.budget}\r\nお酒： #{@req.freedrink}\r\n席時間： #{@req.drinktime}\r\nご飯： #{@req.foodamount}\r\n希望： #{@req.hope}"
             }
             client.push_message(@res.uid,res_message)
           elsif e.eql?('予約確認') 
@@ -403,13 +403,13 @@ def template
                 "type": "postback",
                 "label": "９０分",
                 "data": "９０分",
-                "text": "９０分"
+                "text": "９０"
               },
               {
                 "type": "postback",
                 "label": "１２０分",
                 "data": "１２０分",
-                "text": '１２０分'
+                "text": '１２０'
               }
           ]
       }
