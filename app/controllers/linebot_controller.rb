@@ -1,45 +1,45 @@
 class LinebotController < ApplicationController
     require 'line/bot'
     
-
     protect_from_forgery :except => [:callback]
 
-  def hope
-    
+  def hope  
   end
 
-  def responce
+  def response
     user = Request.find(params[:req_id]).user_id
     userId = User.find(user).uid
     @res = Restaurant.find(params[:res_id])
     @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
     @hope = params[:hope]
-
       def template
-              {
-                "type": "template",
-                "altText": "this is a confirm template",
-                "template": {
-                    "type": "confirm",
-                    "text": "#{@res.name} 様\b\nからスカウトが届きました！\b\n平均予算：#{@res_info.price_min}~#{@res_info.price_max}\b\n一押し： #{@res_info.menu}\b\n住所： #{@res_info.address}\b\nURL: #{@res_info.url}\b\nメッセージ： #{@hope}",
-                    "actions": [
-                        {
-                          "type": "message",
-                          "label": "予約確定",
-                          "text": "予約確定:#{@res.name}",
-                        },
-                        {
-                          "type": "message",
-                          "label": "興味なし",
-                          "text": "興味なし"
-                        }
-                    ]
-                }
-              }
+        {
+          "type": "template",
+          "altText": "this is a confirm template",
+          "template": {
+              "type": "confirm",
+              "text": "#{@res.name} \b\nからスカウトが届きました！\b\n\b\n平均予算：#{@res_info.price_min}~#{@res_info.price_max}\b\n一押し： #{@res_info.menu}\b\n住所： #{@res_info.address}\b\nURL: #{@res_info.url}\b\nメッセージ： #{@hope}",
+              "actions": [
+                  {
+                    "type": "message",
+                    "label": "予約確定",
+                    "text": "予約確定:#{@res.name}",
+                  },
+                  {
+                    "type": "message",
+                    "label": "興味なし",
+                    "text": "興味なし"
+                  }
+              ]
+          }
+        }
       end
-    
     client.push_message(userId,template)
+    redirect_to after_response_path
     flash[:success] = 'スカウトメッセージを送信しました！ブラウザを閉じて、Lineの画面へお戻り下さい。'
+  end
+
+  def after_response
   end
 
   def callback

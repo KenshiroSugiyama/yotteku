@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_07_135058) do
+ActiveRecord::Schema.define(version: 2020_08_09_161036) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
@@ -64,6 +64,22 @@ ActiveRecord::Schema.define(version: 2020_08_07_135058) do
     t.index ["category_id"], name: "index_restaurants_on_category_id"
     t.index ["email"], name: "index_restaurants_on_email", unique: true
     t.index ["reset_password_token"], name: "index_restaurants_on_reset_password_token", unique: true
+  end
+
+  create_table "scouts", force: :cascade do |t|
+    t.integer "restaurant_id"
+    t.integer "request_id"
+    t.string "name"
+    t.integer "price"
+    t.string "beer"
+    t.string "start_time"
+    t.string "drink_time"
+    t.string "content"
+    t.string "hope"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["request_id"], name: "index_scouts_on_request_id"
+    t.index ["restaurant_id"], name: "index_scouts_on_restaurant_id"
   end
 
   create_table "users", force: :cascade do |t|

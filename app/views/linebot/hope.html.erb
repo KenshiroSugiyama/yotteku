@@ -2,10 +2,30 @@
   <%= form_with(url: responce_path,method: :post, local: true) do |f| %>
     <%= f.hidden_field :res_id, :value => params[:res_id]  %>
     <%= f.hidden_field :req_id, :value => params[:req_id]  %>
+
+    <%= f.label :start_time, '値段（席料、お通し代込み）' %><br>
+    <%= f.text_field :start_time, class: 'form-control' %>
     
-    <%= f.label :hope, 'お客様へのメッセージを入力（例：　飲み放題付きで3000円でいけます！,１時間後であればいけます！etc' %><br>
+    <%= f.label :price, '値段（席料、お通し代込み）' %><br>
+    <%= f.telephone_field :price, class: 'form-control' %>円
+
+    <%= f.label :beer, 'お酒' %><br> 
+    <%= f.radio_button :beer,:飲み放題 %>
+    <%= f.label :beer, '飲み放題' %><br>
+    <%= f.radio_button :beer,:単品 %>
+    <%= f.label :beer, '単品' %><br> 
+
+    <%= f.label :drink_time, '席時間' %><br>
+    <%= f.text_field :drink_time,placeholder: "21:30", class: 'form-control' %>
+
+    <%= f.label :content, '提供内容' %><br>
     <br>
-    <%= f.text_field :hope,class: "form-control" %>
+    <%= f.text_area :content,size: "200x100",placeholder: "・お通し\b\n・料理3品\b\n・飲み放題付き",class: "form-control" %>
+
+
+    <%= f.label :hope, 'お客様へのメッセージを入力' %><br>
+    <br>
+    <%= f.text_area :hope,size: "200x100",placeholder: "例 １時間後であればいけます！",class: "form-control" %>
 
     <%= f.submit 'スカウトメッセージを送信' ,class: "btn btn-primary mt-5"%>
   <% end %>
