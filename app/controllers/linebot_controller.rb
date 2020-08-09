@@ -35,7 +35,7 @@ class LinebotController < ApplicationController
         }
       end
     client.push_message(userId,template)
-    redirect_to after_response_path
+    
     flash[:success] = 'スカウトメッセージを送信しました！ブラウザを閉じて、Lineの画面へお戻り下さい。'
   end
 
