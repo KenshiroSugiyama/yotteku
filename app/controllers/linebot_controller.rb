@@ -29,29 +29,32 @@ class LinebotController < ApplicationController
           "altText": "this is a confirm template",
           "template": {
               "type": "confirm",
-              "text": "#{@res.name}  からスカウトが届きました！\b\n開始時間：#{@scout.start_time}\b\n値段：#{@scout.price}\b\nお酒： #{@scout.beer}\b\n席時間： #{@scout.drink_time}\b\n提供内容:\b\n#{@scout.content}\b\nメッセージ： #{@scout.hope}",
+              "text": "#{@res.name}  からスカウトが届きました！\b\n\b\n以下の「内容確認」ボタンを押して詳しいスカウト内容をご確認ください。\b\n予約を確定する場合は、「予約確定」ボタンを押して下さい。",
               "actions": [
+                  {
+                    "type": "uri",
+                    "label": "内容確認",
+                    "uri": "https://yotteku.herokuapp.com/scout_confirm?scout_id=#{@scout.id}"
+                  },
                   {
                     "type": "message",
                     "label": "予約確定",
                     "text": "予約確定:#{@res.name}",
-                  },
-                  {
-                    "type": "message",
-                    "label": "興味なし",
-                    "text": "興味なし"
                   }
               ]
           }
         }
       end
       client.push_message(userId,template)
-      redirect_to after_response_path
+      redirect_to scout_confirm_path(scout_id: @scout.id)
       flash[:success] = 'スカウトメッセージを送信しました！ブラウザを閉じて、Lineの画面へお戻り下さい。'
     end
   end
 
-  def after_response
+  def scout_confirm
+    @scout = Scout.find(params[:scout_id])
+    @res = Restaurant.find(scout.restaurant_id)
+    @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
   end
 
   def callback
