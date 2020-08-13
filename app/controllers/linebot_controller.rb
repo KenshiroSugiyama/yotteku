@@ -190,6 +190,7 @@ class LinebotController < ApplicationController
             client.reply_message(event['replyToken'], message)
 
             #店側に送信
+            user = User.find(@req.user_id)
             def template
               {
                 "type": "template",
