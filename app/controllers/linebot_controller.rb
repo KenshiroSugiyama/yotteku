@@ -7,9 +7,9 @@ class LinebotController < ApplicationController
   end
 
   def response
-    user = Request.find(params[:req_id]).user_id
-    userId = User.find(user).uid
-    @res = Restaurant.find(params[:res_id])
+    user = Request.find_by(id: params[:req_id]).user_id
+    userId = User.find_by(id: user).uid
+    @res = Restaurant.find_by(id: params[:res_id])
     @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
     @hope = params[:hope]
       def template
