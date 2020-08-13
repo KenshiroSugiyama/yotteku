@@ -39,7 +39,7 @@ class LinebotController < ApplicationController
                   {
                     "type": "message",
                     "label": "予約確定",
-                    "text": "予約確定:#{@res.name}",
+                    "text": "予約確定,#{@res.name},#{@scout.id}",
                   }
               ]
           }
@@ -178,11 +178,11 @@ class LinebotController < ApplicationController
              res_ids = Restaurant.where(category_id: @req.category_id).pluck(:uid)
              client.multicast(res_ids,res_message)
           elsif e.include?('予約確定')
-            res_name = e.delete("予約確定:")
-            @res = Restaurant.find_by(name: res_name)
+            a = e.split(",")
+            @res = Restaurant.find_by(name: a[1])
             @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
-            @req.update(req_status: true,res_id: @res.id)
-            @scout = Scout.find_by(restaurant_id: @res.id,request_id: @req.id)
+            @req.update(req_status: true,res_id: @res.id,scout_id: a[2].to_i)
+            @scout = Scout.find(a[2].to_i)
             message = {
               "type": "text",
               "text": "予約を確定しました！\r\n\r\n店名： #{res_name}\r\nTel:  #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@scout.start_time}\r\n値段： #{@scout.price}円\r\nお酒： #{@scout.beer}\r\n席時間： #{@scout.drink_time}\r\n内容： #{@scout.content}\b\n\b\nよってくをご利用頂きありがとうございます！！"

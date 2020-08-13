@@ -33,8 +33,7 @@ Rails.application.routes.draw do
   #--------------------------------------------------------------
   get 'restaurant/signup'
   get 'restaurant/login'
-  get 'reserve/edit'
-  get 'reserve/update'
+  resources :reserves,only: [:index,:show]
   get 'chat/index'
   get 'users_restaurants/new'
   get 'users_restaurants/create'
