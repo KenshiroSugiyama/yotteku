@@ -846,7 +846,7 @@ def template
               {
                 "type": "uri",
                 "label": "予約一覧",
-                "uri": "https://yotteku.herokuapp.com/reserves/#{@res.id}"
+                "uri": "https://yotteku.herokuapp.com/reserves?id=#{@res.id}"
               },
               {
                 "type": "uri",
