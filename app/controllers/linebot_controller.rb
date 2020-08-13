@@ -29,7 +29,7 @@ class LinebotController < ApplicationController
           "altText": "this is a confirm template",
           "template": {
               "type": "confirm",
-              "text": "#{@res.name} \b\nからスカウトが届きました！\b\n\b\n開始時間：#{@scout.start_time}\b\n値段：#{@scout.price}\b\nお酒： #{@scout.beer}\b\n席時間： #{@scout.drink_time}\b\n提供内容: #{@scout.content}\b\nメッセージ： #{@scout.hope}",
+              "text": "#{@res.name}  からスカウトが届きました！\b\n開始時間：#{@scout.start_time}\b\n値段：#{@scout.price}\b\nお酒： #{@scout.beer}\b\n席時間： #{@scout.drink_time}\b\n提供内容:\b\n#{@scout.content}\b\nメッセージ： #{@scout.hope}",
               "actions": [
                   {
                     "type": "message",
