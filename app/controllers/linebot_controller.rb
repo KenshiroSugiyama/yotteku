@@ -190,14 +190,14 @@ class LinebotController < ApplicationController
             client.reply_message(event['replyToken'], message)
 
             #店側に送信
-            user = User.find(@req.user_id)
+            @user = User.find(@req.user_id)
             def template
               {
                 "type": "template",
                 "altText": "this is a confirm template",
                 "template": {
                     "type": "confirm",
-                    "text": "予約が成立しました！\r\n予約者名： #{user.name}\r\nTel:  #{user.email}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@scout.start_time}\r\n値段： #{@scout.price}円\r\nお酒： #{@scout.beer}\r\n席時間： #{@scout.drink_time}\r\n内容： #{@scout.content}",
+                    "text": "予約が成立しました！\r\n予約者名： #{@user.name}\r\nTel:  #{@user.email}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@scout.start_time}\r\n値段： #{@scout.price}円\r\nお酒： #{@scout.beer}\r\n席時間： #{@scout.drink_time}\r\n内容： #{@scout.content}",
                     "actions": [
                         {
                           "type": "uri",
