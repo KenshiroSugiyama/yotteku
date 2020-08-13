@@ -53,7 +53,7 @@ class LinebotController < ApplicationController
 
   def scout_confirm
     @scout = Scout.find(params[:scout_id])
-    @res = Restaurant.find(scout.restaurant_id)
+    @res = Restaurant.find(@scout.restaurant_id)
     @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
   end
 
