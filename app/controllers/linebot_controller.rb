@@ -6,7 +6,7 @@ class LinebotController < ApplicationController
   def hope  
   end
 
-  def response
+  def responce
     user = Request.find_by(id: params[:req_id]).user_id
     userId = User.find_by(id: user).uid
     @res = Restaurant.find_by(id: params[:res_id])

@@ -27,7 +27,7 @@ Rails.application.routes.draw do
 
   post '/callback' => 'linebot#callback'
   get '/hope' => 'linebot#hope'
-  post '/response' => 'linebot#response'
+  post '/responce' => 'linebot#responce'
   get '/after_response' => 'linebot#after_response'
 
   #--------------------------------------------------------------
