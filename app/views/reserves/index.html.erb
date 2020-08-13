@@ -1,6 +1,8 @@
 <h4 class="text-center m-4">予約一覧</h4>
 <div class="text-center mx-3">
     <% @scout.each do |scout|%>
-        <div class="bg-light p-4"><%= link_to "#{scout.id}",reserf_path(id: scout.id) %></div>
+        <div class="bg-light p-4">
+            <%= link_to "#{@user.name}様 #{@scout.start_time}~",reserf_path(id: scout.id) %>
+        </div>
     <% end %>
 </div>
