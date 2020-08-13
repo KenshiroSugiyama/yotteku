@@ -182,22 +182,42 @@ class LinebotController < ApplicationController
             @res = Restaurant.find_by(name: res_name)
             @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
             @req.update(req_status: true,res_id: @res.id)
+            @scout = Scout.find_by(restaurant_id: @res.id,request_id: @req.id)
             message = {
               "type": "text",
-              "text": "予約を確定しました！\r\n\r\n#{res_name}\r\nTel:  #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n予算： #{@req.budget}\r\nお酒： #{@req.freedrink}\r\n席時間： #{@req.drinktime}\r\nご飯： #{@req.foodamount}\r\n希望： #{@req.hope}"
+              "text": "予約を確定しました！\r\n\r\n店名： #{res_name}\r\nTel:  #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@scout.start_time}\r\n値段： #{@scout.price}円\r\nお酒： #{@scout.beer}\r\n席時間： #{@scout.drink_time}\r\n内容： #{@scout.content}\b\n\b\nよってくをご利用頂きありがとうございます！！"
             }
             client.reply_message(event['replyToken'], message)
 
             #店側に送信
-            res_message = {
-              "type": "text",
-              "text": "予約が成立しました！\r\n\r\n予約者名： #{user.name}\r\nTel:  #{user.email}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n予算： #{@req.budget}\r\nお酒： #{@req.freedrink}\r\n席時間： #{@req.drinktime}\r\nご飯： #{@req.foodamount}\r\n希望： #{@req.hope}"
-            }
-            client.push_message(@res.uid,res_message)
+            def template
+              {
+                "type": "template",
+                "altText": "this is a confirm template",
+                "template": {
+                    "type": "confirm",
+                    "text": "予約が成立しました！\r\n予約者名： #{user.name}\r\nTel:  #{user.email}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@scout.start_time}\r\n値段： #{@scout.price}円\r\nお酒： #{@scout.beer}\r\n席時間： #{@scout.drink_time}\r\n内容： #{@scout.content}",
+                    "actions": [
+                        {
+                          "type": "uri",
+                          "label": "内容確認",
+                          "uri": "https://yotteku.herokuapp.com/scout_confirm?scout_id=#{@scout.id}"
+                        },
+                        {
+                          "type": "message",
+                          "label": "OK",
+                          "text": "OK",
+                        }
+                    ]
+                }
+              }
+            end
+            client.push_message(@res.uid,template)
           elsif e.eql?('予約確認') 
             if @req.req_status
               @res = Restaurant.find(@req.res_id)
               @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
+              @scout = Scout.find_by(restaurant_id: @res.id,request_id: @req.id)
               client.reply_message(event['replyToken'], reserve_confirm)
             else
               message = {
@@ -785,7 +805,7 @@ def template
       "altText": "this is a confirm template",
       "template": {
           "type": "confirm",
-          "text": "#{@res.name}\r\nTel: #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}",
+          "text": "#{@res.name}\r\nTel: #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@scout.start_time}\r\n値段： #{@scout.price}円\r\nお酒： #{@scout.beer}\r\n席時間： #{@scout.drink_time}\r\n内容： #{@scout.content}",
           "actions": [
               {
                 "type": "message",
