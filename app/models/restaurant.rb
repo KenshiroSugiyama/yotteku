@@ -5,6 +5,6 @@ class Restaurant < ApplicationRecord
          :recoverable, :rememberable, :validatable
     #belongs_to :category
     has_one :restaurant_information
-    
+    has_many :scouts
     has_many :users_restaurants
 end

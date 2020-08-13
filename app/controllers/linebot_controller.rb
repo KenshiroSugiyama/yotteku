@@ -7,18 +7,29 @@ class LinebotController < ApplicationController
   end
 
   def responce
-    user = Request.find_by(id: params[:req_id]).user_id
-    userId = User.find_by(id: user).uid
-    @res = Restaurant.find_by(id: params[:res_id])
-    @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
-    @hope = params[:hope]
+    user = Request.find(params[:req_id]).user_id
+    userId = User.find(user).uid
+    @res = Restaurant.find(params[:res_id])
+    # @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
+    #scoutインスタンス生成
+    @scout = Scout.new
+    @scout.restaurant_id = params[:res_id]
+    @scout.request_id = params[:req_id]
+    @scout.price = params[:price]
+    @scout.beer = params[:beer]
+    @scout.start_time = params[:start_time]
+    @scout.drink_time = params[:drink_time]
+    @scout.content = params[:content]
+    @scout.hope = params[:hope]
+
+    if @scout.save
       def template
         {
           "type": "template",
           "altText": "this is a confirm template",
           "template": {
               "type": "confirm",
-              "text": "#{@res.name} \b\nからスカウトが届きました！\b\n\b\n平均予算：#{@res_info.price_min}~#{@res_info.price_max}\b\n一押し： #{@res_info.menu}\b\n住所： #{@res_info.address}\b\nURL: #{@res_info.url}\b\nメッセージ： #{@hope}",
+              "text": "#{@res.name} \b\nからスカウトが届きました！\b\n\b\n開始時間：#{@scout.start_time}\b\n値段：#{@scout.price}\b\nお酒： #{@scout.beer}\b\n席時間： #{@scout.drink_time}\b\n提供内容: #{@scout.content}\b\nメッセージ： #{@scout.hope}",
               "actions": [
                   {
                     "type": "message",
@@ -34,9 +45,10 @@ class LinebotController < ApplicationController
           }
         }
       end
-    client.push_message(userId,template)
-    
-    flash[:success] = 'スカウトメッセージを送信しました！ブラウザを閉じて、Lineの画面へお戻り下さい。'
+      client.push_message(userId,template)
+      redirect_to after_response_path
+      flash[:success] = 'スカウトメッセージを送信しました！ブラウザを閉じて、Lineの画面へお戻り下さい。'
+    end
   end
 
   def after_response

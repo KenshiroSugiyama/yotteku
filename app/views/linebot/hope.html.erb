@@ -1,4 +1,4 @@
-<div class="px-4 form-group text-center mb-5">
+<div class="px-4 mt-5 form-group text-center mb-5">
   <h4 class="my-3">スカウトメッセージ入力</h4>
   <%= form_with(url: responce_path,method: :post, local: true) do |f| %>
     <%= f.hidden_field :res_id, :value => params[:res_id]  %>
@@ -25,7 +25,7 @@
     <%= f.text_area :content,size: "1x6",placeholder: "例\b\n・お通し\b\n・料理3品\b\n・飲み放題付き",class: "form-control" %>
 <br>
     <%= f.label :hope, 'お客様へのメッセージを入力' %><br>
-    <%= f.text_area :hope,size: "10x3",placeholder: "例 １時間後であればいけます！",class: "form-control" %>
+    <%= f.text_area :hope,size: "10x3",placeholder: "例 　是非来て下さい！！",class: "form-control" %>
 
     <%= f.submit 'スカウトメッセージを送信' ,class: "btn btn-primary mt-5"%>
   <% end %>
