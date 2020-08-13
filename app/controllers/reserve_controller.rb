@@ -6,7 +6,6 @@ class ReserveController < ApplicationController
   
   def show
     @scout = Scout.find(params[:id])
-    @res = Restaurant.find(@scout.restaurant_id)
     req = Request.find(@scout.request_id)
     @user = User.find(req.user_id)
   end

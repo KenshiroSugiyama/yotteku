@@ -235,13 +235,15 @@ class LinebotController < ApplicationController
             }
             client.reply_message(event['replyToken'], message)
           elsif e.eql?('店舗登録')
-            res = Restaurant.find_by(uid: uid)
-            unless res
+            @res = Restaurant.find_by(uid: uid)
+            unless @res
               message = {
                 "type": "text",
                 "text": "店舗登録を以下のリンクよりお願いいたします。\b\nhttps://yotteku.herokuapp.com/restaurants/sign_up?uid=#{uid}"
               }
               client.reply_message(event['replyToken'], message)
+            else
+              client.reply_message(event['replyToken'], restaurant)
             end
           end
         end
@@ -821,6 +823,40 @@ def template
       }
     }
   end
+
+  def restaurant
+    {
+      "type": "template",
+      "altText": "This is a buttons template",
+      "template": {
+          "type": "buttons",
+          "thumbnailImageUrl": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg",
+          "imageAspectRatio": "rectangle",
+          "imageSize": "cover",
+          "imageBackgroundColor": "#FFFFFF",
+          "title": "店側",
+          "text": "何かお困りですか？",
+          "defaultAction": {
+              "type": "uri",
+              "label": "View detail",
+              "uri": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg"
+          },
+          "actions": [
+              {
+                "type": "uri",
+                "label": "予約一覧",
+                "uri": "https://yotteku.herokuapp.com/reserves?id=#{@res.id}"
+              },
+              {
+                "type": "uri",
+                "label": "登録情報編集",
+                "uri": "https://yotteku.herokuapp.com/restaurant_information/#{@res.id}"
+              }
+          ]
+      }
+    }
+  end
+
 
 
 # LINE Developers登録完了後に作成される環境変数の認証
