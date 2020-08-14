@@ -12,42 +12,51 @@ class LinebotController < ApplicationController
     @res = Restaurant.find(params[:res_id])
     # @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
     #scoutインスタンス生成
-    @scout = Scout.new
-    @scout.restaurant_id = params[:res_id]
-    @scout.request_id = params[:req_id]
-    @scout.price = params[:price]
-    @scout.beer = params[:beer]
-    @scout.start_time = params[:start_time]
-    @scout.drink_time = params[:drink_time]
-    @scout.content = params[:content]
-    @scout.hope = params[:hope]
+    
+    unless @res.req_status
+      @scout = Scout.new
+      @scout.restaurant_id = params[:res_id]
+      @scout.request_id = params[:req_id]
+      @scout.price = params[:price]
+      @scout.beer = params[:beer]
+      @scout.start_time = params[:start_time]
+      @scout.drink_time = params[:drink_time]
+      @scout.content = params[:content]
+      @scout.hope = params[:hope]
 
-    if @scout.save
-      def template
-        {
-          "type": "template",
-          "altText": "this is a confirm template",
-          "template": {
-              "type": "confirm",
-              "text": "#{@res.name}  からスカウトが届きました！\b\n\b\n以下の「内容確認」ボタンを押して詳しいスカウト内容をご確認ください。\b\n予約を確定する場合は、「予約確定」ボタンを押して下さい。",
-              "actions": [
-                  {
-                    "type": "uri",
-                    "label": "内容確認",
-                    "uri": "https://yotteku.herokuapp.com/scout_confirm?scout_id=#{@scout.id}"
-                  },
-                  {
-                    "type": "message",
-                    "label": "予約確定",
-                    "text": "予約確定,#{@res.name},#{@scout.id}",
-                  }
-              ]
+      if @scout.save
+        def template
+          {
+            "type": "template",
+            "altText": "this is a confirm template",
+            "template": {
+                "type": "confirm",
+                "text": "#{@res.name}  からスカウトが届きました！\b\n\b\n以下の「内容確認」ボタンを押して詳しいスカウト内容をご確認ください。\b\n予約を確定する場合は、「予約確定」ボタンを押して下さい。",
+                "actions": [
+                    {
+                      "type": "uri",
+                      "label": "内容確認",
+                      "uri": "https://yotteku.herokuapp.com/scout_confirm?scout_id=#{@scout.id}"
+                    },
+                    {
+                      "type": "message",
+                      "label": "予約確定",
+                      "text": "予約確定,#{@res.name},#{@scout.id}",
+                    }
+                ]
+            }
           }
-        }
+        end
+        client.push_message(userId,template)
+        redirect_to scout_confirm_path(scout_id: @scout.id)
+        flash[:success] = 'スカウトメッセージを送信しました！ブラウザを閉じて、Lineの画面へお戻り下さい。'
       end
-      client.push_message(userId,template)
-      redirect_to scout_confirm_path(scout_id: @scout.id)
-      flash[:success] = 'スカウトメッセージを送信しました！ブラウザを閉じて、Lineの画面へお戻り下さい。'
+    else
+      message = {
+        "type": "text",
+        "text": "他の店との予約が先に成立していたため、スカウトメッセージの送信に失敗しました。"
+      }
+      client.push_message(userId,message)
     end
   end
 
@@ -228,12 +237,19 @@ class LinebotController < ApplicationController
               client.reply_message(event['replyToken'], message)
             end
           elsif e.include?('スカウト')
-            @res = Restaurant.find_by(uid: uid)
-            @req_id = e.delete("スカウト").to_i
-            message = {
-              "type": "text",
-              "text": "以下のリンクからスカウトメッセージを送ってください！\b\n https://yotteku.herokuapp.com/hope?res_id=#{@res.id}&req_id=#{@req_id}"
-            }
+            unless @req.req_status
+              @res = Restaurant.find_by(uid: uid)
+              @req_id = e.delete("スカウト").to_i
+              message = {
+                "type": "text",
+                "text": "以下のリンクからスカウトメッセージを送ってください！\b\n https://yotteku.herokuapp.com/hope?res_id=#{@res.id}&req_id=#{@req_id}"
+              }
+            else
+              message = {
+                "type": "text",
+                "text": "他の店との予約が先に成立したため、スカウトメッセージを送れません。"
+              }
+            end
             client.reply_message(event['replyToken'], message)
           elsif e.eql?('店舗登録')
             @res = Restaurant.find_by(uid: uid)
