@@ -171,9 +171,9 @@ class LinebotController < ApplicationController
               "type": "text",
               "text": "リクエストをキャンセルしました。もう一度予約をする場合は最初からやり直してください。"
             }
-            scout = Scout.find_by(request_id: @req.id)
-            if scout
-              scout.destroy
+            scouts = Scout.where(request_id: @req.id)
+            if scouts.present?
+              scouts.destroy_all
             end
             @req.destroy
             client.reply_message(event['replyToken'], message)

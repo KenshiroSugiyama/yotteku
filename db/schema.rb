@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_13_134501) do
+ActiveRecord::Schema.define(version: 2020_08_15_070114) do
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
@@ -70,7 +70,6 @@ ActiveRecord::Schema.define(version: 2020_08_13_134501) do
 
   create_table "scouts", force: :cascade do |t|
     t.integer "restaurant_id"
-    t.integer "request_id"
     t.string "name"
     t.integer "price"
     t.string "beer"
@@ -80,7 +79,6 @@ ActiveRecord::Schema.define(version: 2020_08_13_134501) do
     t.string "hope"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["request_id"], name: "index_scouts_on_request_id"
     t.index ["restaurant_id"], name: "index_scouts_on_restaurant_id"
   end
 
