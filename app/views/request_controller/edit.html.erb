@@ -1,43 +1,43 @@
 <div class="p-4 form-group my-3 text-center">
   <div class="mb-1">
-    <label>カテゴリー</label>:<br>
+    <label>カテゴリー</label>:
         <%= @category.name %>
   </div>
 
   <div class="mb-1">
-    <label>時間</label>:<br>
+    <label>時間</label>:
         <%= @req.time %>
   </div>
 
   <div class="mb-1">
-    <label>人数</label>:<br>
+    <label>人数</label>:
         <%= @req.number_of_people %>人
   </div>
 
   <div class="mb-1">
-    <label>予算</label>:<br>
+    <label>予算</label>:
         <%= @req.budget %>
   </div>
 
   <div class="mb-1">
-    <label>お酒</label>:<br>
+    <label>お酒</label>:
         <%= @req.freedrink %>
   </div>
 
   <div class="mb-1">
-    <label>席時間</label>:<br>
+    <label>席時間</label>:
         <%= @req.drinktime %>
   </div>
 
   <div class="mb-1">
-    <label>店状況</label>:<br>
+    <label>店状況</label>:
         <%= @req.situation %>
   </div>
     
   <%= form_with(url: request_controller_update_path,method: :put, local: true) do |f| %>
     <%= f.hidden_field :id, :value => params[:id]  %>
     <%= f.label :hope, '要望を入力してね！' %><br>
-    <%= f.text_field :hope,class: "form-control" %>
+    <%= f.text_area :hope,class: "form-control" ,size: "10x3"%>
 
     <%= f.submit '送信' ,class: "btn btn-primary mt-5 "%>
   <% end %>
