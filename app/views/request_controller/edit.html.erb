@@ -1,10 +1,46 @@
-<div class="p-4 form-group">
+<div class="p-4 form-group my-3 text-center">
+  <div class="mb-1">
+    <label>カテゴリー</label>:<br>
+        <%= @category.name %>
+  </div>
+
+  <div class="mb-1">
+    <label>時間</label>:<br>
+        <%= @req.time %>
+  </div>
+
+  <div class="mb-1">
+    <label>人数</label>:<br>
+        <%= @req.number_of_people %>人
+  </div>
+
+  <div class="mb-1">
+    <label>予算</label>:<br>
+        <%= @req.budget %>
+  </div>
+
+  <div class="mb-1">
+    <label>お酒</label>:<br>
+        <%= @req.freedrink %>
+  </div>
+
+  <div class="mb-1">
+    <label>席時間</label>:<br>
+        <%= @req.drinktime %>
+  </div>
+
+  <div class="mb-1">
+    <label>店状況</label>:<br>
+        <%= @req.situation %>
+  </div>
+    
   <%= form_with(url: request_controller_update_path,method: :put, local: true) do |f| %>
     <%= f.hidden_field :id, :value => params[:id]  %>
-    
     <%= f.label :hope, '要望を入力してね！' %><br>
     <%= f.text_field :hope,class: "form-control" %>
 
-    <%= f.submit '送信' ,class: "btn btn-primary mt-5"%>
+    <%= f.submit '送信' ,class: "btn btn-primary mt-5 "%>
   <% end %>
+  <br>
+  <div>リクエスト内容を修正したい場合は、恐れ入りますがもう一度ラインに戻って最初からやり直して下さい。</div>
 </div>

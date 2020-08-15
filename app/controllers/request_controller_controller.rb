@@ -11,6 +11,7 @@ class RequestControllerController < LinebotController
 
   def edit
     @req = Request.find(params[:id])
+    @category = Category.find(@req.category_id)
   end
 
   def update
