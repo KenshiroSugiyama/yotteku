@@ -195,6 +195,8 @@ class LinebotController < ApplicationController
             @res = Restaurant.find_by(name: a[1])
             @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
             @req.update(req_status: true,res_id: @res.id,scout_id: a[2].to_i)
+            scout = Scout.where.not(id: a[2].to_i).where(request_id: @req.id)
+            scout.destroy_all
             @scout = Scout.find(a[2].to_i)
             message = {
               "type": "text",
