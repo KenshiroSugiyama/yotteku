@@ -102,13 +102,29 @@ class LinebotController < ApplicationController
             @req = Request.find_by(user_id: user.id)
           end
           if e.eql?('リクエスト作成')
-            client.reply_message(event['replyToken'], template)
-          elsif req_category.any?(e)
-            category = Category.find_by(name: e)
-            unless @req
-              Request.create(user_id: user.id,category_id: category.id)
+            if !@req
+              client.reply_message(event['replyToken'], template)
+            elsif @req.req_status
+              if (Time.zone.now - @req.updated_at).floor / 3600  < 3 # 時間
+                message = {
+                  "type": "text",
+                  "text": "予約確定からの時間が短いためリクエストを作成できません。予約のキャンセルは、画面下のメニューからお願いします。"
+                }
+                client.reply_message(event['replyToken'], message)
+              else
+                @req.update(req_status: false,hope: "なし")
+                client.reply_message(event['replyToken'], template)
+              end
+            else
+              @req.update(hope: "なし")
+              client.reply_message(event['replyToken'], template)
             end
-            client.reply_message(event['replyToken'], select_freedrink)
+          elsif req_category.any?(e)
+            category = Category.find_by(name: e)     
+            unless @req   
+             Request.create(user_id: user.id,category_id: category.id)
+            end
+            client.reply_message(event['replyToken'], select_freedrink)            
           elsif e.eql?('飲み放題') 
             @req.update(freedrink: e)
             client.reply_message(event['replyToken'], select_drink_time)
