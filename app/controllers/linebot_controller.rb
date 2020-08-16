@@ -214,6 +214,7 @@ class LinebotController < ApplicationController
             scout = Scout.where.not(id: a[2].to_i).where(request_id: @req.id)
             scout.destroy_all
             @scout = Scout.find(a[2].to_i)
+            @scout.update(request_id: @req.id)
             message = {
               "type": "text",
               "text": "予約を確定しました！\r\n\r\n店名： #{@res.name}\r\nTel:  #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@scout.start_time}\r\n値段： #{@scout.price}円\r\nお酒： #{@scout.beer}\r\n席時間： #{@scout.drink_time}\r\n内容： #{@scout.content}\b\n\b\nよってくをご利用頂きありがとうございます！！"
