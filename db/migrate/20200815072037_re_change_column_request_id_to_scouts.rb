@@ -1,5 +1,5 @@
 class ReChangeColumnRequestIdToScouts < ActiveRecord::Migration[5.2]
   def change
-    add_reference :scouts, :request
+    add_column :scouts, :request_id, :integer
   end
 end

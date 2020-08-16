@@ -80,7 +80,6 @@ ActiveRecord::Schema.define(version: 2020_08_15_072037) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "request_id"
-    t.index ["request_id"], name: "index_scouts_on_request_id"
     t.index ["restaurant_id"], name: "index_scouts_on_restaurant_id"
   end
 
