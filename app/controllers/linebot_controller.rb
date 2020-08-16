@@ -190,9 +190,7 @@ class LinebotController < ApplicationController
             scouts.destroy_all
             @req.update(req_status: false,hope: "なし",res_id: nil,scout_id: nil)
             client.reply_message(event['replyToken'], message)
-          elsif e.eql?('OK!')
-            @req.update(req_status: true)
-           
+          elsif e.eql?('OK!')           
             #ユーザ－に送信
             message = {
               "type": "text",
