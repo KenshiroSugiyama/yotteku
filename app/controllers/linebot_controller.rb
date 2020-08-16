@@ -186,7 +186,9 @@ class LinebotController < ApplicationController
               "type": "text",
               "text": "リクエストをキャンセルしました。もう一度予約をする場合は最初からやり直してください。"
             }
-            @req.update(req_status: false,hope: "なし")
+            scout = Scout.find_by(request_id: @req.id)
+            scout.update(request_id: nil)
+            @req.update(req_status: false,hope: "なし",res_id: nil,scout_id: nil)
             client.reply_message(event['replyToken'], message)
           elsif e.eql?('OK!')
             @req.update(req_status: true)
