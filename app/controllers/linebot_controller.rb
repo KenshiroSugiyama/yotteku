@@ -116,7 +116,6 @@ class LinebotController < ApplicationController
                 client.reply_message(event['replyToken'], template)
               end
             else
-              @req.update(hope: "なし")
               client.reply_message(event['replyToken'], template)
             end
           elsif req_category.any?(e)
@@ -187,7 +186,7 @@ class LinebotController < ApplicationController
               "type": "text",
               "text": "リクエストをキャンセルしました。もう一度予約をする場合は最初からやり直してください。"
             }
-            @req.destroy
+            @req.update(req_status: false,hope: "なし")
             client.reply_message(event['replyToken'], message)
           elsif e.eql?('OK!')
             @req.update(req_status: true)
