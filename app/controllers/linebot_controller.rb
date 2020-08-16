@@ -13,7 +13,7 @@ class LinebotController < ApplicationController
     # @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
     #scoutインスタンス生成
     
-    unless @res.req_status
+    unless @req.req_status
       @scout = Scout.new
       @scout.restaurant_id = params[:res_id]
       @scout.request_id = params[:req_id]
