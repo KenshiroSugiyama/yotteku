@@ -113,7 +113,7 @@ class LinebotController < ApplicationController
                 }
                 client.reply_message(event['replyToken'], message)
               else
-                @req.update(status: false,hope: "なし")
+                @req.update(req_status: false,status: false,hope: "なし")
                 client.reply_message(event['replyToken'], template)
               end
             else
@@ -220,7 +220,7 @@ class LinebotController < ApplicationController
 
             #店側に送信
             @user = User.find(@req.user_id)
-            def template
+            def restaurant_template
               {
                 "type": "template",
                 "altText": "this is a confirm template",
@@ -242,7 +242,7 @@ class LinebotController < ApplicationController
                 }
               }
             end
-            client.push_message(@res.uid,template)
+            client.push_message(@res.uid,restaurant_template)
           elsif e.eql?('予約確認') 
             if @req.status
               @res = Restaurant.find(@req.res_id)
