@@ -1,4 +1,4 @@
 class Scout < ApplicationRecord
     belongs_to :restaurant
-    belongs_to :request, dependent: :destroy
+    belongs_to :request
 end
