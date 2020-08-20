@@ -1,0 +1,8 @@
+<h4 class = "text-center m-4">レストラン一覧</h4>
+<div class="mx-3">
+    <% @res.each do |res|%>
+        <div class="row bg-light">
+            <div class="offset-2 col-2 text-center"><%= res.id %></div><div class="col-8"><%= link_to "#{res.name}",restaurant_path(id: res.id) %></div>
+        </div>
+    <% end %>
+</div>

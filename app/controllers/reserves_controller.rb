@@ -9,5 +9,19 @@ class ReservesController < ApplicationController
     req = Request.find(@scout.request_id)
     @user = User.find(req.user_id)
   end
+
+  def admin
+  end
+
+  def admin_index
+    @reqs = Request.where(status: true) 
+  end
+
+  def admin_show
+    @req = Request.find(params[:id])
+    @scout = Scout.find(@req.scout_id)
+  end
+
+  
   
 end

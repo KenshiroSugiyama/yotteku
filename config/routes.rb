@@ -14,12 +14,12 @@ Rails.application.routes.draw do
   end
 
   resources :restaurant_information,only: [:new,:create,:show]
+  resources :restaurant ,only: [:index,:show]
   
   get 'user_profile/show' => 'user_profile#show'
   get 'user_profile/new' => 'user_profile#new'
   get 'user_profile/edit' =>'user_profile#edit'
-  get 'request_controller/new' =>'request_controller#new'
-  get 'request_controller/show' =>'request_controller#show'
+  
   get 'request_controller/edit' =>'request_controller#edit'
   put 'request_controller/update' =>'request_controller#update'
   get '/' => 'firebase#login-authUI'
@@ -31,9 +31,11 @@ Rails.application.routes.draw do
   get '/scout_confirm' => 'linebot#scout_confirm'
 
   #--------------------------------------------------------------
-  get 'restaurant/signup'
-  get 'restaurant/login'
+  
   resources :reserves,only: [:index,:show]
+  get '/admin' => 'reserves#admin'
+  get '/admin_index' => 'reserves#admin_index'
+  get '/admin_show' => 'reserves#admin_show'
   get 'chat/index'
   get 'users_restaurants/new'
   get 'users_restaurants/create'
@@ -44,6 +46,6 @@ Rails.application.routes.draw do
   get 'user_profile/create'
   get 'user_profile/update'
   get 'user_profile/show'
-  resources :users,only: [:new,:create,:show]
+  resources :users,only: [:new,:create,:show,:index]
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

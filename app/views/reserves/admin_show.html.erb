@@ -1,0 +1,46 @@
+<div class="text-center my-4">
+  <h4>予約情報</h4>
+</div>
+<div class="text-center mx-4">
+  <div class="bg-light py-3">
+    <div class="mb-1">
+    <% res = Restaurant.find(@req.res_id)%>
+    <label>店名</label>:
+        <%= res.name%>
+    </div>
+    <div class="mb-1">
+    <label>店電話番号</label>:
+        <%= res.phone_number%>
+    </div>
+    <div class="mb-1">
+    <label>予約者名</label>:
+        <% user = User.find(@req.user_id)%>
+        <%= user.name%>
+    </div>
+    <div class="mb-1">
+    <label>予約者電話番号</label>:
+        <%= user.email%>
+    </div>
+
+    <div class="mb-1 ">
+    <label>開始時間</label>:
+        <%= @scout.start_time%>
+    </div>
+    <div class="mb-1">
+    <label>値段</label>:
+        <%= @scout.price %>円
+    </div>
+    <div class="mb-1">
+    <label>人数</label>:
+        <%= @req.number_of_people %>
+    </div>
+    <div class="mb-1">
+        <label>お酒</label>:
+        <%= @scout.beer %>
+    </div>
+    <div class="mb-1">
+        <label>席時間</label>:
+        <%= @scout.drink_time %>
+    </div>
+  </div>
+</div>

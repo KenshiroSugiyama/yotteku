@@ -1,14 +1,7 @@
 class RequestControllerController < LinebotController
   require "net/http"
   require "json"
-  def new
-    
-  end
-
-  def create
-    
-  end
-
+  
   def edit
     @req = Request.find(params[:id])
     @category = Category.find(@req.category_id)

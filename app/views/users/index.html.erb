@@ -1,0 +1,8 @@
+<h4 class = "text-center m-4">ユーザー一覧</h4>
+<div class="mx-3">
+    <% @user.each do |user|%>
+        <div class="row bg-light py-1">
+            <div class="offset-2 col-4 text-center"><%= user.id %></div><div class="col-6"><%= user.name %></div>
+        </div>
+    <% end %>
+</div>

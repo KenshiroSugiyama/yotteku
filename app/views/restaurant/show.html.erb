@@ -1,0 +1,36 @@
+<div class="text-center my-4">
+  <h4>店情報</h4>
+</div>
+<div class="text-center mx-4">
+  <div class="bg-light py-3">
+    <div class="mb-1">
+    <label>店名</label>:
+        <%= @res.name%>
+    </div>
+    <div class="mb-1">
+    <label>電話番号</label>:
+        <%= @res.phone_number%>
+    </div>
+    <div class="mb-1">
+    <label>email</label>:
+        <%= @res.email%>
+    </div>
+
+    <div class="mb-1 ">
+    <label>一押しメニュー</label>:
+        <%= @res_info.menu%>
+    </div>
+    <div class="mb-1">
+    <label>平均予算</label>:
+        <%= @res_info.price_min %>~<%= @res_info.price_max %>円
+    </div>
+    <div class="mb-1">
+    <label>住所</label>:
+        <%= @res_info.address %>
+    </div>
+    <div class="mb-1">
+        <label>URL</label>:
+        <%= @res_info.url %>
+    </div>
+  </div>
+</div>

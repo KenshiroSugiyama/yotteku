@@ -1,9 +1,10 @@
 class RestaurantController < ApplicationController
-  def signup
+  def index
+    @res = Restaurant.all
   end
 
-  def login
+  def show
+    @res = Restaurant.find(params[:id])
+    @res_info = RestaurantInformation.find_by(Restaurant_id: @res.id)
   end
-
- 
 end
