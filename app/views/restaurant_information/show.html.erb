@@ -3,7 +3,7 @@
 </div>
 <div class="text-center mx-4">
   <div class="bg-light">
-    <div class="mb-1 p-4">
+    <div class="mb-1">
     <label>一押しメニュー</label>:
         <%= @info.menu%>
     </div>
@@ -21,3 +21,4 @@
     </div>
   </div>
 </div>
+<div class="text-center mt-3"><%= link_to "編集",edit_restaurant_information_path(id: params[:id])%></div>

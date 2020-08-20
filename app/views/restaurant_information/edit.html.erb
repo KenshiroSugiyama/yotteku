@@ -1,0 +1,34 @@
+<div class="text-center m-4">
+  <h3>店情報編集</h3>
+</div>
+
+<div class="row mx-4 text-center">
+  <div class="col-sm-6 offset-sm-3">
+
+    <%= form_with(model: @info,url: {controller: "restaurant_information",action: "update"},method: :put,  local: true) do |f| %>
+      
+      <div class="form-group">
+        <%= f.label :menu, '一押しメニュー' %>
+        <%= f.text_field :menu, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :price_min, '平均予算' %>
+        <%= f.number_field :price_min, class: 'form-control' %>~
+        <%= f.number_field :price_max, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :address, '住所' %>
+        <%= f.text_field :address, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :url, 'URL' %>
+        <%= f.url_field :url, class: 'form-control' %>
+      </div>
+     
+      <%= f.submit '更新', class: 'btn btn-info btn-block my-5' %>
+    <% end %>
+  </div>
+</div>

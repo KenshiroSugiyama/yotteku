@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     get "logout", :to => "restaurants/sessions#destroy"
   end
 
-  resources :restaurant_information,only: [:new,:create,:show]
+  resources :restaurant_information,only: [:new,:create,:show,:edit,:update]
   resources :restaurant ,only: [:index,:show]
   
   get 'user_profile/show' => 'user_profile#show'
