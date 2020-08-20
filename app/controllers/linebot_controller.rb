@@ -26,7 +26,7 @@ class LinebotController < ApplicationController
       @scout.hope = params[:hope]
 
       if @scout.save
-        def template
+        def recieve_scout
           {
             "type": "template",
             "altText": "this is a confirm template",
@@ -48,7 +48,7 @@ class LinebotController < ApplicationController
             }
           }
         end
-        client.push_message(userId,template)
+        client.push_message(userId,recieve_scout)
         redirect_to scout_confirm_path(scout_id: @scout.id)
         flash[:success] = 'スカウトメッセージを送信しました！ブラウザを閉じて、Lineの画面へお戻り下さい。'
       end
