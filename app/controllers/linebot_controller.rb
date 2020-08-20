@@ -14,7 +14,7 @@ class LinebotController < ApplicationController
     #scoutインスタンス生成
     req = Request.find(params[:req_id])
     
-    unless req.req_status
+    unless req.status
       @scout = Scout.new
       @scout.restaurant_id = params[:res_id]
       @scout.request_id = params[:req_id]
@@ -105,7 +105,7 @@ class LinebotController < ApplicationController
           if e.eql?('リクエスト作成')
             if !@req
               client.reply_message(event['replyToken'], template)
-            elsif @req.req_status
+            elsif @req.status
               if (Time.zone.now - @req.updated_at).floor / 3600  < 3 # 時間
                 message = {
                   "type": "text",
@@ -113,7 +113,7 @@ class LinebotController < ApplicationController
                 }
                 client.reply_message(event['replyToken'], message)
               else
-                @req.update(req_status: false,hope: "なし")
+                @req.update(status: false,hope: "なし")
                 client.reply_message(event['replyToken'], template)
               end
             else
@@ -172,7 +172,7 @@ class LinebotController < ApplicationController
             @category = Category.find(@req.category_id)
             client.reply_message(event['replyToken'], confirm_send_request)
           elsif e.eql?('リクエスト確認')
-            if @req.present?
+            if @req.req_status
               @category = Category.find(@req.category_id)
               client.reply_message(event['replyToken'], confirm_request)
             else
@@ -189,9 +189,10 @@ class LinebotController < ApplicationController
             }
             scouts = Scout.where(request_id: @req.id)
             scouts.destroy_all
-            @req.update(req_status: false,hope: "なし",res_id: nil,scout_id: nil)
+            @req.update(req_status: false,status: false,hope: "なし",res_id: nil,scout_id: nil)
             client.reply_message(event['replyToken'], message)
           elsif e.eql?('OK!')           
+            @req.update(req_status: true)
             #ユーザ－に送信
             message = {
               "type": "text",
@@ -206,7 +207,7 @@ class LinebotController < ApplicationController
             a = e.split(",")
             @res = Restaurant.find_by(name: a[1])
             @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
-            @req.update(req_status: true,res_id: @res.id,scout_id: a[2].to_i)
+            @req.update(status: true,res_id: @res.id,scout_id: a[2].to_i)
             scout = Scout.where.not(id: a[2].to_i).where(request_id: @req.id)
             scout.destroy_all
             @scout = Scout.find(a[2].to_i)
@@ -243,7 +244,7 @@ class LinebotController < ApplicationController
             end
             client.push_message(@res.uid,template)
           elsif e.eql?('予約確認') 
-            if @req.req_status
+            if @req.status
               @res = Restaurant.find(@req.res_id)
               @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
               @scout = Scout.find_by(restaurant_id: @res.id,request_id: @req.id)
@@ -256,7 +257,7 @@ class LinebotController < ApplicationController
               client.reply_message(event['replyToken'], message)
             end
           elsif e.include?('スカウト')
-            unless @req.req_status
+            unless @req.status
               @res = Restaurant.find_by(uid: uid)
               @req_id = e.delete("スカウト").to_i
               message = {
