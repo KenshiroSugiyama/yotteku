@@ -292,6 +292,12 @@ class LinebotController < ApplicationController
             else
               client.reply_message(event['replyToken'], restaurant)
             end
+          elsif e.eql?('管理者')
+            message = {
+                "type": "text",
+                "text": "https://yotteku.herokuapp.com/admin"
+              }
+              client.reply_message(event['replyToken'], message)
           end
         end
       end
