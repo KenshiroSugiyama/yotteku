@@ -182,15 +182,25 @@ class LinebotController < ApplicationController
               }
               client.reply_message(event['replyToken'], message)
             end
-          elsif e.eql?('リクエストキャンセル') || e.eql?('予約キャンセル')
+          elsif e.eql?('リクエストキャンセル') 
             message = {
               "type": "text",
               "text": "リクエストをキャンセルしました。もう一度予約をする場合は最初からやり直してください。"
             }
             scouts = Scout.where(request_id: @req.id)
             scouts.destroy_all
-            @req.update(req_status: false,status: false,hope: "なし",res_id: nil,scout_id: nil)
+            @req.update(req_status: false,hope: "なし",res_id: nil,scout_id: nil)
             client.reply_message(event['replyToken'], message)
+          elsif e.eql?('予約キャンセル') 
+            client.reply_message(event['replyToken'], cancel_confirm)
+          elsif e.eql?('予約キャンセル確定')
+            res = Restaurant.find(@req.res_id)
+            message = {
+              "type": "text",
+              "text": "店側に電話をお願いします。\b\n#{res.phone_number}"
+            }
+            client.reply_message(event['replyToken'], message)
+            @req.update(status: false,req_status: false,hope: "なし",res_id: nil,scout_id: nil)
           elsif e.eql?('OK!')           
             @req.update(req_status: true)
             #ユーザ－に送信
@@ -893,6 +903,31 @@ def template
       }
     }
   end
+
+
+  def cancel_confirm
+    {
+      "type": "template",
+      "altText": "this is a confirm template",
+      "template": {
+          "type": "confirm",
+          "text": "予約を本当にキャンセルしますか？",
+          "actions": [
+              {
+                "type": "message",
+                "label": "はい",
+                "text": "予約キャンセル確定",
+              },
+              {
+                "type": "message",
+                "label": "いいえ",
+                "text": "OK"
+              }
+          ]
+      }
+    }
+  end
+
 
 
 
