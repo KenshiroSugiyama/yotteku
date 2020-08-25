@@ -127,19 +127,19 @@ class LinebotController < ApplicationController
             client.reply_message(event['replyToken'], select_freedrink)            
           elsif e.eql?('飲み放題') 
             @req.update(freedrink: e)
-            client.reply_message(event['replyToken'], select_drink_time)
-          elsif e.eql?('９０分') || e.eql?('１２０分')
-            @req.update(drinktime: e)
-            client.reply_message(event['replyToken'], select_foodamount)
+            client.reply_message(event['replyToken'], budget)
+          # elsif e.eql?('９０分') || e.eql?('１２０分')
+          #   @req.update(drinktime: e)
+          #   client.reply_message(event['replyToken'], select_foodamount)
           elsif e.eql?('単品') 
             @req.update(freedrink: e)
-            client.reply_message(event['replyToken'], select_foodamount)
-          elsif e.eql?('がっつり') || e.eql?('少し')
-            @req.update(foodamount: e)
-            client.reply_message(event['replyToken'], select_situation)
-          elsif e.eql?('がやがや') || e.eql?('静か')
-            @req.update(situation: e)
             client.reply_message(event['replyToken'], budget)
+          # elsif e.eql?('がっつり') || e.eql?('少し')
+          #   @req.update(foodamount: e)
+          #   client.reply_message(event['replyToken'], select_situation)
+          # elsif e.eql?('がやがや') || e.eql?('静か')
+          #   @req.update(situation: e)
+          #   client.reply_message(event['replyToken'], budget)
           elsif e.include?('~2000円') || e.include?('2000~3000円') || e.include?('3000~4000円') || e.include?('5000円~') 
             @req.update(budget: e)
             client.reply_message(event['replyToken'], template7)
@@ -163,10 +163,10 @@ class LinebotController < ApplicationController
             end
           elsif num.any?(e.to_i)
             @req.update(number_of_people: e.to_i)
-            client.reply_message(event['replyToken'], select_time)
-          elsif e.eql?('今すぐ') || e.eql?('３０分後') || e.eql?('１時間後')
-            @req.update(time: e)
             client.reply_message(event['replyToken'], confirm_hope)
+          # elsif e.eql?('今すぐ') || e.eql?('３０分後') || e.eql?('１時間後')
+          #   @req.update(time: e)
+          #   client.reply_message(event['replyToken'], confirm_hope)
           elsif e.eql?('なし') 
             @req.update(hope: e)
             @category = Category.find(@req.category_id)
@@ -224,7 +224,7 @@ class LinebotController < ApplicationController
             @scout.update(request_id: @req.id)
             message = {
               "type": "text",
-              "text": "予約を確定しました！\r\n\r\n店名： #{@res.name}\r\nTel:  #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@scout.start_time}\r\n値段： #{@scout.price}円\r\nお酒： #{@scout.beer}\r\n席時間： #{@scout.drink_time}\r\n内容： #{@scout.content}\b\n\b\nよってくをご利用頂きありがとうございます！！"
+              "text": "予約を確定しました！\r\n\r\n店名： #{@res.name}\r\nTel:  #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@scout.start_time}\r\n値段： #{@scout.price}円\r\nお酒： #{@scout.beer}\r\n内容： #{@scout.content}\b\n\b\nよってくをご利用頂きありがとうございます！！"
             }
             client.reply_message(event['replyToken'], message)
 
@@ -236,7 +236,7 @@ class LinebotController < ApplicationController
                 "altText": "this is a confirm template",
                 "template": {
                     "type": "confirm",
-                    "text": "予約が成立しました！\r\n予約者名： #{@user.name}\r\nTel:  #{@user.email}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@scout.start_time}\r\n値段： #{@scout.price}円\r\nお酒： #{@scout.beer}\r\n席時間： #{@scout.drink_time}\r\n内容： #{@scout.content}",
+                    "text": "予約が成立しました！\r\n予約者名： #{@user.name}\r\nTel:  #{@user.email}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@scout.start_time}\r\n値段： #{@scout.price}円\r\nお酒： #{@scout.beer}\r\n内容： #{@scout.content}",
                     "actions": [
                         {
                           "type": "uri",
@@ -617,7 +617,7 @@ def template
       "altText": "this is a confirm template",
       "template": {
           "type": "confirm",
-          "text": "リクエストが完成しました\r\nジャンル： #{@category.name} \r\nお酒： #{@req.freedrink}\r\n席時間： #{@req.drinktime}\r\n雰囲気： #{@req.situation}\r\n食べ物： #{@req.foodamount}\r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}\b\n店側にリクエストを送ってもいいですか？",
+          "text": "リクエストが完成しました\r\nジャンル： #{@category.name} \r\nお酒： #{@req.freedrink}\r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}\b\n店側にリクエストを送ってもいいですか？",
           "actions": [
               {
                 "type": "message",
@@ -640,7 +640,7 @@ def template
       "altText": "this is a confirm template",
       "template": {
           "type": "confirm",
-          "text": "リクエスト確認\r\nジャンル： #{@category.name}\r\nお酒： #{@req.freedrink}\r\n席時間： #{@req.drinktime}\r\n雰囲気： #{@req.situation}\r\n食べ物： #{@req.foodamount}\r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}",
+          "text": "リクエスト確認\r\nジャンル： #{@category.name}\r\nお酒： #{@req.freedrink}\r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}",
           "actions": [
               {
                 "type": "message",
@@ -837,7 +837,7 @@ def template
       "altText": "this is a confirm template",
       "template": {
           "type": "confirm",
-          "text": "リクエストが届きました！\r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\nお酒： #{@req.freedrink}\r\n席時間： #{@req.drinktime}\r\n食べ物： #{@req.foodamount}\r\n要望:  #{@req.hope}",
+          "text": "リクエストが届きました！\r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\nお酒： #{@req.freedrink}\r\n要望:  #{@req.hope}",
           "actions": [
               {
                 "type": "message",
@@ -860,7 +860,7 @@ def template
       "altText": "this is a confirm template",
       "template": {
           "type": "confirm",
-          "text": "#{@res.name}\r\nTel: #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@scout.start_time}\r\n値段： #{@scout.price}円\r\nお酒： #{@scout.beer}\r\n席時間： #{@scout.drink_time}\r\n内容： #{@scout.content}",
+          "text": "#{@res.name}\r\nTel: #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@scout.start_time}\r\n値段： #{@scout.price}円\r\nお酒： #{@scout.beer}\r\n内容： #{@scout.content}",
           "actions": [
               {
                 "type": "message",

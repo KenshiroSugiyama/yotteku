@@ -24,15 +24,7 @@
         <%= @req.freedrink %>
   </div>
 
-  <div class="mb-1">
-    <label>席時間</label>:
-        <%= @req.drinktime %>
-  </div>
-
-  <div class="mb-1">
-    <label>店状況</label>:
-        <%= @req.situation %>
-  </div>
+  
     
   <%= form_with(url: request_controller_update_path,method: :put, local: true) do |f| %>
     <%= f.hidden_field :id, :value => params[:id]  %>
