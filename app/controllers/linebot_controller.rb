@@ -283,6 +283,7 @@ class LinebotController < ApplicationController
             client.reply_message(event['replyToken'], message)
           elsif e.eql?('店舗登録')
             @res = Restaurant.find_by(uid: uid)
+            @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
             unless @res
               message = {
                 "type": "text",
@@ -903,7 +904,7 @@ def template
               {
                 "type": "uri",
                 "label": "登録情報編集",
-                "uri": "https://yotteku.herokuapp.com/restaurant_information/#{@res.id}"
+                "uri": "https://yotteku.herokuapp.com/restaurant_information/#{@res_info}"
               }
           ]
       }
