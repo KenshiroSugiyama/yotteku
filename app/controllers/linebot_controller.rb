@@ -904,7 +904,7 @@ def template
               {
                 "type": "uri",
                 "label": "登録情報編集",
-                "uri": "https://yotteku.herokuapp.com/restaurant_information/#{@res_info}"
+                "uri": "https://yotteku.herokuapp.com/restaurant_information/#{@res_info.id}"
               }
           ]
       }
