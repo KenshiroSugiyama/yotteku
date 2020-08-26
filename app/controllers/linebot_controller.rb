@@ -690,7 +690,7 @@ def template
       "altText": "This is a buttons template",
       "template": {
           "type": "buttons",
-          "thumbnailImageUrl": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg",
+          "thumbnailImageUrl": "https://imgcp.aacdn.jp/img-a/1200/900/aa/gm/article/4/7/2/1/9/2/201712101304/topimg_original.jpg",
           "imageAspectRatio": "rectangle",
           "imageSize": "cover",
           "imageBackgroundColor": "#FFFFFF",
@@ -699,7 +699,7 @@ def template
           "defaultAction": {
               "type": "uri",
               "label": "View detail",
-              "uri": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg"
+              "uri": "https://imgcp.aacdn.jp/img-a/1200/900/aa/gm/article/4/7/2/1/9/2/201712101304/topimg_original.jpg"
           },
           "actions": [
               {
