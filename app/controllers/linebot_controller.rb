@@ -224,7 +224,7 @@ class LinebotController < ApplicationController
             @scout.update(request_id: @req.id)
             message = {
               "type": "text",
-              "text": "予約を確定しました！\r\n\r\n店名： #{@res.name}\r\nTel:  #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@scout.start_time}\r\n値段： #{@scout.price}円\r\nお酒： #{@scout.beer}\r\n内容： #{@scout.content}\b\n\b\nよってくをご利用頂きありがとうございます！！"
+              "text": "予約を確定しました！\r\n\r\n店名： #{@res.name}\r\nTel:  #{@res.phone_number}\r\n住所： #{@res_info.address}\r\nurl： #{@res_info.url}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@scout.start_time}\r\n値段： #{@scout.price}円\r\nお酒： #{@scout.beer}\r\n内容：\b\n#{@scout.content}\b\n\b\nよってくをご利用頂きありがとうございます！！"
             }
             client.reply_message(event['replyToken'], message)
 
@@ -548,7 +548,7 @@ def template
       "altText": "This is a buttons template",
       "template": {
           "type": "buttons",
-          "thumbnailImageUrl": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg",
+          "thumbnailImageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTXRQvfA_RhFpqGEWrDb3MxzHrWmjFT8gjRyw&usqp=CAU",
           "imageAspectRatio": "rectangle",
           "imageSize": "cover",
           "imageBackgroundColor": "#FFFFFF",
@@ -557,7 +557,7 @@ def template
           "defaultAction": {
               "type": "uri",
               "label": "View detail",
-              "uri": "https://www.gurutto-fukushima.com/db_img/cl_img/800/menu/menu_img_20181009130238470.jpg"
+              "uri": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTXRQvfA_RhFpqGEWrDb3MxzHrWmjFT8gjRyw&usqp=CAU"
           },
           "actions": [
               {
