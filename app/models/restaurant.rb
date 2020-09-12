@@ -7,6 +7,7 @@ class Restaurant < ApplicationRecord
     has_one :restaurant_information
     has_many :scouts
     has_many :users_restaurants
+    has_many :scout_templates
 
    #validation
    validates :name, presence: true,on: :update

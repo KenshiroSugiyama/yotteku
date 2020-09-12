@@ -1,0 +1,11 @@
+<h4 class="text-center m-4">スカウトテンプレ一覧</h4>
+<h5 class="text-center mx-4"><%= @res.name %></h5>
+<div class="text-center m-3">
+    <% if @scout_template.present?%>
+        <% @scout_template.each do |scout|%>
+            <div class="bg-light p-3"><%= link_to "#{scout.name}",scout_template_path(id: scout.id)%></div>
+        <% end %>
+    <% else %>
+        <div>作成済みスカウトテンプレはありません</div>
+    <% end %>
+</div>

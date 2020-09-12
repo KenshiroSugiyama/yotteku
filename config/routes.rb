@@ -15,6 +15,8 @@ Rails.application.routes.draw do
 
   resources :restaurant_information,only: [:new,:create,:show,:edit,:update]
   resources :restaurant ,only: [:index,:show]
+
+  resources :scout_templates,only: [:new,:create,:show,:edit,:update,:index]
   
   get 'user_profile/show' => 'user_profile#show'
   get 'user_profile/new' => 'user_profile#new'

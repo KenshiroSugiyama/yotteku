@@ -1,0 +1,33 @@
+<div class="px-4 mt-5 form-group text-center mb-5">
+  <h4 class="my-3">スカウトテンプレート作成</h4>
+  <%= form_with(model: @scout_template, local: true) do |f| %>
+    <%= f.hidden_field :restaurant_id, :value => params[:res_id]  %>
+    <%= f.label :name, '名前' %><br>
+    <%= f.text_field :name,placeholder: "テンプレート１", class: 'form-control offset-3 col-6' %>
+<br>
+    <%= f.label :start_time, '開始時間' %><br>
+    <%= f.text_field :start_time,placeholder: "21:30~", class: 'form-control offset-3 col-6' %>
+<br>
+    <%= f.label :price, '値段（席料、お通し代込み）' %>
+    <div class="row">
+    <%= f.telephone_field :price, class: 'form-control offset-3 col-6' %><div class="ml-2 pt-1">円</div>
+    </div>
+    <%= f.label :beer, 'お酒',class: "mt-4 mb-2" %><br>
+    <%= f.radio_button :beer,:飲み放題 %>
+    <%= f.label :beer, '飲み放題',class: "pr-3" %>
+
+    <%= f.radio_button :beer,:単品 %>
+    <%= f.label :beer, '単品' %><br> 
+<br>
+    <%= f.label :drink_time, '席時間' %><br>
+    <%= f.text_field :drink_time,placeholder: "120分", class: 'form-control offset-3 col-6' %>
+<br>
+    <%= f.label :content, '提供内容' %><br>
+    <%= f.text_area :content,size: "1x6",placeholder: "例\b\n・お通し\b\n・料理3品\b\n・飲み放題付き",class: "form-control" %>
+<br>
+    <%= f.label :hope, 'お客様へのメッセージを入力' %><br>
+    <%= f.text_area :hope,size: "10x3",placeholder: "例 　是非来て下さい！！",class: "form-control" %>
+
+    <%= f.submit '作成' ,class: "btn btn-info my-5"%>
+  <% end %>
+</div>
