@@ -4,6 +4,7 @@ class LinebotController < ApplicationController
     protect_from_forgery :except => [:callback]
 
   def hope  
+    @scout_template = ScoutTemplate.where(restaurant_id: params[:res_id])
   end
 
   def responce

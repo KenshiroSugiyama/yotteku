@@ -25,10 +25,26 @@ class RequestControllerController < LinebotController
       post = {
         'to': userId,
         'messages': [
-            {
-                "type": "text",
-                "text": "要望入力が完了しました！\r\nジャンル： #{@category.name} \r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}"
+          {
+            "type": "template",
+            "altText": "this is a confirm template",
+            "template": {
+                "type": "confirm",
+                "text": "リクエストが完成しました\r\nジャンル： #{@category.name} \r\nお酒： #{@req.freedrink}\r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}\b\n店側にリクエストを送ってもいいですか？",
+                "actions": [
+                    {
+                      "type": "message",
+                      "label": "OK!",
+                      "text": "OK!"
+                    },
+                    {
+                      "type": "message",
+                      "label": "キャンセル",
+                      "text": "リクエストキャンセル"
+                    }
+                ]
             }
+          }
         ]
       }
       puts userId
@@ -42,6 +58,30 @@ class RequestControllerController < LinebotController
 
   def show
     @req = Request.find(params[:id])
+  end
+
+  
+  def confirm_send_request
+    {
+      "type": "template",
+      "altText": "this is a confirm template",
+      "template": {
+          "type": "confirm",
+          "text": "リクエストが完成しました\r\nジャンル： #{@category.name} \r\nお酒： #{@req.freedrink}\r\n予算： #{@req.budget}\r\n人数： #{@req.number_of_people.to_s}\r\n開始時間： #{@req.time}\r\n要望:  #{@req.hope}\b\n店側にリクエストを送ってもいいですか？",
+          "actions": [
+              {
+                "type": "message",
+                "label": "OK!",
+                "text": "OK!"
+              },
+              {
+                "type": "message",
+                "label": "キャンセル",
+                "text": "リクエストキャンセル"
+              }
+          ]
+      }
+    }
   end
 end
 
