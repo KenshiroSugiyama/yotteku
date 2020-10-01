@@ -282,7 +282,13 @@ class LinebotController < ApplicationController
               }
             end
             client.reply_message(event['replyToken'], message)
-          elsif e.eql?('店舗登録')
+          elsif e.eql?('見送り')
+            message = {
+              "type": "text",
+              "text": "リクエストを見送りました！"
+            }
+            client.reply_message(event['replyToken'], message)
+          elsif e.eql?('店側操作')
             @res = Restaurant.find_by(uid: uid)
             @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
             unless @res
