@@ -1,42 +1,42 @@
 <div class="text-center my-4">
   <h4>スカウト内容確認</h4>
 </div>
-<div class="row mx-5 bg-light p-4">
+<div class="row mx-3 bg-light p-4">
   <div class="col-sm-6 offset-sm-3">
-    <div class="mb-1">
-    <label>店名</label>:
+    <div class="mb-2">
+    <label>店名</label>：
         <%= @res.name%>
     </div>
 
-    <div class="mb-1">
-    <label>住所</label>:
+    <div class="mb-3">
+    <div class="mb-1">住所：</div>
         <%= @res_info.address%>
     </div>
 
-    <div class="mb-1">
-    <label>開始時間</label>:
+    <div class="mb-2">
+    <label>開始時間</label>：
         <%= @scout.start_time%>
     </div>
     
-    <div class="mb-1">
-    <label>値段</label>:
+    <div class="mb-2">
+    <label>値段</label>：
         <%= @scout.price%>円
     </div>
-    <div class="mb-1">
-    <label>お酒</label>:
+    <div class="mb-2">
+    <label>お酒</label>：
         <%= @scout.beer%>
     </div>
-    <div class="mb-1">
-    <label>席時間</label>:
+    <div class="mb-2">
+    <label>席時間</label>：
         <%= @scout.drink_time%>
     </div>
-    <div class="mb-1">
-    <label>提供内容</label>:
+    <div class="mb-2">
+    <div class="mb-1">提供内容：</div>
         <%= @scout.content%>
     </div>
     
     <div class="mb-1">
-    <label>メッセージ</label>:
+    <div class="mb-1">メッセージ：</div>
         <%= @scout.hope %>
     </div>
     
