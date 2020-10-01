@@ -107,7 +107,7 @@ class LinebotController < ApplicationController
             if !@req
               client.reply_message(event['replyToken'], template)
             elsif @req.status
-              if (Time.zone.now - @req.updated_at).floor / 3600  < 3 # 時間
+              if (Time.zone.now - @req.updated_at).floor / 3600  < 2 # 時間
                 message = {
                   "type": "text",
                   "text": "予約確定からの時間が短いためリクエストを作成できません。予約のキャンセルは、画面下のメニューからお願いします。"
@@ -173,7 +173,7 @@ class LinebotController < ApplicationController
             @category = Category.find(@req.category_id)
             client.reply_message(event['replyToken'], confirm_send_request)
           elsif e.eql?('リクエスト確認')
-            if @req.req_status
+            if @req.req_status && (Time.zone.now - @req.updated_at).floor / 3600  < 2
               @category = Category.find(@req.category_id)
               client.reply_message(event['replyToken'], confirm_request)
             else
