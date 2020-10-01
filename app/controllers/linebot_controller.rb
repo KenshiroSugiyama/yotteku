@@ -849,7 +849,7 @@ def template
               {
                 "type": "message",
                 "label": "見送り",
-                "text": "スカウトを送らない"
+                "text": "見送り"
               }
           ]
       }
