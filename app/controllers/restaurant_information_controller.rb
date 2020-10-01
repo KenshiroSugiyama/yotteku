@@ -47,5 +47,6 @@ class RestaurantInformationController < ApplicationController
 
     def show
         @info = RestaurantInformation.find(params[:id])
+        @res = Restaurant.find(@info.restaurant_id)
     end
 end

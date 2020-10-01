@@ -2,23 +2,32 @@
   <h4>店情報</h4>
 </div>
 <div class="mx-4">
-  <div class="bg-light p-3">
-    <div class="mb-1">
-    <label>一押しメニュー</label>:
-        <%= @info.menu%>
+  <div class="bg-light p-4 ">
+    <div class="mb-3  text-center">
+      <div class="mb-1">店名</div>
+        <%= @res.name %>
     </div>
-    <div class="mb-1">
-    <label>平均予算</label>:
-        <%= @info.price_min %>~<%= @info.price_max %>
+    <div class="mb-3  text-center">
+      <div class="mb-1">電話番号</div>
+        <%= @res.phone_number %>
     </div>
-    <div class="mb-1">
-    <label>住所</label>:
+    <div class="mb-3  text-center">
+      <div class="mb-1">住所</div>
         <%= @info.address %>
     </div>
-    <div class="mb-1">
-        <label>URL</label>:
+    <div class="mb-3  text-center">
+      <div class="mb-1">URL</div>
         <%= @info.url %>
     </div>
+    <div class="mb-3  text-center">
+      <div class="mb-1">平均予算</div>
+        <%= @info.price_min %>円~<%= @info.price_max %>円
+    </div>
+    <div class="mb-3  text-center">
+      <div class="mb-1">一押しメニュー</div>
+        <%= @info.menu%>
+    </div>
+    
   </div>
 </div>
 <div class="text-center mt-3"><%= link_to "編集",edit_restaurant_information_path(id: params[:id])%></div>
