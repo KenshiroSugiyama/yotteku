@@ -4,7 +4,7 @@
         <% @scout.each do |scout|%>
             <% req = Request.find(scout.request_id) %>
             <% @user = User.find(req.user_id) %>
-            <div class="bg-light p-4">
+            <div class="bg-light px-4 py-3">
                 <%= link_to "#{@user.name}様 　#{scout.start_time}~",reserf_path(id: scout.id) %>
             </div>
         <% end %>

@@ -6,8 +6,8 @@ class ReservesController < ApplicationController
   
   def show
     @scout = Scout.find(params[:id])
-    req = Request.find(@scout.request_id)
-    @user = User.find(req.user_id)
+    @req = Request.find(@scout.request_id)
+    @user = User.find(@req.user_id)
   end
 
   def admin

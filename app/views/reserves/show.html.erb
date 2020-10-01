@@ -7,12 +7,14 @@
     <label>予約者名</label>:
         <%= @user.name%>
     </div>
-
     <div class="mb-1">
-    <label>予約者電話番号</label>:
+    <label>電話番号</label>:
         <%= @user.email%>
     </div>
-
+    <div class="mb-1">
+    <label>人数</label>:
+        <%= @req.number_of_people%>
+    </div>
     <div class="mb-1">
     <label>開始時間</label>:
         <%= @scout.start_time%>
@@ -29,7 +31,9 @@
     <label>提供内容</label>:<br>
         <%= @scout.content%>
     </div>
-    
+    <label>要望</label>:<br>
+        <%= @req.hope%>
+    </div>
     <div class="mb-1">
     <label>メッセージ</label>:<br>
         <%= @scout.hope %>
