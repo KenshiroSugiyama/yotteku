@@ -1,6 +1,6 @@
 class ReservesController < ApplicationController
   def index
-    scout_ids = Request.where(res_id: params[:id]).pluck(:scout_id)
+    scout_ids = Request.where(res_id: params[:id]).where(updated_at: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day).pluck(:scout_id)
     @scout = Scout.find(scout_ids)
   end
   

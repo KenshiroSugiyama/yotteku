@@ -119,10 +119,11 @@ class LinebotController < ApplicationController
                 }
                 client.reply_message(event['replyToken'], message)
               else
-                @req.update(req_status: false,status: false,hope: "なし")
+                @req.update(req_status: false,res_id: nil,status: false,scout_id: nil,hope: "なし")
                 client.reply_message(event['replyToken'], template)
               end
             else
+              @req.update(req_status: false,hope: "なし")
               client.reply_message(event['replyToken'], template)
             end
           elsif req_category.any?(e)
