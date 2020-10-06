@@ -7,6 +7,11 @@ class LinebotController < ApplicationController
     @scout_template = ScoutTemplate.where(restaurant_id: params[:res_id])
   end
 
+  def scout_ajax
+    scout_template = ScoutTemplate.find(params[:id])
+    render json: scout_template
+  end
+
   def responce
     user = Request.find(params[:req_id]).user_id
     userId = User.find(user).uid
