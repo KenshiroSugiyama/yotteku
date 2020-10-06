@@ -38,6 +38,7 @@ class ScoutTemplatesController < ApplicationController
 
     def show
         @scout_template = ScoutTemplate.find(params[:id])
+        @res = Restaurant.find(@scout_template.restaurant_id)
     end
 
     def index

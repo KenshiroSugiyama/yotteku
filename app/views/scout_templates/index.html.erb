@@ -8,4 +8,5 @@
     <% else %>
         <div>作成済みスカウトテンプレはありません</div>
     <% end %>
+    <div class="btn btn-info my-4 "><%= link_to '作成',new_scout_template_path(res_id: @res.id),class: "text-white" %></div>
 </div>

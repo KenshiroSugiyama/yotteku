@@ -917,6 +917,11 @@ def template
                 "type": "uri",
                 "label": "登録情報編集",
                 "uri": "https://yotteku.herokuapp.com/restaurant_information/#{@res_info.id}"
+              },
+              {
+                "type": "uri",
+                "label": "スカウトテンプレ",
+                "uri": "https://yotteku.herokuapp.com/scout_templates?res_id=#{@res.id}"
               }
           ]
       }
