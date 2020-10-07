@@ -193,7 +193,7 @@ class LinebotController < ApplicationController
             unless @req.status
               message = {
                 "type": "text",
-                "text": "リクエストをキャンセルしました。もう一度予約をする場合は最初からやり直してください。"
+                "text": "リクエストをキャンセルしました。もう一度予約をする場合は、リクエストを作成し直してください。"
               }
               scouts = Scout.where(request_id: @req.id)
               scouts.destroy_all
