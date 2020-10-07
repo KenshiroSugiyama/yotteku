@@ -190,20 +190,30 @@ class LinebotController < ApplicationController
               client.reply_message(event['replyToken'], message)
             end
           elsif e.eql?('リクエストキャンセル') 
-            unless @req.status
-              message = {
-                "type": "text",
-                "text": "リクエストをキャンセルしました。もう一度予約をする場合は、リクエストを作成し直してください。"
-              }
-              scouts = Scout.where(request_id: @req.id)
-              scouts.destroy_all
-              @req.update(req_status: false,hope: "なし",res_id: nil,scout_id: nil)
-            else
+            if @req.status
               message = {
                 "type": "text",
                 "text": "予約が確定しているリクエストがあります。予約をキャンセルする場合は、「予約確認・キャンセル」よりお願いします。"
               }
+              client.reply_message(event['replyToken'], message)
+            elsif @req.req_status
+              client.reply_message(event['replyToken'], req_cancel)
+            else
+              message = {
+                "type": "text",
+                "text": "リクエストを削除しました。「リクエスト作成」を押して、リクエストを最初から作り直してください。"
+              }
+              scouts = Scout.where(request_id: @req.id)
+              scouts.destroy_all
+              @req.update(req_status: false,hope: "なし",res_id: nil,scout_id: nil)
+              client.reply_message(event['replyToken'], message)
             end
+          elsif e.eql?('はい')
+            @req.update(req_status: false,hope: "なし",res_id: nil,scout_id: nil)
+            message = {
+              "type": "text",
+              "text": "リクエストを取り消しました。「リクエスト作成」を押して、リクエストを最初から作り直してください。"
+            }
             client.reply_message(event['replyToken'], message)
           elsif e.eql?('予約キャンセル') 
             client.reply_message(event['replyToken'], cancel_confirm)
@@ -702,6 +712,30 @@ def template
       }
     }
   end
+
+  def req_cancel
+    {
+      "type": "template",
+      "altText": "リクエストをキャンセルしますか？",
+      "template": {
+          "type": "confirm",
+          "text": "すでに店側に送信しているリクエストが存在します。リクエストを作り直しますか？",
+          "actions": [
+              {
+                "type": "message",
+                "label": "はい",
+                "text": "はい"
+              },
+              {
+                "type": "message",
+                "label": "いいえ",
+                "text": "いいえ"
+              }
+          ]
+      }
+    }
+  end
+
 
   
   def template7
