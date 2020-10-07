@@ -17,14 +17,10 @@ class RestaurantInformationController < ApplicationController
         category_id = params[:restaurant_information][:category_id].to_i
         phone_number = params[:restaurant_information][:phone_number].to_i
 
-        if @info.save!
+        if @info.save(res_info_params)
             Restaurant.find(current_restaurant.id).update(name: name,phone_number: phone_number,category_id: category_id)
-            redirect_to restaurant_information_path(id: @info.id)
             flash[:notice] = '登録しました!Lineの画面にお戻り下さい。'
-            
-        else
-            redirect_to action: "new"
-            flash[:alert] = '登録に失敗しました'
+            redirect_to restaurant_information_path(id: @info.id)
         end
     end
 
@@ -34,19 +30,28 @@ class RestaurantInformationController < ApplicationController
     
     def update
         @info = RestaurantInformation.find(params[:id])
-        menu = params[:restaurant_information][:menu]
-        price_min = params[:restaurant_information][:price_min]
-        price_max = params[:restaurant_information][:price_max]
-        address = params[:restaurant_information][:address]
-        url = params[:restaurant_information][:url]
-        if @info.update(menu: menu,price_min: price_min,price_max: price_max,address: address,url: url )
-            redirect_to restaurant_information_path(id: @info.id)
+        @info.menu = params[:restaurant_information][:menu]
+        @info.price_min = params[:restaurant_information][:price_min]
+        @info.price_max = params[:restaurant_information][:price_max]
+        @info.address = params[:restaurant_information][:address]
+        @info.url = params[:restaurant_information][:url]
+        if @info.update(res_info_params)
             flash[:success] = '更新しました!'
+            redirect_to restaurant_information_path(id: @info.id)
+        else
+            flash[:danger] = '更新に失敗しました'
+            redirect_to edit_restaurant_information_path(id: @info.id)
         end
     end
 
     def show
         @info = RestaurantInformation.find(params[:id])
         @res = Restaurant.find(@info.restaurant_id)
+    end
+
+    private
+    def res_info_params
+        params.require(:restaurant_information).permit(:menu, :price_max,:price_min,:address,:url)
+        params.permit(:id)
     end
 end

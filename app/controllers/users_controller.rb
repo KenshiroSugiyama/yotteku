@@ -9,7 +9,11 @@ class UsersController < ApplicationController
     @user.name = params[:user][:name]
     @user.email = params[:user][:email]
     if @user.save
+      flash[:success] = "登録成功！"
       redirect_to user_path(@user.id)
+    else
+      flash.now[:danger] = "登録に失敗しました"
+      render :new
     end
   end
 

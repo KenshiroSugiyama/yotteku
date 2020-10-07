@@ -14,12 +14,17 @@ class ScoutTemplatesController < ApplicationController
         @scout_template.hope = params[:scout_template][:hope]
         @scout_template.restaurant_id = params[:scout_template][:restaurant_id]
         if @scout_template.save(scout_template_params)
-            redirect_to scout_template_path(id: @scout_template.id)
+            flash[:success] = "テンプレートを登録しました！"
+            redirect_to scout_template_path(id: @scout_template.id)    
+        else
+            flash[:danger] = "更新に失敗しました。"
+            redirect_to new_scout_template_path(res_id: @scout_template.restaurant_id)
         end
     end
 
     def edit
         @scout_template = ScoutTemplate.find(params[:id])
+        @res_id = @scout_template.restaurant_id
     end
 
     def update
@@ -33,7 +38,11 @@ class ScoutTemplatesController < ApplicationController
         @scout_template.hope = params[:scout_template][:hope]
         @scout_template.restaurant_id = params[:scout_template][:restaurant_id]
         if @scout_template.update(scout_template_params)
+            flash[:success] = "更新しました！"
             redirect_to scout_template_path(id: @scout_template.id)
+        else
+            flash[:danger] = "更新に失敗しました。"
+            redirect_to edit_scout_template_path(id: @scout_template.id)
         end
     end
 
