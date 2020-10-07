@@ -928,7 +928,7 @@ def template
               },
               {
                 "type": "uri",
-                "label": "スカウトテンプレ",
+                "label": "スカウトテンプレ作成",
                 "uri": "https://yotteku.herokuapp.com/scout_templates?res_id=#{@res.id}"
               }
           ]
