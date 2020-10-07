@@ -31,6 +31,7 @@ class ScoutTemplatesController < ApplicationController
         @scout_template.drink_time = params[:scout_template][:drink_time]
         @scout_template.content = params[:scout_template][:content]
         @scout_template.hope = params[:scout_template][:hope]
+        @scout_template.restaurant_id = params[:scout_template][:restaurant_id]
         if @scout_template.update(scout_template_params)
             redirect_to scout_template_path(id: @scout_template.id)
         end

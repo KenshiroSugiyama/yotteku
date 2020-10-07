@@ -1,7 +1,7 @@
 <div class="px-4 mt-5 form-group text-center mb-5">
   <h4 class="my-3">スカウトテンプレート編集</h4>
   <%= form_with(model: @scout_template, local: true) do |f| %>
-    <%= f.hidden_field :restaurant_id, :value => params[:res_id]  %>
+    <%= f.hidden_field :restaurant_id, :value => params[:id]  %>
     <%= f.label :name, '名前' %><br>
     <%= f.text_field :name,placeholder: "テンプレート１", class: 'form-control offset-3 col-6' %>
 <br>
