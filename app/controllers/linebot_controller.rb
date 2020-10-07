@@ -190,13 +190,20 @@ class LinebotController < ApplicationController
               client.reply_message(event['replyToken'], message)
             end
           elsif e.eql?('リクエストキャンセル') 
-            message = {
-              "type": "text",
-              "text": "リクエストをキャンセルしました。もう一度予約をする場合は最初からやり直してください。"
-            }
-            scouts = Scout.where(request_id: @req.id)
-            scouts.destroy_all
-            @req.update(req_status: false,hope: "なし",res_id: nil,scout_id: nil)
+            unless @req.status
+              message = {
+                "type": "text",
+                "text": "リクエストをキャンセルしました。もう一度予約をする場合は最初からやり直してください。"
+              }
+              scouts = Scout.where(request_id: @req.id)
+              scouts.destroy_all
+              @req.update(req_status: false,hope: "なし",res_id: nil,scout_id: nil)
+            else
+              message = {
+                "type": "text",
+                "text": "予約が確定しているリクエストがあります。予約をキャンセルする場合は、「予約確認・キャンセル」よりお願いします。"
+              }
+            end
             client.reply_message(event['replyToken'], message)
           elsif e.eql?('予約キャンセル') 
             client.reply_message(event['replyToken'], cancel_confirm)
