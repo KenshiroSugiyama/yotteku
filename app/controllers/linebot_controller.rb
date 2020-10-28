@@ -107,6 +107,13 @@ class LinebotController < ApplicationController
           user = User.find_by(uid: uid)
           if user
             @req = Request.find_by(user_id: user.id)
+          else 
+            message = {
+              "type": "text",
+              "text": "ユーザー登録が完了していません！以下のリンクよりユーザー登録をお願いします。\b\nhttps://yotteku.herokuapp.com/users/new?uid=#{uid}"
+            }
+            client.reply_message(event['replyToken'], message)
+            exit
           end
           if e.eql?('リクエスト作成')
             if !@req
