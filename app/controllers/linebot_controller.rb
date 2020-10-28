@@ -63,7 +63,7 @@ class LinebotController < ApplicationController
         "type": "text",
         "text": "他の店との予約が先に成立していたため、スカウトメッセージの送信に失敗しました。"
       }
-      client.push_message(userId,message)
+      client2.push_message(@res.uid,message)
     end
   end
 
@@ -243,7 +243,7 @@ class LinebotController < ApplicationController
 
              #店側に送信
              res_ids = Restaurant.where(category_id: @req.category_id).pluck(:uid)
-             client.multicast(res_ids,res_message)
+             client2.multicast(res_ids,res_message)
           elsif e.include?('予約確定')
             a = e.split(",")
             @res = Restaurant.find_by(name: a[1])
@@ -283,7 +283,7 @@ class LinebotController < ApplicationController
                 }
               }
             end
-            client.push_message(@res.uid,restaurant_template)
+            client2.push_message(@res.uid,restaurant_template)
           elsif e.eql?('予約確認') 
             if @req.status
               @res = Restaurant.find(@req.res_id)
@@ -297,39 +297,8 @@ class LinebotController < ApplicationController
                 }
               client.reply_message(event['replyToken'], message)
             end
-          elsif e.include?('スカウト')
-            unless @req.status
-              @res = Restaurant.find_by(uid: uid)
-              @req_id = e.delete("スカウト").to_i
-              message = {
-                "type": "text",
-                "text": "以下のリンクからスカウトメッセージを送ってください！\b\n https://yotteku.herokuapp.com/hope?res_id=#{@res.id}&req_id=#{@req_id}"
-              }
-            else
-              message = {
-                "type": "text",
-                "text": "他の店との予約が先に成立したため、スカウトメッセージを送れません。"
-              }
-            end
-            client.reply_message(event['replyToken'], message)
-          elsif e.eql?('見送り')
-            message = {
-              "type": "text",
-              "text": "リクエストを見送りました！"
-            }
-            client.reply_message(event['replyToken'], message)
-          elsif e.eql?('店側操作')
-            @res = Restaurant.find_by(uid: uid)
-            @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
-            unless @res
-              message = {
-                "type": "text",
-                "text": "店舗登録を以下のリンクよりお願いいたします。\b\nhttps://yotteku.herokuapp.com/restaurants/sign_up?uid=#{uid}"
-              }
-              client.reply_message(event['replyToken'], message)
-            else
-              client.reply_message(event['replyToken'], restaurant)
-            end
+          
+          
           elsif e.eql?('管理者')
             message = {
                 "type": "text",
@@ -341,6 +310,73 @@ class LinebotController < ApplicationController
       end
     end
     head :ok
+  end
+
+  def callback2
+    body = request.body.read
+    signature = request.env['HTTP_X_LINE_SIGNATURE']
+    unless client2.validate_signature(body, signature)
+      error 400 do 'Bad Request' end
+    end
+    events = client2.parse_events_from(body)
+
+    events.each do |event|
+      case event
+      when Line::Bot::Event::Follow
+        uid = event['source']['userId']
+        res = Restaurant.find_by(uid: uid)
+        unless res
+          message = {
+            "type": "text",
+            "text": "店舗登録を以下のリンクよりお願いいたします。\b\nhttps://yotteku.herokuapp.com/restaurants/sign_up?uid=#{uid}"
+          }
+          client2.reply_message(event['replyToken'], message)
+        end
+      when Line::Bot::Event::Message
+        case event.type
+        when Line::Bot::Event::MessageType::Text
+          e = event.message['text']
+          uid = event['source']['userId']
+          
+          if e.eql?('店側操作')
+            @res = Restaurant.find_by(uid: uid)
+            @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
+            unless @res
+              message = {
+                "type": "text",
+                "text": "店舗登録を以下のリンクよりお願いいたします。\b\nhttps://yotteku.herokuapp.com/restaurants/sign_up?uid=#{uid}"
+              }
+              client2.reply_message(event['replyToken'], message)
+            else
+              client2.reply_message(event['replyToken'], restaurant)
+            end
+          elsif e.include?('スカウト')
+            @req_id = e.delete("スカウト").to_i
+            @req = Request.find(@req_id)
+            unless @req.status
+              @res = Restaurant.find_by(uid: uid)
+              message = {
+                "type": "text",
+                "text": "以下のリンクからスカウトメッセージを送ってください！\b\n https://yotteku.herokuapp.com/hope?res_id=#{@res.id}&req_id=#{@req_id}"
+              }
+            else
+              message = {
+                "type": "text",
+                "text": "他の店との予約が先に成立したため、スカウトメッセージを送れません。"
+              }
+            end
+            client2.reply_message(event['replyToken'], message)
+          elsif e.eql?('見送り')
+            message = {
+              "type": "text",
+              "text": "リクエストを見送りました！"
+            }
+            client2.reply_message(event['replyToken'], message)
+          end
+        end
+      end
+    end
+
   end
 
   
@@ -1011,5 +1047,12 @@ def template
       config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
       config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
     }
+  end
+
+  def client2
+    @client2 ||= Line::Bot::Client.new { |config|
+       config.channel_secret = ENV["LINE_CHANNEL_SECRET2"]
+       config.channel_token = ENV["LINE_CHANNEL_TOKEN2"]
+     }
   end
 end
