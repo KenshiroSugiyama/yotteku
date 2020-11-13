@@ -320,7 +320,6 @@ class LinebotController < ApplicationController
             client.reply_message(event['replyToken'], message)
           elsif e.eql?('店側操作')
             @res = Restaurant.find_by(uid: uid)
-            @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
             unless @res
               message = {
                 "type": "text",
@@ -328,6 +327,7 @@ class LinebotController < ApplicationController
               }
               client.reply_message(event['replyToken'], message)
             else
+              @res_info = RestaurantInformation.find_by(restaurant_id: @res.id)
               client.reply_message(event['replyToken'], restaurant)
             end
           elsif e.eql?('管理者')
