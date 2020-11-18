@@ -15,7 +15,7 @@ class RestaurantInformationController < ApplicationController
         @info.url = params[:restaurant_information][:url]
         name = params[:restaurant_information][:name]
         category_id = params[:restaurant_information][:category_id].to_i
-        phone_number = params[:restaurant_information][:phone_number].to_i
+        phone_number = params[:restaurant_information][:phone_number]
 
         if @info.save(res_info_params)
             Restaurant.find(current_restaurant.id).update(name: name,phone_number: phone_number,category_id: category_id)
