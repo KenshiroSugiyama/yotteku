@@ -115,6 +115,10 @@ class LinebotController < ApplicationController
             client.reply_message(event['replyToken'], message)
             exit
           end
+          if e.eql?('講師検索')
+            client.reply_message(event['replyToken'], template100)
+          end
+
           if e.eql?('リクエスト作成')
             if !@req
               client.reply_message(event['replyToken'], template)
@@ -420,6 +424,82 @@ def template
   }
     }
   end
+
+  def template100
+    {
+      "type": "template",
+      "altText": "講師を選択してください",
+      "template": {
+          "type": "carousel",
+          "text": "講師を選択してください",
+          "columns": [
+          {
+            "thumbnailImageUrl": "https://rimage.gnst.jp/rest/img/6sp1wtu60000/s_0n6m.jpg?t=1585036850",
+            "imageBackgroundColor": "#FFFFFF",
+            "title": "堅志郎",
+            "text": "description",
+            "defaultAction": {
+                "type": "postback",
+                "label": "選択",
+                "data": "category=meat",
+                "text": "肉系"
+            },
+            "actions": [
+                {
+                    "type": "postback",
+                    "label": "選択",
+                    "data": "category=meat",
+                    "text": "肉系"
+                },
+            ]
+          },
+          {
+            "thumbnailImageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTdJUj8MRgLDP64ptvYCflvOwcOKBrjnvtWd3MX86QD1gNl8-el&usqp=CAU",
+            "imageBackgroundColor": "#000000",
+            "title": "和",
+            "text": "description",
+            "defaultAction": {
+                "type": "postback",
+                "label": "選択",
+                "data": "category=fish",
+                "text": "魚介系"
+            },
+            "actions": [
+                {
+                    "type": "postback",
+                    "label": "選択",
+                    "data": "category=fish",
+                    "text": "魚介系"
+                },
+            ]
+          },
+          {
+            "thumbnailImageUrl": "https://tblg.k-img.com/resize/660x370c/restaurant/images/Rvw/131355/131355648.jpg?token=0890a11&api=v2",
+            "imageBackgroundColor": "#000000",
+            "title": "そらたろう",
+            "text": "description",
+            "defaultAction": {
+                "type": "postback",
+                "label": "選択",
+                "data": "category=italy",
+                "text": "イタリアン"
+            },
+            "actions": [
+                {
+                    "type": "postback",
+                    "label": "選択",
+                    "data": "category=italy",
+                    "text": "イタリアン"
+                },
+            ]
+          }
+      ],
+      "imageAspectRatio": "rectangle",
+      "imageSize": "cover"
+  }
+    }
+  end
+
 
   def budget
     {
