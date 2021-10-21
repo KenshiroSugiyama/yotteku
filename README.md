@@ -7,7 +7,7 @@ If the user wants to go to a pub, the app will suggest pubs according to the use
 This app was written in Ruby.<br>I chose Ruby on Rails as framework.<br>
 This app can be used on **LINE (messaging app)**. So you don't need to open the web app and **it's easy to use**.<br>
 
-## Notable PointMatchmaking
+## Notable Point
 Used the LINE API (message app)<br>
 Created a simple matching algorithm.<br>
 
